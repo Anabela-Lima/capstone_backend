@@ -1,4 +1,4 @@
 package com.sgone.capstone.dto;
 
-public class IGNORETHIS {
+public class StandardResponseDto {
 }

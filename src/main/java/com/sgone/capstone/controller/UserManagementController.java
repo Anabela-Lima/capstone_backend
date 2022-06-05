@@ -32,6 +32,8 @@ public class UserManagementController {
     public ResponseEntity<StandardResponseDto<List<User>>> getAllUsers() {
         List<User> allUsers = userManagementService.getAllUsers();
 
+
+        // TODO: refactor this to SERVICE!!
         if (allUsers.isEmpty()) {
             StandardResponseDto<List<User>> response =
                     new StandardResponseDto<>(

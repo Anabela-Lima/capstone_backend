@@ -1,6 +1,6 @@
 package com.sgone.capstone.service;
 
-import com.sgone.capstone.model.User;
+import com.sgone.capstone.model.ApplicationUser;
 import com.sgone.capstone.repository.UserManagementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +20,18 @@ public class UserManagementService {
         this.userManagementRepository = userManagementRepository;
     }
 
-    public List<User> getAllUsers() {
-        return userManagementRepository.getAll();
+    public List<ApplicationUser> getAllUsers() {
+        List<ApplicationUser> allApplicationUsers = userManagementRepository.getAll();
+
+        if (allApplicationUsers.isEmpty()) {
+            throw new RuntimeException("No users found in database!");
+        }
+
+        return allApplicationUsers;
     }
 
-    public User getSingleUser(Long userId) {
-        Optional<User> userOptional = userManagementRepository.getSingle(userId);
+    public ApplicationUser getSingleUser(Long userId) {
+        Optional<ApplicationUser> userOptional = userManagementRepository.getSingle(userId);
 
         if (userOptional.isEmpty()) {
             throw new RuntimeException("No user found!");

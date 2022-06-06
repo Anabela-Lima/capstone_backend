@@ -2,7 +2,7 @@ package com.sgone.capstone.controller;
 
 
 import com.sgone.capstone.dto.StandardResponseDto;
-import com.sgone.capstone.model.User;
+import com.sgone.capstone.model.ApplicationUser;
 import com.sgone.capstone.service.UserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/api/v1/users")
+@RequestMapping("/admin/api/users")
 public class UserManagementController {
 
     private UserManagementService userManagementService;
@@ -29,46 +29,44 @@ public class UserManagementController {
     }
 
     @GetMapping("/get_all")
-    public ResponseEntity<StandardResponseDto<List<User>>> getAllUsers() {
-        List<User> allUsers = userManagementService.getAllUsers();
+    public ResponseEntity<StandardResponseDto<List<ApplicationUser>>> getAllUsers() {
 
-
-        // TODO: refactor this to SERVICE!!
-        if (allUsers.isEmpty()) {
-            StandardResponseDto<List<User>> response =
-                    new StandardResponseDto<>(
-                            false,
-                            "No users found!",
-                            new ArrayList<>()
-                    );
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        try {
+            List<ApplicationUser> allApplicationUsers = userManagementService.getAllUsers();
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new StandardResponseDto<>(
+                            true,
+                            String.format("%s users found.", allApplicationUsers.size()),
+                            allApplicationUsers
+                    ));
         }
-
-        StandardResponseDto<List<User>> response =
-                new StandardResponseDto<>(
-                        true,
-                        String.format("%s users found.", allUsers.size()),
-                        allUsers
-        );
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        catch (RuntimeException re) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(new StandardResponseDto<>(
+                            false,
+                            re.getMessage(),
+                            new ArrayList<>()
+                    ));
+        }
     }
 
     @GetMapping("/get_single/{userId}")
-    public ResponseEntity<StandardResponseDto<User>> getSingleUser(@PathVariable Long userId) {
+    public ResponseEntity<StandardResponseDto<ApplicationUser>> getSingleUser(@PathVariable Long userId) {
 
         try {
-            User singleUser = userManagementService.getSingleUser(userId);
-            StandardResponseDto<User> response =
-                    new StandardResponseDto<>(
+            ApplicationUser singleApplicationUser = userManagementService.getSingleUser(userId);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new StandardResponseDto<>(
                             true,
                             "PLACEHOLDER MESSAGE",
-                            singleUser
-                    );
-            return ResponseEntity.status(HttpStatus.OK).body(response);
+                            singleApplicationUser
+                    ));
         }
         catch (RuntimeException re) {
-            StandardResponseDto<User> response =
+            StandardResponseDto<ApplicationUser> response =
                     new StandardResponseDto<>(
                             false,
                             re.getMessage(),

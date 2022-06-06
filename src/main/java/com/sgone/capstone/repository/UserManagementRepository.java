@@ -1,6 +1,6 @@
 package com.sgone.capstone.repository;
 
-import com.sgone.capstone.model.User;
+import com.sgone.capstone.model.ApplicationUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -9,17 +9,33 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserManagementRepository extends JpaRepository<User, Long> {
+public interface UserManagementRepository extends JpaRepository<ApplicationUser, Long> {
 
     @Query(
-            value = "SELECT * FROM USER",
+            value = "SELECT " +
+                    "* " +
+                    "FROM " +
+                    "USER " +
+                    "WHERE " +
+                    "is_admin = false " +
+                    "AND " +
+                    "is_owner = false",
             nativeQuery = true
     )
-    List<User> getAll();
+    List<ApplicationUser> getAll();
 
     @Query(
-            value = "SELECT * FROM USER WHERE id = ?1",
+            value = "SELECT " +
+                    "* " +
+                    "FROM " +
+                    "USER " +
+                    "WHERE " +
+                    "id = ?1 " +
+                    "AND " +
+                    "is_admin = false " +
+                    "AND " +
+                    "is_owner = false",
             nativeQuery = true
     )
-    Optional<User> getSingle(Long userId);
+    Optional<ApplicationUser> getSingle(Long userId);
 }

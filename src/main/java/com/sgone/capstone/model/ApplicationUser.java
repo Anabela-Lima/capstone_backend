@@ -3,11 +3,11 @@ package com.sgone.capstone.model;
 import javax.persistence.*;
 
 @Entity
-public class User {
+public class ApplicationUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
     @Column
     private String username;
     @Column(name = "password_hash")
@@ -21,15 +21,15 @@ public class User {
     private Boolean isOwner;
 
 
-    public User() {}
+    public ApplicationUser() {}
 
     // TODO: Modify constructor after adding additional properties
-    public User(Long id,
-                String username,
-                String password,
-                Boolean isAdmin,
-                Boolean isOwner) {
-        this.Id = id;
+    public ApplicationUser(Long id,
+                           String username,
+                           String password,
+                           Boolean isAdmin,
+                           Boolean isOwner) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.isAdmin = isAdmin;
@@ -38,11 +38,11 @@ public class User {
 
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getUsername() {

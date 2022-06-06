@@ -8,16 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/api/users")
+@RequestMapping("/management/users")
 public class UserManagementController {
 
     private UserManagementService userManagementService;
@@ -55,8 +52,10 @@ public class UserManagementController {
     }
 
     // TODO: Add @PreAuthorize Annotation to only allow Admin and Owner roles
-    @GetMapping("/get_single/{userId}")
-    public ResponseEntity<StandardResponseDto<ApplicationUser>> getSingleUser(@PathVariable Long userId) {
+    @GetMapping("/get_single")
+    public ResponseEntity<StandardResponseDto<ApplicationUser>> getSingleUser(
+            @RequestParam(required = true, defaultValue = "0") Long userId
+    ) {
 
         try {
             ApplicationUser singleApplicationUser = userManagementService.getSingleUser(userId);
@@ -64,7 +63,7 @@ public class UserManagementController {
                     .status(HttpStatus.OK)
                     .body(new StandardResponseDto<>(
                             true,
-                            "PLACEHOLDER MESSAGE",
+                            String.format("User %s found.", singleApplicationUser.getUsername()),
                             singleApplicationUser
                     ));
         }
@@ -80,5 +79,5 @@ public class UserManagementController {
 
     }
 
-    // TODO: Add endpoint for modifying account information
+
 }

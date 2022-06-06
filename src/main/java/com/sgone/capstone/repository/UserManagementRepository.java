@@ -15,7 +15,7 @@ public interface UserManagementRepository extends JpaRepository<ApplicationUser,
             value = "SELECT " +
                     "* " +
                     "FROM " +
-                    "USER " +
+                    "APPLICATION_USER " +
                     "WHERE " +
                     "is_admin = false " +
                     "AND " +
@@ -28,7 +28,7 @@ public interface UserManagementRepository extends JpaRepository<ApplicationUser,
             value = "SELECT " +
                     "* " +
                     "FROM " +
-                    "USER " +
+                    "APPLICATION_USER " +
                     "WHERE " +
                     "id = ?1 " +
                     "AND " +

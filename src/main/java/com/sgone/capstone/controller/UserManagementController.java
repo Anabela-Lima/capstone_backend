@@ -7,6 +7,7 @@ import com.sgone.capstone.service.UserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ public class UserManagementController {
         this.userManagementService = userManagementService;
     }
 
+    // TODO: Add @PreAuthorize Annotation to only allow Admin and Owner roles
     @GetMapping("/get_all")
     public ResponseEntity<StandardResponseDto<List<ApplicationUser>>> getAllUsers() {
 
@@ -52,6 +54,7 @@ public class UserManagementController {
         }
     }
 
+    // TODO: Add @PreAuthorize Annotation to only allow Admin and Owner roles
     @GetMapping("/get_single/{userId}")
     public ResponseEntity<StandardResponseDto<ApplicationUser>> getSingleUser(@PathVariable Long userId) {
 
@@ -66,14 +69,16 @@ public class UserManagementController {
                     ));
         }
         catch (RuntimeException re) {
-            StandardResponseDto<ApplicationUser> response =
-                    new StandardResponseDto<>(
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(new StandardResponseDto<>(
                             false,
                             re.getMessage(),
                             null
-                    );
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+                    ));
         }
 
     }
+
+    // TODO: Add endpoint for modifying account information
 }

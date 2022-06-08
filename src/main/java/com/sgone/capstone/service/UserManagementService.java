@@ -23,7 +23,7 @@ public class UserManagementService {
     public List<ApplicationUser> getAllUsers() {
         List<ApplicationUser> allApplicationUsers = userManagementRepository.getAll();
 
-        if (allApplicationUsers.isEmpty()) {
+        if (allApplicationUsers.size() == 0) {
             throw new RuntimeException("No users found in database!");
         }
 

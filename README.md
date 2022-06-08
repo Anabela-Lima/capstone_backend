@@ -7,6 +7,8 @@
 
 ### Test Endpoint
 
+##### IMPORTANT: Heroku will go to 'sleep' after 30 minutes of inactivity, first API request to wake will take roughly 20 seconds.
+
 #### Endpoint
 ```
 https://springboot-postgres-test.herokuapp.com/test

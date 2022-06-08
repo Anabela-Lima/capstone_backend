@@ -5,4 +5,27 @@
 ### https://springboot-postgres-test.herokuapp.com/
 
 
-### Test Endpoint: https://springboot-postgres-test.herokuapp.com/test
+### Test Endpoint
+
+#### Endpoint
+```
+https://springboot-postgres-test.herokuapp.com/test
+```
+
+#### Input
+```
+GET REQUEST
+```
+
+#### Example Response
+
+**200** - Test Success (Backend is active)
+
+```
+{
+    "success": true,
+    "message": "This is a test endpoint",
+    "payload": "Test Success!"
+}
+```
+**Other Code** - Backend is offline

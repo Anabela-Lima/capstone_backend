@@ -8,10 +8,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class TestAccessController {
+public class _TestAccessController {
 
     @GetMapping("/test")
     public ResponseEntity<StandardResponseDto<String>> testAccess() {
-        return ResponseEntity.status(HttpStatus.OK).body(new StandardResponseDto<>(true, "This is a test endpoint", "Test Success!"));
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(
+                        new StandardResponseDto<>(
+                                true,
+                                "This is a test endpoint",
+                                "Test Success!")
+                );
     }
 }

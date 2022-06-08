@@ -1,7 +1,7 @@
 package com.sgone.capstone.service;
 
 import com.sgone.capstone.model.ApplicationUser;
-import com.sgone.capstone.repository.UserManagementRepository;
+import com.sgone.capstone.repository.management.UserManagementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

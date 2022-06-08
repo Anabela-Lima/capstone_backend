@@ -1,4 +1,4 @@
-package com.sgone.capstone.repository;
+package com.sgone.capstone.repository.management;
 
 import com.sgone.capstone.model.ApplicationUser;
 import org.springframework.data.jpa.repository.JpaRepository;

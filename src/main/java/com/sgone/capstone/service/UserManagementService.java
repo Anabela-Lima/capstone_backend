@@ -33,7 +33,7 @@ public class UserManagementService {
     public ApplicationUser getSingleUser(Long userId) {
         Optional<ApplicationUser> userOptional = userManagementRepository.getSingle(userId);
 
-        if (userOptional.isEmpty()) {
+        if (!userOptional.isPresent()) {
             throw new RuntimeException("No user found!");
         }
 

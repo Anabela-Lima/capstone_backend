@@ -24,7 +24,7 @@ public class UserManagementService {
         List<ApplicationUser> allApplicationUsers = userManagementRepository.getAll();
 
         if (allApplicationUsers.isEmpty()) {
-            throw new RuntimeException("No users found in database!");
+            throw new RuntimeException("No users found in database.");
         }
 
         return allApplicationUsers;
@@ -34,7 +34,7 @@ public class UserManagementService {
         Optional<ApplicationUser> userOptional = userManagementRepository.getSingle(userId);
 
         if (!userOptional.isPresent()) {
-            throw new RuntimeException("No user found!");
+            throw new RuntimeException("No user found");
         }
 
         return userOptional.get();

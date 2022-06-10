@@ -31,6 +31,11 @@ public class SecurityConfiguration{
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 //        http.authorizeRequests().anyRequest().permitAll();
+
+        // Disabling CSRF
+        http
+                .csrf().disable();
+
         // Whitelisting the below URLs
         http
                 .authorizeRequests()

@@ -8,15 +8,15 @@ public class ApplicationUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
+    @Column(name = "username", unique = true)
     private String username;
     @Column(name = "password_hash")
     private String password;
 
     // TODO: User Entity properties goes here
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
-    @Column(name = "mobile")
+    @Column(name = "mobile", unique = true)
     private Long mobile;
     // TODO: User Entity properties goes here
 
@@ -37,6 +37,20 @@ public class ApplicationUser {
                            Boolean isAdmin,
                            Boolean isOwner) {
         this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.mobile = mobile;
+        this.isAdmin = isAdmin;
+        this.isOwner = isOwner;
+    }
+    // TODO: Modify constructor after adding additional properties
+    public ApplicationUser(String username,
+                           String password,
+                           String email,
+                           Long mobile,
+                           Boolean isAdmin,
+                           Boolean isOwner) {
         this.username = username;
         this.password = password;
         this.email = email;

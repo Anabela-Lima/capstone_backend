@@ -1,15 +1,13 @@
 package com.sgone.capstone.controller.management;
 
+import com.sgone.capstone.dto.request.AddNewAdminDto;
 import com.sgone.capstone.dto.response.StandardResponseDto;
 import com.sgone.capstone.model.ApplicationUser;
 import com.sgone.capstone.service.AdminManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +57,7 @@ public class AdminManagementController {
     ) {
 
         try {
-            ApplicationUser singleAdmin = adminManagementService.getSingle(userId);
+            ApplicationUser singleAdmin = adminManagementService.getSingleAdmin(userId);
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(new StandardResponseDto<>(
@@ -71,6 +69,33 @@ public class AdminManagementController {
         catch (RuntimeException re) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
+                    .body(new StandardResponseDto<>(
+                            false,
+                            re.getMessage(),
+                            null
+                    ));
+        }
+    }
+
+    // TODO: Add @PreAuthorize Annotation to only allow Owner roles
+    @PostMapping("/add_new_admin")
+    public ResponseEntity<StandardResponseDto<ApplicationUser>> addNewAdmin(
+            @RequestBody AddNewAdminDto adminDto
+    ) {
+
+        try {
+            ApplicationUser newlyAddedAdmin = adminManagementService.addNewAdmin(adminDto);
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(new StandardResponseDto<>(
+                            true,
+                            String.format("New admin %s created", newlyAddedAdmin.getUsername()),
+                            newlyAddedAdmin
+                    ));
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
                     .body(new StandardResponseDto<>(
                             false,
                             re.getMessage(),

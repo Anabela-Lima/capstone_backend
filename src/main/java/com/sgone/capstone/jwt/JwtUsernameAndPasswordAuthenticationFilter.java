@@ -2,7 +2,7 @@ package com.sgone.capstone.jwt;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sgone.capstone.dto.UsernameAndPasswordAuthenticationRequestDto;
+import com.sgone.capstone.dto.request.UsernameAndPasswordAuthenticationRequestDto;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.AuthenticationManager;

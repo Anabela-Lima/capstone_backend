@@ -14,6 +14,11 @@ public class ApplicationUser {
     private String password;
 
     // TODO: User Entity properties goes here
+    @Column(name = "email")
+    private String email;
+    @Column(name = "mobile")
+    private Long mobile;
+    // TODO: User Entity properties goes here
 
     @Column(name = "is_admin")
     private Boolean isAdmin;
@@ -27,15 +32,18 @@ public class ApplicationUser {
     public ApplicationUser(Long id,
                            String username,
                            String password,
+                           String email,
+                           Long mobile,
                            Boolean isAdmin,
                            Boolean isOwner) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.email = email;
+        this.mobile = mobile;
         this.isAdmin = isAdmin;
         this.isOwner = isOwner;
     }
-
 
     public Long getId() {
         return id;
@@ -59,6 +67,22 @@ public class ApplicationUser {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Long getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(Long mobile) {
+        this.mobile = mobile;
     }
 
     public Boolean getAdmin() {

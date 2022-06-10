@@ -1,4 +1,4 @@
-package com.sgone.capstone.dto;
+package com.sgone.capstone.dto.request;
 
 public class UsernameAndPasswordAuthenticationRequestDto {
 

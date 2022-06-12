@@ -1,4 +1,4 @@
-package com.sgone.capstone.service;
+package com.sgone.capstone.service.management;
 
 import com.sgone.capstone.model.ApplicationUser;
 import com.sgone.capstone.repository.management.UserManagementRepository;

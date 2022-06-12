@@ -1,6 +1,6 @@
 package com.sgone.capstone.dto.request;
 
-public class AddNewAdminDto {
+public class AdminDto {
 
     private String username;
     private String email;
@@ -8,12 +8,12 @@ public class AddNewAdminDto {
     private String password;
 
 
-    public AddNewAdminDto() {}
+    public AdminDto() {}
 
-    public AddNewAdminDto(String username,
-                          String email,
-                          String mobile,
-                          String password) {
+    public AdminDto(String username,
+                    String email,
+                    String mobile,
+                    String password) {
         this.username = username;
         this.email = email;
         this.mobile = mobile;

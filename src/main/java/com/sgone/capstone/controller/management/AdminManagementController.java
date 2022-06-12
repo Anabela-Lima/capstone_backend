@@ -1,9 +1,9 @@
 package com.sgone.capstone.controller.management;
 
-import com.sgone.capstone.dto.request.AddNewAdminDto;
+import com.sgone.capstone.dto.request.AdminDto;
 import com.sgone.capstone.dto.response.StandardResponseDto;
 import com.sgone.capstone.model.ApplicationUser;
-import com.sgone.capstone.service.AdminManagementService;
+import com.sgone.capstone.service.management.AdminManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("management/admins")
+@RequestMapping("management/admin")
 public class AdminManagementController {
 
     private AdminManagementService adminManagementService;
@@ -25,7 +25,15 @@ public class AdminManagementController {
         this.adminManagementService = adminManagementService;
     }
 
-    // TODO: Add @PreAuthorize Annotation to only allow Owner roles
+
+    /*
+        TODO: Add @PreAuthorize Annotation to only allow Owner roles and permissions
+
+        TODO:
+            Permissions allows:
+            1. APP_ADMIN_READ_ALL
+
+     */
     @GetMapping("/get_all")
     public ResponseEntity<StandardResponseDto<List<ApplicationUser>>> getAllAdmins() {
 
@@ -50,37 +58,18 @@ public class AdminManagementController {
         }
     }
 
-    // TODO: Add @PreAuthorize Annotation to only allow Owner roles
-    @GetMapping("/get_single")
-    public ResponseEntity<StandardResponseDto<ApplicationUser>> getSingleAdmin(
-            @RequestParam(required = true, defaultValue = "0") Long userId
-    ) {
 
-        try {
-            ApplicationUser singleAdmin = adminManagementService.getSingleAdmin(userId);
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(new StandardResponseDto<>(
-                            true,
-                            String.format("Admin %s found.", singleAdmin.getUsername()),
-                            singleAdmin
-                    ));
-        }
-        catch (RuntimeException re) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(new StandardResponseDto<>(
-                            false,
-                            re.getMessage(),
-                            null
-                    ));
-        }
-    }
+    /*
+        TODO: Add @PreAuthorize Annotation to only allow Owner roles and permissions
 
-    // TODO: Add @PreAuthorize Annotation to only allow Owner roles
-    @PostMapping("/add_new_admin")
+        TODO:
+            Permissions allows:
+            1. APP_ADMIN_WRITE_ALL
+
+     */
+    @PostMapping("/add_new")
     public ResponseEntity<StandardResponseDto<ApplicationUser>> addNewAdmin(
-            @RequestBody AddNewAdminDto adminDto
+            @RequestBody AdminDto adminDto
     ) {
 
         try {
@@ -102,5 +91,29 @@ public class AdminManagementController {
                             null
                     ));
         }
+    }
+
+
+    /*
+        TODO:
+            1. Add implementation
+            2. Add @PreAuthorize Annotation to only allow Owner roles and permissions
+
+        TODO:
+            Permissions allows:
+            1. APP_ADMIN_WRITE_ALL
+
+     */
+    @DeleteMapping("/delete")
+    public ResponseEntity<StandardResponseDto<ApplicationUser>> deleteAdmin(
+            @RequestParam(required = true) Long userId
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new StandardResponseDto<>(
+                        false,
+                        "Endpoint not yet implemented",
+                        null
+                ));
     }
 }

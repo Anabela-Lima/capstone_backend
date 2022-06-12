@@ -1,8 +1,11 @@
 package com.sgone.capstone.security;
 
+import com.sgone.capstone.model.ApplicationUser;
+import com.sgone.capstone.security.access_definitions.UserPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static com.sgone.capstone.security.access_definitions.UserPermission.*;
 import static com.sgone.capstone.security.access_definitions.UserRole.*;
 import static org.springframework.security.core.userdetails.User.*;
 
@@ -30,7 +34,6 @@ public class SecurityConfiguration{
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.authorizeRequests().anyRequest().permitAll();
 
         // Disabling CSRF
         http
@@ -45,14 +48,23 @@ public class SecurityConfiguration{
         // API Endpoints with ADMIN and OWNER role access
         http
                 .authorizeRequests()
-                .antMatchers("/management/users/**")
+                .antMatchers("/management/user/**")
                 .hasAnyRole(APP_ADMIN.name(), APP_OWNER.name());
 
         // API Endpoints with OWNER role access
+//        http
+//                .authorizeRequests()
+//                .antMatchers("/management/admin/**")
+//                .hasRole(APP_OWNER.name());
+
         http
                 .authorizeRequests()
-                .antMatchers("/management/admins/**")
-                .hasRole(APP_OWNER.name());
+                .antMatchers(HttpMethod.GET,"/management/admin/get_all")
+                    .hasAuthority(APP_ADMIN_READ_ALL.getPermission())
+                .antMatchers(HttpMethod.POST, "/management/admin/add_new")
+                    .hasAuthority(APP_ADMIN_WRITE_ALL.getPermission())
+                .antMatchers(HttpMethod.DELETE, "/management/admin/delete")
+                    .hasAuthority(APP_ADMIN_WRITE_ALL.getPermission());
 
         http
                 .authorizeRequests()
@@ -68,30 +80,35 @@ public class SecurityConfiguration{
     public UserDetailsService userDetailsService() {
 
         // OWNER level user
-        UserDetails harry = User.builder()
-                .username("Harry")
+        UserDetails owner_test = User.builder()
+                .username("owner")
                 .password(passwordEncoder.encode("password"))
-                .roles(APP_OWNER.name()) // ROLE_APP_OWNER is how spring understands it
+                // ROLE_APP_OWNER is how spring understands it
+//                .roles(APP_OWNER.name())
+                .authorities(APP_OWNER.getGrantedAuthorities())
                 .build();
 
         // ADMIN level user
-        UserDetails bob = User.builder()
-                .username("Bob")
+        UserDetails admin_test = User.builder()
+                .username("admin")
                 .password(passwordEncoder.encode("password"))
-                .roles(APP_ADMIN.name())
+//                .roles(APP_ADMIN.name())
+                .authorities(APP_OWNER.getGrantedAuthorities())
                 .build();
 
+
         // APP USER level user
-        UserDetails john = User.builder()
-                .username("John")
+        UserDetails user_test = User.builder()
+                .username("user")
                 .password(passwordEncoder.encode("password"))
-                .roles(APP_USER.name())
+//                .roles(APP_USER.name())
+                .authorities(APP_USER.getGrantedAuthorities())
                 .build();
 
         return new InMemoryUserDetailsManager(
-                harry,
-                bob,
-                john
+                owner_test,
+                admin_test,
+                user_test
         );
     }
 

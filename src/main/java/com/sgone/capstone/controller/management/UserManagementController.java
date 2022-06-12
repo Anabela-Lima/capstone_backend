@@ -2,7 +2,7 @@ package com.sgone.capstone.controller.management;
 
 import com.sgone.capstone.dto.response.StandardResponseDto;
 import com.sgone.capstone.model.ApplicationUser;
-import com.sgone.capstone.service.UserManagementService;
+import com.sgone.capstone.service.management.UserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/management/users")
+@RequestMapping("/management/user")
 public class UserManagementController {
 
     private UserManagementService userManagementService;

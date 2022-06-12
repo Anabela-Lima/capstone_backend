@@ -13,11 +13,11 @@ public class _TestAccessController {
     @GetMapping("/test")
     public ResponseEntity<StandardResponseDto<String>> testAccess() {
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(HttpStatus.I_AM_A_TEAPOT)
                 .body(
                         new StandardResponseDto<>(
                                 true,
-                                "This is a test endpoint",
+                                "Tea party?",
                                 "Test Success!")
                 );
     }

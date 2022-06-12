@@ -2,7 +2,7 @@ package com.sgone.capstone.controller.management;
 
 import com.sgone.capstone.dto.request.AdminDto;
 import com.sgone.capstone.dto.response.StandardResponseDto;
-import com.sgone.capstone.model.ApplicationUser;
+import com.sgone.capstone.model.entity.ApplicationUser;
 import com.sgone.capstone.service.management.AdminManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.sgone.capstone.security;
+package com.sgone.capstone.security.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

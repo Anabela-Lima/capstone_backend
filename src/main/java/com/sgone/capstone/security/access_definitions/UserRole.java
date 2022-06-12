@@ -1,8 +1,6 @@
 package com.sgone.capstone.security.access_definitions;
 
 import com.google.common.collect.Sets;
-import net.bytebuddy.build.Plugin;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Set;

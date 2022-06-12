@@ -1,4 +1,4 @@
-package com.sgone.capstone.model;
+package com.sgone.capstone.model.entity;
 
 import javax.persistence.*;
 

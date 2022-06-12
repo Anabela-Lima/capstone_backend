@@ -32,9 +32,9 @@ public class DataLoader implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         dataLoaderRepository.save(
             new ApplicationUser(
-                    "admin",
+                    "admin1",
                     passwordEncoder.encode("password"),
-                    "admin_1@email.com",
+                    "admin1@email.com",
                     1l,
                     true,
                     false
@@ -45,7 +45,7 @@ public class DataLoader implements ApplicationRunner {
                 new ApplicationUser(
                         "admin2",
                         passwordEncoder.encode("password"),
-                        "admin_2@email.com",
+                        "admin2@email.com",
                         3l,
                         true,
                         false
@@ -54,9 +54,9 @@ public class DataLoader implements ApplicationRunner {
 
         dataLoaderRepository.save(
                 new ApplicationUser(
-                        "owner",
+                        "owner1",
                         passwordEncoder.encode("password"),
-                        "owner@email.com",
+                        "owner1@email.com",
                         2l,
                         false,
                         true

@@ -93,7 +93,7 @@ public class SecurityConfiguration{
                 .username("admin")
                 .password(passwordEncoder.encode("password"))
 //                .roles(APP_ADMIN.name())
-                .authorities(APP_OWNER.getGrantedAuthorities())
+                .authorities(APP_ADMIN.getGrantedAuthorities())
                 .build();
 
 

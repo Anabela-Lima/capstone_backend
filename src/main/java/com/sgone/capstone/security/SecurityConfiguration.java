@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -23,6 +24,7 @@ import static org.springframework.security.core.userdetails.User.*;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration{
 
     private PasswordEncoder passwordEncoder;
@@ -31,6 +33,7 @@ public class SecurityConfiguration{
     public SecurityConfiguration(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -57,14 +60,14 @@ public class SecurityConfiguration{
 //                .antMatchers("/management/admin/**")
 //                .hasRole(APP_OWNER.name());
 
-        http
-                .authorizeRequests()
-                .antMatchers(HttpMethod.GET,"/management/admin/get_all")
-                    .hasAuthority(APP_ADMIN_READ_ALL.getPermission())
-                .antMatchers(HttpMethod.POST, "/management/admin/add_new")
-                    .hasAuthority(APP_ADMIN_WRITE_ALL.getPermission())
-                .antMatchers(HttpMethod.DELETE, "/management/admin/delete")
-                    .hasAuthority(APP_ADMIN_WRITE_ALL.getPermission());
+//        http
+//                .authorizeRequests()
+//                .antMatchers(HttpMethod.GET,"/management/admin/get_all")
+//                    .hasAuthority(APP_ADMIN_READ_ALL.getPermission())
+//                .antMatchers(HttpMethod.POST, "/management/admin/add_new")
+//                    .hasAuthority(APP_ADMIN_WRITE_ALL.getPermission())
+//                .antMatchers(HttpMethod.DELETE, "/management/admin/delete")
+//                    .hasAuthority(APP_ADMIN_WRITE_ALL.getPermission());
 
         http
                 .authorizeRequests()
@@ -75,6 +78,7 @@ public class SecurityConfiguration{
 
         return http.build();
     }
+
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -111,6 +115,7 @@ public class SecurityConfiguration{
                 user_test
         );
     }
+
 
 //    @Bean
 //    public AuthenticationManager authenticationManager(AuthenticationManagerBuilder auth)

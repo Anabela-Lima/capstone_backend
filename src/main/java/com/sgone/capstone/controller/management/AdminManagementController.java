@@ -7,6 +7,7 @@ import com.sgone.capstone.service.management.AdminManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -27,14 +28,23 @@ public class AdminManagementController {
 
 
     /*
-        TODO: Add @PreAuthorize Annotation to only allow Owner roles and permissions
+        TODO: available args for @PreAuthorize annotation
+            -
+                hasRole('ROLE_')
+                hasAnyRole('ROLE_')
+                hasAuthority('permission')
+                hasAnyAuthority('permission')
+            -
+     */
 
+    /*
         TODO:
-            Permissions allows:
+            Permissions allowed:
             1. APP_ADMIN_READ_ALL
 
      */
     @GetMapping("/get_all")
+    @PreAuthorize("hasAuthority('app_admin:read_all')")
     public ResponseEntity<StandardResponseDto<List<ApplicationUser>>> getAllAdmins() {
 
         try {
@@ -60,14 +70,13 @@ public class AdminManagementController {
 
 
     /*
-        TODO: Add @PreAuthorize Annotation to only allow Owner roles and permissions
-
         TODO:
-            Permissions allows:
+            Permissions allowed:
             1. APP_ADMIN_WRITE_ALL
 
      */
     @PostMapping("/add_new")
+    @PreAuthorize("hasAuthority('app_admin:write_all')")
     public ResponseEntity<StandardResponseDto<ApplicationUser>> addNewAdmin(
             @RequestBody AdminDto adminDto
     ) {
@@ -97,14 +106,14 @@ public class AdminManagementController {
     /*
         TODO:
             1. Add implementation
-            2. Add @PreAuthorize Annotation to only allow Owner roles and permissions
 
         TODO:
-            Permissions allows:
+            Permissions allowed:
             1. APP_ADMIN_WRITE_ALL
 
      */
     @DeleteMapping("/delete")
+    @PreAuthorize("hasAuthority('app_admin:write_all')")
     public ResponseEntity<StandardResponseDto<ApplicationUser>> deleteAdmin(
             @RequestParam(required = true) Long userId
     ) {

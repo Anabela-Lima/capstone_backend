@@ -20,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -63,6 +64,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             Claims body = claimsJws.getBody();
 
             String username = body.getSubject();
+
+            Date expiration = body.getExpiration();
+
+            if (expiration.before(new Date())) {
+                filterChain.doFilter(request, response);
+                return;
+            }
 
             List<Map<String, String>> authorities = (List<Map<String, String>>) body.get("authorities");
 

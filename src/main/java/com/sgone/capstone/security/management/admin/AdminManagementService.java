@@ -1,7 +1,7 @@
-package com.sgone.capstone.security.management;
+package com.sgone.capstone.security.management.admin;
 
 import com.sgone.capstone.dto.request.AdminDto;
-import com.sgone.capstone.model.ApplicationUser;
+import com.sgone.capstone.project.model.ApplicationUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;

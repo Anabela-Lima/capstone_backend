@@ -1,4 +1,4 @@
-package com.sgone.capstone.controller;
+package com.sgone.capstone.project.controller;
 
 
 import com.sgone.capstone.dto.response.StandardResponseDto;

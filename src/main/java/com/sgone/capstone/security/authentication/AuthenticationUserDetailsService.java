@@ -1,6 +1,6 @@
 package com.sgone.capstone.security.authentication;
 
-import com.sgone.capstone.model.ApplicationUser;
+import com.sgone.capstone.project.model.ApplicationUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

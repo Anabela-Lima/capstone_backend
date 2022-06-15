@@ -1,4 +1,4 @@
-package com.sgone.capstone.controller;
+package com.sgone.capstone.security;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

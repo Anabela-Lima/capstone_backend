@@ -1,4 +1,4 @@
-package com.sgone.capstone.controller;
+package com.sgone.capstone.project.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 

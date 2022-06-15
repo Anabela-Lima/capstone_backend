@@ -1,8 +1,7 @@
-package com.sgone.capstone.security.management;
+package com.sgone.capstone.security.management.user;
 
 import com.sgone.capstone.dto.response.StandardResponseDto;
-import com.sgone.capstone.model.ApplicationUser;
-import com.sgone.capstone.security.management.UserManagementService;
+import com.sgone.capstone.project.model.ApplicationUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

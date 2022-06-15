@@ -1,8 +1,6 @@
-package com.sgone.capstone.service.auth;
+package com.sgone.capstone.security.authentication;
 
-import com.sgone.capstone.model.auth.ApplicationUserImplUserDetails;
-import com.sgone.capstone.model.entity.ApplicationUser;
-import com.sgone.capstone.repository.auth.AuthenticationApplicationUserRepository;
+import com.sgone.capstone.model.ApplicationUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,22 +29,22 @@ import java.util.Set;
  *  <b>This service is only called during the authentication process.</b>
  */
 @Service
-public class AuthenticationApplicationUserService implements UserDetailsService {
+public class AuthenticationUserDetailsService implements UserDetailsService {
 
-    private AuthenticationApplicationUserRepository authenticationApplicationUserRepository;
+    private AuthenticationUserDetailsRepository authenticationUserDetailsRepository;
 
     @Autowired
-    public AuthenticationApplicationUserService(
-            AuthenticationApplicationUserRepository authenticationApplicationUserRepository
+    public AuthenticationUserDetailsService(
+            AuthenticationUserDetailsRepository authenticationUserDetailsRepository
     ) {
-        this.authenticationApplicationUserRepository = authenticationApplicationUserRepository;
+        this.authenticationUserDetailsRepository = authenticationUserDetailsRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         Optional<ApplicationUser> userOptional =
-                authenticationApplicationUserRepository.findUserByUsername(username);
+                authenticationUserDetailsRepository.findUserByUsername(username);
 
         if (!userOptional.isPresent()) {
             throw new UsernameNotFoundException(
@@ -61,7 +59,7 @@ public class AuthenticationApplicationUserService implements UserDetailsService 
                 user.getAdmin() ? APP_ADMIN.getGrantedAuthorities() :
                                   APP_USER.getGrantedAuthorities();
 
-        return new ApplicationUserImplUserDetails(
+        return new AuthenticationUserImplUserDetails(
             user.getUsername(),
             user.getPassword(),
             authorities,

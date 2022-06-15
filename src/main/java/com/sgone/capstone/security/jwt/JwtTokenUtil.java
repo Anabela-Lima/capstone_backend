@@ -1,6 +1,5 @@
-package com.sgone.capstone.jwt;
+package com.sgone.capstone.security.jwt;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.function.Function;
 
 /**
  * A JWT token consist of three parts separated by a dot.

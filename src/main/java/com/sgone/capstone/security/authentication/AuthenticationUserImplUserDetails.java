@@ -1,4 +1,4 @@
-package com.sgone.capstone.model.auth;
+package com.sgone.capstone.security.authentication;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Set;
 
-public class ApplicationUserImplUserDetails implements UserDetails {
+public class AuthenticationUserImplUserDetails implements UserDetails {
 
     private final String username;
     private final String password;
@@ -16,7 +16,7 @@ public class ApplicationUserImplUserDetails implements UserDetails {
     private final boolean isCredentialNonExpired;
     private final boolean isEnabled;
 
-    public ApplicationUserImplUserDetails(
+    public AuthenticationUserImplUserDetails(
             String username,
             String password,
             Set<? extends GrantedAuthority> grantedAuthorities,

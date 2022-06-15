@@ -1,7 +1,7 @@
 package com.sgone.capstone.security.configurations;
 
-import com.sgone.capstone.jwt.JwtRequestFilter;
-import com.sgone.capstone.service.auth.AuthenticationApplicationUserService;
+import com.sgone.capstone.security.jwt.JwtRequestFilter;
+import com.sgone.capstone.security.authentication.AuthenticationUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,15 +24,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration{
 
     private PasswordEncoder passwordEncoder;
-    private AuthenticationApplicationUserService authenticationApplicationUserService;
+    private AuthenticationUserDetailsService authenticationUserDetailsService;
     private JwtRequestFilter jwtRequestFilter;
 
     @Autowired
     public SecurityConfiguration(PasswordEncoder passwordEncoder,
-                                 AuthenticationApplicationUserService authenticationApplicationUserService,
+                                 AuthenticationUserDetailsService authenticationUserDetailsService,
                                  JwtRequestFilter jwtRequestFilter) {
         this.passwordEncoder = passwordEncoder;
-        this.authenticationApplicationUserService = authenticationApplicationUserService;
+        this.authenticationUserDetailsService = authenticationUserDetailsService;
         this.jwtRequestFilter = jwtRequestFilter;
     }
 
@@ -78,7 +78,7 @@ public class SecurityConfiguration{
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder);
-        provider.setUserDetailsService(authenticationApplicationUserService);
+        provider.setUserDetailsService(authenticationUserDetailsService);
         return provider;
     }
 }

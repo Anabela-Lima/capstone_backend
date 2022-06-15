@@ -1,7 +1,7 @@
-package com.sgone.capstone.jwt;
+package com.sgone.capstone.security.jwt;
 
 import com.google.common.base.Strings;
-import com.sgone.capstone.service.auth.AuthenticationApplicationUserService;
+import com.sgone.capstone.security.authentication.AuthenticationUserDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
-    private AuthenticationApplicationUserService authenticationApplicationUserService;
+    private AuthenticationUserDetailsService authenticationUserDetailsService;
     @Autowired
     private JwtConfig jwtConfig;
 

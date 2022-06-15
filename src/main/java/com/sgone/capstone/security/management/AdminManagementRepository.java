@@ -1,6 +1,6 @@
-package com.sgone.capstone.repository.management;
+package com.sgone.capstone.security.management;
 
-import com.sgone.capstone.model.entity.ApplicationUser;
+import com.sgone.capstone.model.ApplicationUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserManagementRepository extends JpaRepository<ApplicationUser, Long> {
+public interface AdminManagementRepository extends JpaRepository<ApplicationUser, Long> {
 
     @Query(
             value = "SELECT " +
@@ -17,12 +17,13 @@ public interface UserManagementRepository extends JpaRepository<ApplicationUser,
                     "FROM " +
                     "APPLICATION_USER " +
                     "WHERE " +
-                    "is_admin = false " +
+                    "is_admin = true " +
                     "AND " +
                     "is_owner = false",
             nativeQuery = true
     )
     List<ApplicationUser> getAll();
+
 
     @Query(
             value = "SELECT " +
@@ -32,10 +33,12 @@ public interface UserManagementRepository extends JpaRepository<ApplicationUser,
                     "WHERE " +
                     "id = ?1 " +
                     "AND " +
-                    "is_admin = false " +
+                    "is_admin = true " +
                     "AND " +
                     "is_owner = false",
             nativeQuery = true
     )
     Optional<ApplicationUser> getSingle(Long userId);
+
+
 }

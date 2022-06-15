@@ -1,4 +1,4 @@
-package com.sgone.capstone.jwt;
+package com.sgone.capstone.security.jwt;
 
 import com.google.common.net.HttpHeaders;
 import org.springframework.beans.factory.annotation.Value;

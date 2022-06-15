@@ -1,7 +1,6 @@
 package com.sgone.capstone._dataloader;
 
-import com.sgone.capstone.model.entity.ApplicationUser;
-import com.sgone.capstone._dataloader.DataLoaderRepository;
+import com.sgone.capstone.model.ApplicationUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

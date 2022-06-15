@@ -1,6 +1,6 @@
 package com.sgone.capstone.repository;
 
-import com.sgone.capstone.model.entity.ApplicationUser;
+import com.sgone.capstone.model.ApplicationUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

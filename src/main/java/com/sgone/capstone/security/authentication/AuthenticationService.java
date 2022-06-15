@@ -1,19 +1,18 @@
-package com.sgone.capstone.jwt;
+package com.sgone.capstone.security.authentication;
 
-import com.sgone.capstone.service.auth.AuthenticationApplicationUserService;
+import com.sgone.capstone.security.authentication.AuthenticationUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class JwtAuthenticationService {
+public class AuthenticationService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
-    private AuthenticationApplicationUserService authenticationApplicationUserService;
+    private AuthenticationUserDetailsService authenticationUserDetailsService;
 
 
     public UserDetails tryAuthentication(String username, String password) {
@@ -22,7 +21,7 @@ public class JwtAuthenticationService {
                     username,
                     password
             ));
-            return authenticationApplicationUserService.loadUserByUsername(username);
+            return authenticationUserDetailsService.loadUserByUsername(username);
         }
         catch (DisabledException de) {
             throw new RuntimeException("This user has been disabled, please contact support.");

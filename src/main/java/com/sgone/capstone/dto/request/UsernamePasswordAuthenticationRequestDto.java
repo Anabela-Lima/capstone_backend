@@ -1,14 +1,14 @@
 package com.sgone.capstone.dto.request;
 
-public class UsernameAndPasswordAuthenticationRequestDto {
+public class UsernamePasswordAuthenticationRequestDto {
 
     public String username;
     public String password;
 
-    public UsernameAndPasswordAuthenticationRequestDto() {}
+    public UsernamePasswordAuthenticationRequestDto() {}
 
-    public UsernameAndPasswordAuthenticationRequestDto(String username,
-                                                       String password) {
+    public UsernamePasswordAuthenticationRequestDto(String username,
+                                                    String password) {
         this.username = username;
         this.password = password;
     }

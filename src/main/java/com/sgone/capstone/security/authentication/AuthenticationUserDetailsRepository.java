@@ -1,6 +1,6 @@
-package com.sgone.capstone.repository.auth;
+package com.sgone.capstone.security.authentication;
 
-import com.sgone.capstone.model.entity.ApplicationUser;
+import com.sgone.capstone.model.ApplicationUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -17,7 +17,7 @@ import java.util.Optional;
  *  <b>This repository is only called during the authentication process.</b>
  */
 @Repository
-public interface AuthenticationApplicationUserRepository extends JpaRepository<ApplicationUser, Long> {
+public interface AuthenticationUserDetailsRepository extends JpaRepository<ApplicationUser, Long> {
 
     @Query(
             value = "SELECT * FROM APPLICATION_USER WHERE username = ?1",

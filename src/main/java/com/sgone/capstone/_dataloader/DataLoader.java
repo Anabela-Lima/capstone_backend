@@ -72,5 +72,27 @@ public class DataLoader implements ApplicationRunner {
                         true
                 )
         );
+
+        dataLoaderRepository.save(
+                new ApplicationUser(
+                        "user1",
+                        passwordEncoder.encode("password"),
+                        "user1@email.com",
+                        9082913814l,
+                        false,
+                        false
+                )
+        );
+
+        dataLoaderRepository.save(
+                new ApplicationUser(
+                        "user2",
+                        passwordEncoder.encode("password"),
+                        "user2@email.com",
+                        908291213814l,
+                        false,
+                        false
+                )
+        );
     }
 }

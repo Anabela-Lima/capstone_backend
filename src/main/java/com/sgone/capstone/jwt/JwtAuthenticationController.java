@@ -42,7 +42,7 @@ public class JwtAuthenticationController {
         }
         catch (RuntimeException re) {
             return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
+                    .status(HttpStatus.UNAUTHORIZED)
                     .body(new StandardResponseDto<>(
                             false,
                             re.getMessage(),

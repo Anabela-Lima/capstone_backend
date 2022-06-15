@@ -6,6 +6,7 @@ import com.sgone.capstone.service.management.UserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -24,8 +25,9 @@ public class UserManagementController {
         this.userManagementService = userManagementService;
     }
 
-    // TODO: Add @PreAuthorize Annotation to only allow Admin and Owner roles
+
     @GetMapping("/get_all")
+    @PreAuthorize("hasAuthority('app_user:read_all')")
     public ResponseEntity<StandardResponseDto<List<ApplicationUser>>> getAllUsers() {
 
         try {
@@ -49,8 +51,9 @@ public class UserManagementController {
         }
     }
 
-    // TODO: Add @PreAuthorize Annotation to only allow Admin and Owner roles
+
     @GetMapping("/get_single")
+    @PreAuthorize("hasAuthority('app_user:read_all')")
     public ResponseEntity<StandardResponseDto<ApplicationUser>> getSingleUser(
             @RequestParam(required = true, defaultValue = "0") Long userId
     ) {

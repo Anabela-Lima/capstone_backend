@@ -27,14 +27,6 @@ import static com.sgone.capstone.security.access_definitions.UserPermission.*;
 
 // TODO: Add additional permissions to OWNER, ADMIN and USER as application functionalities develops
 public enum UserRole {
-    APP_ADMIN(Sets.newHashSet(
-            APP_ADMIN_READ_SELF,
-            APP_ADMIN_WRITE_SELF,
-            APP_USER_READ_ALL,
-            APP_USER_WRITE_ALL
-    )
-    ) // TODO: Add additional permissions here
-    ,
     APP_OWNER(Sets.newHashSet(
             APP_OWNER_READ_SELF,
             APP_OWNER_WRITE_SELF,
@@ -42,15 +34,20 @@ public enum UserRole {
             APP_ADMIN_WRITE_ALL,
             APP_USER_READ_ALL,
             APP_USER_WRITE_ALL
-    )
-    ) // TODO: Add additional permissions here
-    ,
+            // TODO: Add additional permissions here
+    )),
+    APP_ADMIN(Sets.newHashSet(
+            APP_ADMIN_READ_SELF,
+            APP_ADMIN_WRITE_SELF,
+            APP_USER_READ_ALL,
+            APP_USER_WRITE_ALL
+            // TODO: Add additional permissions here
+    )),
     APP_USER(Sets.newHashSet(
             APP_USER_READ_SELF,
             APP_USER_WRITE_SELF
-    )
-    ) // TODO: Add additional permissions here
-    ;
+            // TODO: Add additional permissions here
+    ));
 
     // Permissions must be unique
     private final Set<UserPermission> permissions;

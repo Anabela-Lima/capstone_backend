@@ -12,38 +12,24 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.function.Function;
 
+/**
+ * A JWT token consist of three parts separated by a dot.
+ * <br><br>
+ * <b>Header.Payload.Signature</b>
+ * <br><br>
+ * The <b>Header</b> typically consists of two parts, the type of token and the signing algorithm used.
+ * <br><br>
+ * The <b>Payload</b> contains the claims, which are statements about an entity, in this case it is the user. <br>For this
+ * project the claims contains the authorities given to a user. When the user makes a request to any endpoints, the
+ * user's authorities will be checked to see if this user should be allowed access.
+ * <br><br>
+ * The <b>Signature</b> is used to verify the message wasn't changed along the way, and in the case of tokens signed
+ * with a private key, it can also verify that the sender of the JWT is who it says it is.
+ * <br><br>
+ * <i><b>source:</b></i> https://jwt.io/introduction
+ */
 @Component
 public class JwtTokenUtil implements Serializable {
-
-
-//    private final String secret = "thisIsAReallyReallyLongAndVerySecureSecretKeySsshItsASecret";
-
-
-//    public Date getExpirationDateFromToken(String token) {
-//        return getClaimFromToken(token, Claims::getExpiration);
-//    }
-//
-//
-//    public String getUsernameFromToken(String token) {
-//        return getClaimFromToken(token, Claims::getSubject);
-//    }
-//
-//
-//    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-//        final Claims claims = getAllClaimsFromToken(token);
-//        return claimsResolver.apply(claims);
-//    }
-//
-//
-//    private Claims getAllClaimsFromToken(String token) {
-//        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-//    }
-//
-//
-//    private Boolean isTokenExpired(String token) {
-//        final Date expiration = getExpirationDateFromToken(token);
-//        return expiration.before(new Date());
-//    }
 
     @Autowired
     private JwtConfig jwtConfig;
@@ -51,10 +37,11 @@ public class JwtTokenUtil implements Serializable {
     public String generateToken(UserDetails userDetails) {
         return Jwts
                 .builder()
+                .setHeaderParam("typ", "JWT")
                 .setSubject(userDetails.getUsername())
                 .claim("authorities", userDetails.getAuthorities())
                 .setIssuedAt(new Date())
-                .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(1)))
+                .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(jwtConfig.getTokenExpirationAfterDays())))
                 .signWith(Keys.hmacShaKeyFor(jwtConfig.getSecretKey().getBytes()))
                 .compact();
     }

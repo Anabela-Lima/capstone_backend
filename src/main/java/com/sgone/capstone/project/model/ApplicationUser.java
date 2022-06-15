@@ -1,6 +1,7 @@
 package com.sgone.capstone.project.model;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 public class ApplicationUser {
@@ -8,6 +9,7 @@ public class ApplicationUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "username", unique = true, nullable = false)
     private String username;
     @Column(name = "password_hash", nullable = false)

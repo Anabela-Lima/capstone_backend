@@ -1,4 +1,4 @@
-package com.sgone.capstone.security;
+package com.sgone.capstone.security.self_management;
 
 import com.sgone.capstone.dto.request.AdminDto;
 import com.sgone.capstone.dto.response.StandardResponseDto;

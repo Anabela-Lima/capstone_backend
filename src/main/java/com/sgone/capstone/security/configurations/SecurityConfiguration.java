@@ -51,6 +51,8 @@ public class SecurityConfiguration{
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/authenticate")
                 .permitAll()
+                .antMatchers(HttpMethod.POST, "/sign_up")
+                .permitAll()
                 .antMatchers(HttpMethod.GET, "/test")
                 .permitAll();
 

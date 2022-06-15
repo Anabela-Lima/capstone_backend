@@ -1,5 +1,6 @@
 package com.sgone.capstone.security.authentication;
 
+import com.sgone.capstone.dto.request.NewUserDto;
 import com.sgone.capstone.dto.request.UsernamePasswordAuthenticationRequestDto;
 import com.sgone.capstone.dto.response.StandardResponseDto;
 import com.sgone.capstone.security.jwt.JwtTokenUtil;
@@ -47,6 +48,17 @@ public class AuthenticationController {
                             null
                     ));
         }
+    }
 
+
+
+    @PostMapping("/sign_up")
+    public ResponseEntity<StandardResponseDto<?>> createNewUser(
+            @RequestBody NewUserDto newUserDto
+    ) {
+
+
+
+        return null;
     }
 }

@@ -1,4 +1,4 @@
-package com.sgone.capstone.security;
+package com.sgone.capstone.security.self_management;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -81,14 +82,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             // If the token is valid we get the body of the token
             Claims body = claimsJws.getBody();
 
+            // Get the username and expiration date from the payload of the JWT
             String username = body.getSubject();
             Date expiration = body.getExpiration();
 
+            // If the token has expired then we reject it and move onto to authentication
             if (expiration.before(new Date())) {
                 filterChain.doFilter(request, response);
                 return;
             }
 
+            // We grab all the authorities attributed to this user
             List<Map<String, String>> authorities = (List<Map<String, String>>) body.get("authorities");
 
             Set<SimpleGrantedAuthority> simpleGrantedAuthorities = authorities
@@ -103,6 +107,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             );
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            String userName;
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                userName = ((UserDetails)principal).getUsername();
+            } else {
+                userName = principal.toString();
+            }
+
+            System.out.println(userName);
 
         } catch (JwtException e) {
             throw new IllegalStateException(String.format("Token %s cannot be trusted", token));

@@ -32,4 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 
-/resources/secrets.properties
+
+### OS Generated ###
+.DS_Store
+.DS_Store?

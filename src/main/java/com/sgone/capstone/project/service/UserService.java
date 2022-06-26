@@ -17,6 +17,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+
+    public Trip getTrip() {
+        return null;
+    }
+
+
     public Trip createTrip() {
         return null;
     }

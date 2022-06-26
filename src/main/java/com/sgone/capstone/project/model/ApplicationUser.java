@@ -16,7 +16,7 @@ public class ApplicationUser {
     private String password;
 
     // TODO: User Entity properties goes here
-    @Column(name = "email", unique = true, nullable = false)
+    @Column(name = "email", unique = true)
     private String email;
     @Column(name = "mobile", unique = true)
     private Long mobile;

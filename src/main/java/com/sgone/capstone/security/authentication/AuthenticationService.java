@@ -1,10 +1,14 @@
 package com.sgone.capstone.security.authentication;
 
+import com.sgone.capstone.project.model.ApplicationUser;
 import com.sgone.capstone.security.authentication.AuthenticationUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AuthenticationService {
@@ -13,6 +17,10 @@ public class AuthenticationService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private AuthenticationUserDetailsService authenticationUserDetailsService;
+    @Autowired
+    private AuthenticationUserDetailsRepository authenticationUserDetailsRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     public UserDetails tryAuthentication(String username, String password) {
@@ -34,6 +42,35 @@ public class AuthenticationService {
         }
     }
 
+
+    public UserDetails trySignUp(String username, String password) {
+
+        Optional<ApplicationUser> userOptional =
+                authenticationUserDetailsRepository.findUserByUsername(username.trim());
+
+        if (userOptional.isPresent()) {
+            throw new RuntimeException("User already exists, sign in instead?");
+        }
+
+        authenticationUserDetailsRepository
+                .save(
+                        new ApplicationUser(
+                                username.trim(),
+                                passwordEncoder.encode(password.trim()),
+                                null,
+                                null,
+                                false,
+                                false
+                        )
+                );
+
+        try {
+            return tryAuthentication(username, password);
+        }
+        catch (RuntimeException re) {
+            throw new RuntimeException(re.getMessage());
+        }
+    }
 
 }
 

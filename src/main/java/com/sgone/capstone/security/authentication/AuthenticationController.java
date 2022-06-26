@@ -51,14 +51,32 @@ public class AuthenticationController {
     }
 
 
-
     @PostMapping("/sign_up")
     public ResponseEntity<StandardResponseDto<?>> createNewUser(
             @RequestBody NewUserDto newUserDto
     ) {
 
-
-
-        return null;
+        try {
+            UserDetails newUser = authenticationService.trySignUp(
+                    newUserDto.getUsername(),
+                    newUserDto.getPassword()
+            );
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(new StandardResponseDto<>(
+                            true,
+                            "User created.",
+                            jwtTokenUtil.generateToken(newUser)
+                    ));
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new StandardResponseDto<>(
+                            false,
+                            re.getMessage(),
+                            null
+                    ));
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.sgone.capstone.project.model;
 
 
+import com.google.common.collect.Sets;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
@@ -40,6 +42,17 @@ public class Day {
         this.date = date;
         this.trip = trip;
         this.dayActivities = dayActivities;
+    }
+
+    public Day(String name,
+               Double budget,
+               Date date,
+               Trip trip) {
+        this.name = name;
+        this.budget = budget;
+        this.date = date;
+        this.trip = trip;
+        this.dayActivities = Sets.newHashSet();
     }
 
     public Long getId() {

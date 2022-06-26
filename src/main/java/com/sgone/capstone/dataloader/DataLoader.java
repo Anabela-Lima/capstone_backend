@@ -1,111 +1,152 @@
 package com.sgone.capstone.dataloader;
 
+import com.sgone.capstone.dataloader.repository.DataLoaderApplicationUserRepository;
+import com.sgone.capstone.dataloader.repository.DataLoaderDayRepository;
+import com.sgone.capstone.dataloader.repository.DataLoaderTripAssignmentRepository;
+import com.sgone.capstone.dataloader.repository.DataLoaderTripRepository;
 import com.sgone.capstone.project.model.ApplicationUser;
+import com.sgone.capstone.project.model.Day;
+import com.sgone.capstone.project.model.Trip;
+import com.sgone.capstone.project.model.TripAssignment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.Date;
 
 
 @Component
 public class DataLoader implements ApplicationRunner {
 
     // Repository dependency goes here
-    private DataLoaderRepository dataLoaderRepository;
+    private DataLoaderApplicationUserRepository dataLoaderApplicationUserRepository;
+    private DataLoaderTripRepository dataLoaderTripRepository;
+    private DataLoaderTripAssignmentRepository dataLoaderTripAssignmentRepository;
+    private DataLoaderDayRepository dataLoaderDayRepository;
     private PasswordEncoder passwordEncoder;
 
     public DataLoader(){}
 
     @Autowired
-    public DataLoader(
-            DataLoaderRepository dataLoaderRepository,
-            PasswordEncoder passwordEncoder) {
-        this.dataLoaderRepository = dataLoaderRepository;
+    public DataLoader(DataLoaderApplicationUserRepository dataLoaderApplicationUserRepository,
+                      DataLoaderTripRepository dataLoaderTripRepository,
+                      DataLoaderTripAssignmentRepository dataLoaderTripAssignmentRepository,
+                      DataLoaderDayRepository dataLoaderDayRepository,
+                      PasswordEncoder passwordEncoder) {
+        this.dataLoaderApplicationUserRepository = dataLoaderApplicationUserRepository;
+        this.dataLoaderTripRepository = dataLoaderTripRepository;
+        this.dataLoaderTripAssignmentRepository = dataLoaderTripAssignmentRepository;
+        this.dataLoaderDayRepository = dataLoaderDayRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
 
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        dataLoaderRepository.save(
-            new ApplicationUser(
-                    "admin1",
-                    passwordEncoder.encode("password"),
-                    "admin1@email.com",
-                    1234567890l,
-                    "firstname",
-                    "lastname",
-                    true,
-                    false
-            )
+
+        DataLoaderUsersArray dataLoaderUsersArray = new DataLoaderUsersArray();
+        ArrayList<ApplicationUser> users = dataLoaderUsersArray.dataLoaderUsers();
+
+        for (ApplicationUser user: users) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            dataLoaderApplicationUserRepository.save(user);
+        }
+
+        ApplicationUser ana = new ApplicationUser(
+                "ana",
+                passwordEncoder.encode("password"),
+                "ana@email.com",
+                1l,
+                "Ana",
+                "Lima",
+                false,
+                false
         );
 
-        dataLoaderRepository.save(
-                new ApplicationUser(
-                        "admin2",
-                        passwordEncoder.encode("password"),
-                        "admin2@email.com",
-                        2345678901l,
-                        "firstname",
-                        "lastname",
-                        true,
-                        false
-                )
+        ApplicationUser jenna = new ApplicationUser(
+                "jenna",
+                passwordEncoder.encode("password"),
+                "jenna@email.com",
+                2l,
+                "Jenna",
+                "Vlahos",
+                false,
+                false
         );
 
-        dataLoaderRepository.save(
-                new ApplicationUser(
-                        "owner1",
-                        passwordEncoder.encode("password"),
-                        "owner1@email.com",
-                        3456789012l,
-                        "firstname",
-                        "lastname",
-                        false,
-                        true
-                )
+        ApplicationUser naeem = new ApplicationUser(
+                "naeem",
+                passwordEncoder.encode("password"),
+                "naeem@email.com",
+                3l,
+                "Naeem",
+                "Khan",
+                false,
+                false
         );
 
-        dataLoaderRepository.save(
-                new ApplicationUser(
-                        "owner2",
-                        passwordEncoder.encode("password"),
-                        "owner2@email.com",
-                        4567890123l,
-                        "firstname",
-                        "lastname",
-                        false,
-                        true
-                )
+        ApplicationUser scott = new ApplicationUser(
+                "scott",
+                passwordEncoder.encode("password"),
+                "scott@email.com",
+                4l,
+                "Scott",
+                "Christie",
+                false,
+                false
         );
 
-        dataLoaderRepository.save(
-                new ApplicationUser(
-                        "user1",
-                        passwordEncoder.encode("password"),
-                        "user1@email.com",
-                        9082913814l,
-                        "firstname",
-                        "lastname",
-                        false,
-                        false
-                )
+        dataLoaderApplicationUserRepository.save(ana);
+        dataLoaderApplicationUserRepository.save(jenna);
+        dataLoaderApplicationUserRepository.save(naeem);
+        dataLoaderApplicationUserRepository.save(scott);
+
+        Trip trip1 = new Trip(
+                "trip1",
+                5,
+                "test trip 1"
         );
 
-        dataLoaderRepository.save(
-                new ApplicationUser(
-                        "user2",
-                        passwordEncoder.encode("password"),
-                        "user2@email.com",
-                        908291213814l,
-                        "firstname",
-                        "lastname",
-                        false,
-                        false
-                )
+        Trip trip2 = new Trip(
+                "trip2",
+                1,
+                "test trip 2"
         );
+
+        Trip trip3 = new Trip(
+                "trip3",
+                2,
+                "test trip 3"
+        );
+
+        Trip trip4 = new Trip(
+                "trip4",
+                4,
+                "test trip 4"
+        );
+
+        dataLoaderTripRepository.save(trip1);
+        dataLoaderTripRepository.save(trip2);
+        dataLoaderTripRepository.save(trip3);
+        dataLoaderTripRepository.save(trip4);
+
+        TripAssignment tripAssignment1 = new TripAssignment(trip1, ana);
+        TripAssignment tripAssignment2 = new TripAssignment(trip1, jenna);
+        TripAssignment tripAssignment3 = new TripAssignment(trip3, scott);
+        TripAssignment tripAssignment4 = new TripAssignment(trip4, naeem);
+
+        dataLoaderTripAssignmentRepository.save(tripAssignment1);
+        dataLoaderTripAssignmentRepository.save(tripAssignment2);
+        dataLoaderTripAssignmentRepository.save(tripAssignment3);
+        dataLoaderTripAssignmentRepository.save(tripAssignment4);
+
+        Day trip1Day1 = new Day("trip_1_day_1", 200.00, new Date(), trip1);
+
+        dataLoaderDayRepository.save(trip1Day1);
+
     }
 }

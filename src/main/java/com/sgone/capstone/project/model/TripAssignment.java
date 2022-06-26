@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "trip_assignment")
-public class TripAssignement {
+public class TripAssignment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,10 +19,18 @@ public class TripAssignement {
     @JoinColumn(name = "application_user_id")
     private ApplicationUser applicationUser;
 
-    public TripAssignement() {}
+    public TripAssignment() {}
 
-    public TripAssignement(Long id, Trip trip, ApplicationUser applicationUser) {
+    public TripAssignment(Long id,
+                          Trip trip,
+                          ApplicationUser applicationUser) {
         this.id = id;
+        this.trip = trip;
+        this.applicationUser = applicationUser;
+    }
+
+    public TripAssignment(Trip trip,
+                          ApplicationUser applicationUser) {
         this.trip = trip;
         this.applicationUser = applicationUser;
     }

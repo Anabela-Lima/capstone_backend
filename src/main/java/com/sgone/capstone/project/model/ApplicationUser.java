@@ -34,7 +34,7 @@ public class ApplicationUser {
     private String lastname;
 
     @OneToMany(mappedBy = "applicationUser")
-    private Set<TripAssignement> tripAssignements;
+    private Set<TripAssignment> tripAssignments;
 
     @OneToMany(mappedBy = "applicationUser")
     private Set<DayActivityAssignment> dayActivityAssignments;
@@ -53,7 +53,7 @@ public class ApplicationUser {
                            Long mobile,
                            String firstname,
                            String lastname,
-                           Set<TripAssignement> tripAssignements,
+                           Set<TripAssignment> tripAssignments,
                            Set<DayActivityAssignment> dayActivityAssignments) {
         this.id = id;
         this.username = username;
@@ -64,7 +64,7 @@ public class ApplicationUser {
         this.mobile = mobile;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.tripAssignements = tripAssignements;
+        this.tripAssignments = tripAssignments;
         this.dayActivityAssignments = dayActivityAssignments;
     }
 
@@ -89,7 +89,7 @@ public class ApplicationUser {
         this.lastname = lastname;
         this.isAdmin = isAdmin;
         this.isOwner = isOwner;
-        this.tripAssignements = Sets.newHashSet();
+        this.tripAssignments = Sets.newHashSet();
         this.dayActivityAssignments = Sets.newHashSet();
     }
 
@@ -165,12 +165,12 @@ public class ApplicationUser {
         this.lastname = lastname;
     }
 
-    public Set<TripAssignement> getTripAssignements() {
-        return tripAssignements;
+    public Set<TripAssignment> getTripAssignments() {
+        return tripAssignments;
     }
 
-    public void setTripAssignements(Set<TripAssignement> tripAssignements) {
-        this.tripAssignements = tripAssignements;
+    public void setTripAssignements(Set<TripAssignment> tripAssignements) {
+        this.tripAssignments = tripAssignements;
     }
 
     public Set<DayActivityAssignment> getDayActivityAssignments() {

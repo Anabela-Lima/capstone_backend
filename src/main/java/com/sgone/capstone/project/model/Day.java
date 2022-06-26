@@ -2,6 +2,8 @@ package com.sgone.capstone.project.model;
 
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.Set;
 
 @Entity
 public class Day {
@@ -14,18 +16,25 @@ public class Day {
     private String name;
     @Column(name = "budget")
     private Double budget;
+    @Column(name = "date")
+    private Date date;
 
     @ManyToOne
     @JoinColumn(name = "trip_id")
     private Trip trip;
 
+    @OneToMany(mappedBy = "day")
+    private Set<DayActivity> dayActivities;
+
     public Day() {}
 
-    public Day(Long id, String name, Double budget, Trip trip) {
+    public Day(Long id, String name, Double budget, Date date, Trip trip, Set<DayActivity> dayActivities) {
         this.id = id;
         this.name = name;
         this.budget = budget;
+        this.date = date;
         this.trip = trip;
+        this.dayActivities = dayActivities;
     }
 
     public Long getId() {
@@ -52,11 +61,27 @@ public class Day {
         this.budget = budget;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public Trip getTrip() {
         return trip;
     }
 
     public void setTrip(Trip trip) {
         this.trip = trip;
+    }
+
+    public Set<DayActivity> getDayActivities() {
+        return dayActivities;
+    }
+
+    public void setDayActivities(Set<DayActivity> dayActivities) {
+        this.dayActivities = dayActivities;
     }
 }

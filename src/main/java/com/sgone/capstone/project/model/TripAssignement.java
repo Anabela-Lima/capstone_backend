@@ -19,7 +19,6 @@ public class TripAssignement {
     @JoinColumn(name = "application_user_id")
     private ApplicationUser applicationUser;
 
-
     public TripAssignement() {}
 
     public TripAssignement(Long id, Trip trip, ApplicationUser applicationUser) {

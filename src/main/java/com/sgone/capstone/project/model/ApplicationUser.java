@@ -1,6 +1,9 @@
 package com.sgone.capstone.project.model;
 
+import com.google.common.collect.Sets;
+
 import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -14,58 +17,74 @@ public class ApplicationUser {
     private String username;
     @Column(name = "password_hash", nullable = false)
     private String password;
-
-    // TODO: User Entity properties goes here
-    @Column(name = "email", unique = true)
-    private String email;
-    @Column(name = "mobile", unique = true)
-    private Long mobile;
-    @Column(name = "name")
-    private String name;
-    // TODO: User Entity properties goes here
-
     @Column(name = "is_admin", nullable = false)
     private Boolean isAdmin;
     @Column(name = "is_owner", nullable = false)
     private Boolean isOwner;
 
 
+    // TODO: User Entity properties goes here
+    @Column(name = "email", unique = true)
+    private String email;
+    @Column(name = "mobile", unique = true)
+    private Long mobile;
+    @Column(name = "firstname")
+    private String firstname;
+    @Column(name = "lastname")
+    private String lastname;
+
+    @OneToMany(mappedBy = "applicationUser")
+    private Set<TripAssignement> tripAssignements;
+    // TODO: User Entity properties goes here
+
     public ApplicationUser() {}
 
     // TODO: Modify constructor after adding additional properties
+
     public ApplicationUser(Long id,
                            String username,
                            String password,
+                           Boolean isAdmin,
+                           Boolean isOwner,
                            String email,
                            Long mobile,
-                           String name,
-                           Boolean isAdmin,
-                           Boolean isOwner) {
+                           String firstname,
+                           String lastname,
+                           Set<TripAssignement> tripAssignements) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.email = email;
-        this.mobile = mobile;
-        this.name = name;
         this.isAdmin = isAdmin;
         this.isOwner = isOwner;
+        this.email = email;
+        this.mobile = mobile;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.tripAssignements = tripAssignements;
     }
 
+
     // TODO: Modify constructor after adding additional properties
+
+
     public ApplicationUser(String username,
                            String password,
                            String email,
                            Long mobile,
-                           String name,
+                           String firstname,
+                           String lastname,
                            Boolean isAdmin,
-                           Boolean isOwner) {
+                           Boolean isOwner
+    ) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.mobile = mobile;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.isAdmin = isAdmin;
         this.isOwner = isOwner;
-        this.name = name;
+        this.tripAssignements = Sets.newHashSet();
     }
 
     public Long getId() {
@@ -92,6 +111,22 @@ public class ApplicationUser {
         this.password = password;
     }
 
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
+    }
+
+    public Boolean getOwner() {
+        return isOwner;
+    }
+
+    public void setOwner(Boolean owner) {
+        isOwner = owner;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -108,19 +143,27 @@ public class ApplicationUser {
         this.mobile = mobile;
     }
 
-    public Boolean getAdmin() {
-        return isAdmin;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setAdmin(Boolean admin) {
-        isAdmin = admin;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
-    public Boolean getOwner() {
-        return isOwner;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setOwner(Boolean owner) {
-        isOwner = owner;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public Set<TripAssignement> getTripAssignements() {
+        return tripAssignements;
+    }
+
+    public void setTripAssignements(Set<TripAssignement> tripAssignements) {
+        this.tripAssignements = tripAssignements;
     }
 }

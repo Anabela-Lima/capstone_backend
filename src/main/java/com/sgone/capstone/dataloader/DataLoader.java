@@ -36,7 +36,8 @@ public class DataLoader implements ApplicationRunner {
                     passwordEncoder.encode("password"),
                     "admin1@email.com",
                     1234567890l,
-                    "test_name",
+                    "firstname",
+                    "lastname",
                     true,
                     false
             )
@@ -48,7 +49,8 @@ public class DataLoader implements ApplicationRunner {
                         passwordEncoder.encode("password"),
                         "admin2@email.com",
                         2345678901l,
-                        "test_name",
+                        "firstname",
+                        "lastname",
                         true,
                         false
                 )
@@ -60,7 +62,8 @@ public class DataLoader implements ApplicationRunner {
                         passwordEncoder.encode("password"),
                         "owner1@email.com",
                         3456789012l,
-                        "test_name",
+                        "firstname",
+                        "lastname",
                         false,
                         true
                 )
@@ -72,7 +75,8 @@ public class DataLoader implements ApplicationRunner {
                         passwordEncoder.encode("password"),
                         "owner2@email.com",
                         4567890123l,
-                        "test_name",
+                        "firstname",
+                        "lastname",
                         false,
                         true
                 )
@@ -84,7 +88,8 @@ public class DataLoader implements ApplicationRunner {
                         passwordEncoder.encode("password"),
                         "user1@email.com",
                         9082913814l,
-                        "test_name",
+                        "firstname",
+                        "lastname",
                         false,
                         false
                 )
@@ -96,7 +101,8 @@ public class DataLoader implements ApplicationRunner {
                         passwordEncoder.encode("password"),
                         "user2@email.com",
                         908291213814l,
-                        "test_name",
+                        "firstname",
+                        "lastname",
                         false,
                         false
                 )

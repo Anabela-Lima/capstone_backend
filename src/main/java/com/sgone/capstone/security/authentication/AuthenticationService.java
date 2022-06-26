@@ -59,7 +59,8 @@ public class AuthenticationService {
                                 passwordEncoder.encode(password.trim()),
                                 null,
                                 null,
-                                "test_name",
+                                "firstname",
+                                "lastname",
                                 false,
                                 false
                         )

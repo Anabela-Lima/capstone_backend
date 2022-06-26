@@ -69,7 +69,8 @@ public class AdminManagementService {
                                     passwordEncoder.encode(adminDto.getPassword().trim()),
                                     adminDto.getEmail().trim(),
                                     mobile,
-                                    "test_name",
+                                    "firstname",
+                                    "lastname",
                                     true,
                                     false
                             )

@@ -20,6 +20,8 @@ public class ApplicationUser {
     private String email;
     @Column(name = "mobile", unique = true)
     private Long mobile;
+    @Column(name = "name")
+    private String name;
     // TODO: User Entity properties goes here
 
     @Column(name = "is_admin", nullable = false)
@@ -36,6 +38,7 @@ public class ApplicationUser {
                            String password,
                            String email,
                            Long mobile,
+                           String name,
                            Boolean isAdmin,
                            Boolean isOwner) {
         this.id = id;
@@ -43,14 +46,17 @@ public class ApplicationUser {
         this.password = password;
         this.email = email;
         this.mobile = mobile;
+        this.name = name;
         this.isAdmin = isAdmin;
         this.isOwner = isOwner;
     }
+
     // TODO: Modify constructor after adding additional properties
     public ApplicationUser(String username,
                            String password,
                            String email,
                            Long mobile,
+                           String name,
                            Boolean isAdmin,
                            Boolean isOwner) {
         this.username = username;
@@ -59,6 +65,7 @@ public class ApplicationUser {
         this.mobile = mobile;
         this.isAdmin = isAdmin;
         this.isOwner = isOwner;
+        this.name = name;
     }
 
     public Long getId() {

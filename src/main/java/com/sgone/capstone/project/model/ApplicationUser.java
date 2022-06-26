@@ -35,6 +35,9 @@ public class ApplicationUser {
 
     @OneToMany(mappedBy = "applicationUser")
     private Set<TripAssignement> tripAssignements;
+
+    @OneToMany(mappedBy = "applicationUser")
+    private Set<DayActivityAssignment> dayActivityAssignments;
     // TODO: User Entity properties goes here
 
     public ApplicationUser() {}
@@ -50,7 +53,8 @@ public class ApplicationUser {
                            Long mobile,
                            String firstname,
                            String lastname,
-                           Set<TripAssignement> tripAssignements) {
+                           Set<TripAssignement> tripAssignements,
+                           Set<DayActivityAssignment> dayActivityAssignments) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -61,6 +65,7 @@ public class ApplicationUser {
         this.firstname = firstname;
         this.lastname = lastname;
         this.tripAssignements = tripAssignements;
+        this.dayActivityAssignments = dayActivityAssignments;
     }
 
 
@@ -85,6 +90,7 @@ public class ApplicationUser {
         this.isAdmin = isAdmin;
         this.isOwner = isOwner;
         this.tripAssignements = Sets.newHashSet();
+        this.dayActivityAssignments = Sets.newHashSet();
     }
 
     public Long getId() {
@@ -165,5 +171,13 @@ public class ApplicationUser {
 
     public void setTripAssignements(Set<TripAssignement> tripAssignements) {
         this.tripAssignements = tripAssignements;
+    }
+
+    public Set<DayActivityAssignment> getDayActivityAssignments() {
+        return dayActivityAssignments;
+    }
+
+    public void setDayActivityAssignments(Set<DayActivityAssignment> dayActivityAssignments) {
+        this.dayActivityAssignments = dayActivityAssignments;
     }
 }

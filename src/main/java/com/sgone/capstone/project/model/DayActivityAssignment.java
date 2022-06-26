@@ -20,13 +20,22 @@ public class DayActivityAssignment {
     @JoinColumn(name = "day_activity_id")
     private DayActivity dayActivity;
 
+    @ManyToOne
+    @JoinColumn(name = "application_user_id")
+    private ApplicationUser applicationUser;
+
     public DayActivityAssignment() {}
 
-    public DayActivityAssignment(Long id, Double paid, Double outstanding, DayActivity dayActivity) {
+    public DayActivityAssignment(Long id,
+                                 Double paid,
+                                 Double outstanding,
+                                 DayActivity dayActivity,
+                                 ApplicationUser applicationUser) {
         this.id = id;
         this.paid = paid;
         this.outstanding = outstanding;
         this.dayActivity = dayActivity;
+        this.applicationUser = applicationUser;
     }
 
     public Long getId() {
@@ -59,5 +68,13 @@ public class DayActivityAssignment {
 
     public void setDayActivity(DayActivity dayActivity) {
         this.dayActivity = dayActivity;
+    }
+
+    public ApplicationUser getApplicationUser() {
+        return applicationUser;
+    }
+
+    public void setApplicationUser(ApplicationUser applicationUser) {
+        this.applicationUser = applicationUser;
     }
 }

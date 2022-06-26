@@ -3,6 +3,7 @@ package com.sgone.capstone.project.model;
 import com.sgone.capstone.project.model.Enum.DayActivityType;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "day_activity")
@@ -12,6 +13,10 @@ public class DayActivity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name")
+    private String name;
+    @Column(name = "location")
+    private String location;
     @Column(name = "price")
     private Double price;
     @Column(name = "activity_type")
@@ -20,6 +25,9 @@ public class DayActivity {
     @ManyToOne
     @JoinColumn(name = "day_id")
     private Day day;
+
+    @OneToMany(mappedBy = "dayActivity")
+    private Set<DayActivityAssignment> dayActivityAssignmentSet;
 
 
     public DayActivity() {}

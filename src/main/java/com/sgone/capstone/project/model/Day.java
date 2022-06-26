@@ -28,7 +28,12 @@ public class Day {
 
     public Day() {}
 
-    public Day(Long id, String name, Double budget, Date date, Trip trip, Set<DayActivity> dayActivities) {
+    public Day(Long id,
+               String name,
+               Double budget,
+               Date date,
+               Trip trip,
+               Set<DayActivity> dayActivities) {
         this.id = id;
         this.name = name;
         this.budget = budget;

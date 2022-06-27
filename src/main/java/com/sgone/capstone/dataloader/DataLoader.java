@@ -142,6 +142,8 @@ public class DataLoader implements ApplicationRunner {
         dataLoaderDayRepository.save(trip1Day1);
         dataLoaderDayRepository.save(trip1Day2);
 
+//        DayActivity dayActivity1 = new DayActivity("")
+
         Friend friend1 = new Friend(jenna, ana);
         Friend friend2 = new Friend(jenna, scott);
         Friend friend3 = new Friend(jenna, naeem);

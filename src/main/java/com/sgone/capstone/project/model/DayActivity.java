@@ -1,5 +1,6 @@
 package com.sgone.capstone.project.model;
 
+import com.google.common.collect.Sets;
 import com.sgone.capstone.project.model.Enum.DayActivityType;
 
 import javax.persistence.*;
@@ -40,6 +41,19 @@ public class DayActivity {
         this.price = price;
         this.dayActivityType = dayActivityType;
         this.day = day;
+    }
+
+    public DayActivity(String name,
+                       String location,
+                       Double price,
+                       DayActivityType dayActivityType,
+                       Day day) {
+        this.name = name;
+        this.location = location;
+        this.price = price;
+        this.dayActivityType = dayActivityType;
+        this.day = day;
+        this.dayActivityAssignmentSet = Sets.newHashSet();
     }
 
     public Long getId() {

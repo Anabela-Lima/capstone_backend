@@ -34,13 +34,19 @@ public class DayActivity {
     public DayActivity() {}
 
     public DayActivity(Long id,
+                       String name,
+                       String location,
                        Double price,
                        DayActivityType dayActivityType,
-                       Day day) {
+                       Day day,
+                       Set<DayActivityAssignment> dayActivityAssignmentSet) {
         this.id = id;
+        this.name = name;
+        this.location = location;
         this.price = price;
         this.dayActivityType = dayActivityType;
         this.day = day;
+        this.dayActivityAssignmentSet = dayActivityAssignmentSet;
     }
 
     public DayActivity(String name,

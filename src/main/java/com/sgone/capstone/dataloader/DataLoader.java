@@ -21,18 +21,28 @@ public class DataLoader implements ApplicationRunner {
     private DataLoaderTripRepository dataLoaderTripRepository;
     private DataLoaderTripAssignmentRepository dataLoaderTripAssignmentRepository;
     private DataLoaderDayRepository dataLoaderDayRepository;
-
+    private DataLoaderDayActivityRepository dataLoaderDayActivityRepository;
+    private DataLoaderDayActivityAssignmentRepository dataLoaderDayActivityAssignmentRepository;
     private DataLoaderFriendRepository dataLoaderFriendRepository;
     private PasswordEncoder passwordEncoder;
 
     public DataLoader(){}
 
     @Autowired
-    public DataLoader(DataLoaderApplicationUserRepository dataLoaderApplicationUserRepository, DataLoaderTripRepository dataLoaderTripRepository, DataLoaderTripAssignmentRepository dataLoaderTripAssignmentRepository, DataLoaderDayRepository dataLoaderDayRepository, DataLoaderFriendRepository dataLoaderFriendRepository, PasswordEncoder passwordEncoder) {
+    public DataLoader(DataLoaderApplicationUserRepository dataLoaderApplicationUserRepository,
+                      DataLoaderTripRepository dataLoaderTripRepository,
+                      DataLoaderTripAssignmentRepository dataLoaderTripAssignmentRepository,
+                      DataLoaderDayRepository dataLoaderDayRepository,
+                      DataLoaderDayActivityRepository dataLoaderDayActivityRepository,
+                      DataLoaderDayActivityAssignmentRepository dataLoaderDayActivityAssignmentRepository,
+                      DataLoaderFriendRepository dataLoaderFriendRepository,
+                      PasswordEncoder passwordEncoder) {
         this.dataLoaderApplicationUserRepository = dataLoaderApplicationUserRepository;
         this.dataLoaderTripRepository = dataLoaderTripRepository;
         this.dataLoaderTripAssignmentRepository = dataLoaderTripAssignmentRepository;
         this.dataLoaderDayRepository = dataLoaderDayRepository;
+        this.dataLoaderDayActivityRepository = dataLoaderDayActivityRepository;
+        this.dataLoaderDayActivityAssignmentRepository = dataLoaderDayActivityAssignmentRepository;
         this.dataLoaderFriendRepository = dataLoaderFriendRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -142,7 +152,46 @@ public class DataLoader implements ApplicationRunner {
         dataLoaderDayRepository.save(trip1Day1);
         dataLoaderDayRepository.save(trip1Day2);
 
-//        DayActivity dayActivity1 = new DayActivity("")
+        DayActivity dayActivity1 = new DayActivity(
+                "pizza with the boys",
+                "London",
+                100.00,
+                null,
+                trip1Day1
+        );
+
+        dataLoaderDayActivityRepository.save(dayActivity1);
+
+        DayActivityAssignment dayActivityAssignment1 = new DayActivityAssignment(
+                0.00,
+                25.00,
+                dayActivity1,
+                naeem
+        );
+        DayActivityAssignment dayActivityAssignment2 = new DayActivityAssignment(
+                0.00,
+                25.00,
+                dayActivity1,
+                scott
+        );
+        DayActivityAssignment dayActivityAssignment3 = new DayActivityAssignment(
+                0.00,
+                25.00,
+                dayActivity1,
+                jenna
+        );
+        DayActivityAssignment dayActivityAssignment4 = new DayActivityAssignment(
+                0.00,
+                25.00,
+                dayActivity1,
+                ana
+        );
+
+        dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment1);
+        dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment2);
+        dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment3);
+        dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment4);
+
 
         Friend friend1 = new Friend(jenna, ana);
         Friend friend2 = new Friend(jenna, scott);

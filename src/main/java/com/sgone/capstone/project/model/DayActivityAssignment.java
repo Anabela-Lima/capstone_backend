@@ -11,10 +11,13 @@ public class DayActivityAssignment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Paid 100
     @Column(name = "paid")
     private Double paid;
-    @Column(name = "outstanding")
-    private Double outstanding;
+    // Should pay 20
+    @Column(name = "should_pay")
+    private Double shouldPay;
+
 
     @ManyToOne
     @JoinColumn(name = "day_activity_id")
@@ -28,12 +31,22 @@ public class DayActivityAssignment {
 
     public DayActivityAssignment(Long id,
                                  Double paid,
-                                 Double outstanding,
+                                 Double shouldPay,
                                  DayActivity dayActivity,
                                  ApplicationUser applicationUser) {
         this.id = id;
         this.paid = paid;
-        this.outstanding = outstanding;
+        this.shouldPay = shouldPay;
+        this.dayActivity = dayActivity;
+        this.applicationUser = applicationUser;
+    }
+
+    public DayActivityAssignment(Double paid,
+                                 Double shouldPay,
+                                 DayActivity dayActivity,
+                                 ApplicationUser applicationUser) {
+        this.paid = paid;
+        this.shouldPay = shouldPay;
         this.dayActivity = dayActivity;
         this.applicationUser = applicationUser;
     }
@@ -54,12 +67,12 @@ public class DayActivityAssignment {
         this.paid = paid;
     }
 
-    public Double getOutstanding() {
-        return outstanding;
+    public Double getShouldPay() {
+        return shouldPay;
     }
 
-    public void setOutstanding(Double outstanding) {
-        this.outstanding = outstanding;
+    public void setShouldPay(Double shouldPay) {
+        this.shouldPay = shouldPay;
     }
 
     public DayActivity getDayActivity() {

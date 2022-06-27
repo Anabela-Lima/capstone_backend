@@ -1,9 +1,12 @@
 package com.sgone.capstone.project.controller;
 
+import com.sgone.capstone.dto.CustomApplicationUserDto;
 import com.sgone.capstone.dto.request.NewTripDto;
 import com.sgone.capstone.dto.response.StandardResponseDto;
+import com.sgone.capstone.project.model.ApplicationUser;
 import com.sgone.capstone.project.model.Trip;
 import com.sgone.capstone.project.repository.TripRepository;
+import com.sgone.capstone.project.repository.UserRepository;
 import com.sgone.capstone.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,24 +16,21 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
-    private UserService userService;
-
-    public UserController() {}
-
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
+    private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private TripRepository tripRepository;
 
+    public UserController() {}
 
     // get trip by trip code
     @GetMapping("/trip")
@@ -106,6 +106,56 @@ public class UserController {
     }
 
 
+    @PutMapping("/{user_id}/trips/{trip_id}")
+    public ResponseEntity<Trip> addTripId(
+            @PathVariable Long user_id,
+            @PathVariable Long trip_id) {
+        ApplicationUser applicationUser = userRepository.getAllUsers(user_id).get();
+        Trip trip = tripRepository.findById(trip_id).get();
+
+        applicationUser.addTrip(trip);
+        trip.addUser(applicationUser);
+        System.out.println(applicationUser);
+        System.out.println(trip);
+
+        return ResponseEntity.status(HttpStatus.OK).body(trip);
+    }
+
+    @GetMapping("/get_all_users")
+    public ResponseEntity<List<CustomApplicationUserDto>> getAllOfTheUsers(){
+        List<ApplicationUser> users = userRepository.findAll();
+        List<CustomApplicationUserDto> customUsers = users
+                .stream()
+                .map(user -> {
+                    Set<Trip> trips = user.getTrips();
+                    Set<Long> tripIds = trips.stream().map(trip -> {
+                        return trip.getId();
+                    }).collect(Collectors.toSet());
+                    return new CustomApplicationUserDto(
+                        user.getId(),
+                        user.getUsername(),
+                        user.getPassword(),
+                        user.getEmail(),
+                        user.getMobile(),
+                        user.getFirstname(),
+                        user.getLastname(),
+                            tripIds
+                    );
+                })
+                .collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(customUsers);
+    }
+
+
+//    @PutMapping("/{staff_id}/exhibit/{exhibit_id}")
+//    public ResponseEntity<Exhibit> addExhibitID(@PathVariable Long staff_id, @PathVariable Long exhibit_id) {
+//
+//        Staff staff = staffService.getStaff(staff_id).get();
+//        Exhibit exhibit = exhibitService.getExhibit(exhibit_id);
+//        staff.addExhibit(exhibit);
+//        Exhibit updatedExhibit = exhibit.addStaff(staff);
+//        return ResponseEntity.ok().body(updatedExhibit);
+//    }
 
 
     @PatchMapping("/trip/add_friend")

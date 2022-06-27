@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import com.sgone.capstone.security.management.user.UserManagementService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,6 @@ public class UserManagementController {
     public UserManagementController(UserManagementService userManagementService) {
         this.userManagementService = userManagementService;
     }
-
 
     @GetMapping("/get_all")
     @PreAuthorize("hasAuthority('app_user:read_all')")

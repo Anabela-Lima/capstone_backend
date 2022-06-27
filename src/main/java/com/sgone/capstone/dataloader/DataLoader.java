@@ -36,7 +36,6 @@ public class DataLoader implements ApplicationRunner {
 
     public DataLoader(){}
 
-
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
@@ -142,7 +141,10 @@ public class DataLoader implements ApplicationRunner {
 //        TripAssignment tripAssignment2 = new TripAssignment(trip1, jenna);
 //        TripAssignment tripAssignment3 = new TripAssignment(trip3, scott);
 //        TripAssignment tripAssignment4 = new TripAssignment(trip4, naeem);
-//
+
+//        trip1.addUser(ana);
+//        ana.addTrip(trip1);
+
 //        dataLoaderTripAssignmentRepository.save(tripAssignment1);
 //        dataLoaderTripAssignmentRepository.save(tripAssignment2);
 //        dataLoaderTripAssignmentRepository.save(tripAssignment3);

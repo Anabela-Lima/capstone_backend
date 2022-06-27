@@ -76,6 +76,12 @@ public class Trip {
         this.users = new HashSet<>();
     }
 
+    public void addUser(ApplicationUser newUser) {
+        users.add(newUser);
+        return;
+    }
+
+
     public Long getId() {
         return id;
     }

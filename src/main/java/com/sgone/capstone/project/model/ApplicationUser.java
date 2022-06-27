@@ -46,7 +46,7 @@ public class ApplicationUser {
             joinColumns = @JoinColumn(name = "application_user_id"),
             inverseJoinColumns = @JoinColumn(name = "trip_id")
     )
-    private Set<Trip> trips = new HashSet<>();
+    private Set<Trip> trips;
 
     @OneToMany(mappedBy = "applicationUser")
     private Set<DayActivityAssignment> dayActivityAssignments;
@@ -120,6 +120,11 @@ public class ApplicationUser {
         this.mobile = mobile;
         this.firstname = firstname;
         this.lastname = lastname;
+    }
+
+
+    public void addTrip(Trip trip) {
+        this.trips.add(trip);
     }
 
     public Long getId() {

@@ -30,6 +30,17 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
     )
     Optional<Trip> findByTripCode(@Param("tripCode") String tripCode);
 
+    @Query (
+            value = "SELECT " +
+                    "* " +
+                    "FROM " +
+                    "trip " +
+                    "WHERE " +
+                    "id = ?1",
+            nativeQuery = true
+    )
+    Optional<Trip> findById(Long id);
+
 
 
     // custom query 2

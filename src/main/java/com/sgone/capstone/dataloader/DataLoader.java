@@ -1,13 +1,7 @@
 package com.sgone.capstone.dataloader;
 
-import com.sgone.capstone.dataloader.repository.DataLoaderApplicationUserRepository;
-import com.sgone.capstone.dataloader.repository.DataLoaderDayRepository;
-import com.sgone.capstone.dataloader.repository.DataLoaderTripAssignmentRepository;
-import com.sgone.capstone.dataloader.repository.DataLoaderTripRepository;
-import com.sgone.capstone.project.model.ApplicationUser;
-import com.sgone.capstone.project.model.Day;
-import com.sgone.capstone.project.model.Trip;
-import com.sgone.capstone.project.model.TripAssignment;
+import com.sgone.capstone.dataloader.repository.*;
+import com.sgone.capstone.project.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -27,24 +21,21 @@ public class DataLoader implements ApplicationRunner {
     private DataLoaderTripRepository dataLoaderTripRepository;
     private DataLoaderTripAssignmentRepository dataLoaderTripAssignmentRepository;
     private DataLoaderDayRepository dataLoaderDayRepository;
+
+    private DataLoaderFriendRepository dataLoaderFriendRepository;
     private PasswordEncoder passwordEncoder;
 
     public DataLoader(){}
 
     @Autowired
-    public DataLoader(DataLoaderApplicationUserRepository dataLoaderApplicationUserRepository,
-                      DataLoaderTripRepository dataLoaderTripRepository,
-                      DataLoaderTripAssignmentRepository dataLoaderTripAssignmentRepository,
-                      DataLoaderDayRepository dataLoaderDayRepository,
-                      PasswordEncoder passwordEncoder) {
+    public DataLoader(DataLoaderApplicationUserRepository dataLoaderApplicationUserRepository, DataLoaderTripRepository dataLoaderTripRepository, DataLoaderTripAssignmentRepository dataLoaderTripAssignmentRepository, DataLoaderDayRepository dataLoaderDayRepository, DataLoaderFriendRepository dataLoaderFriendRepository, PasswordEncoder passwordEncoder) {
         this.dataLoaderApplicationUserRepository = dataLoaderApplicationUserRepository;
         this.dataLoaderTripRepository = dataLoaderTripRepository;
         this.dataLoaderTripAssignmentRepository = dataLoaderTripAssignmentRepository;
         this.dataLoaderDayRepository = dataLoaderDayRepository;
+        this.dataLoaderFriendRepository = dataLoaderFriendRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
-
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -151,5 +142,14 @@ public class DataLoader implements ApplicationRunner {
         dataLoaderDayRepository.save(trip1Day1);
         dataLoaderDayRepository.save(trip1Day2);
 
+        Friend friend1 = new Friend(jenna, ana);
+        Friend friend2 = new Friend(jenna, scott);
+        Friend friend3 = new Friend(jenna, naeem);
+
+        dataLoaderFriendRepository.save(friend1);
+        dataLoaderFriendRepository.save(friend2);
+        dataLoaderFriendRepository.save(friend3);
+
     }
+
 }

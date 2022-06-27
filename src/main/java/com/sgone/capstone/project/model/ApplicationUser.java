@@ -1,6 +1,7 @@
 package com.sgone.capstone.project.model;
 
 import com.google.common.collect.Sets;
+import org.checkerframework.checker.units.qual.A;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -38,6 +39,17 @@ public class ApplicationUser {
 
     @OneToMany(mappedBy = "applicationUser")
     private Set<DayActivityAssignment> dayActivityAssignments;
+
+    @OneToMany(mappedBy = "payee")
+    private Set<MoneyOwed> payee;
+    @OneToMany(mappedBy = "payer")
+    private Set<MoneyOwed> payer;
+
+    @OneToMany(mappedBy = "friend_a")
+    private Set<Friend> friends_a;
+
+    @OneToMany(mappedBy = "friend_b")
+    private Set<Friend> friends_b;
     // TODO: User Entity properties goes here
 
     public ApplicationUser() {}
@@ -54,7 +66,11 @@ public class ApplicationUser {
                            String firstname,
                            String lastname,
                            Set<TripAssignment> tripAssignments,
-                           Set<DayActivityAssignment> dayActivityAssignments) {
+                           Set<DayActivityAssignment> dayActivityAssignments,
+                           Set<MoneyOwed> payee,
+                           Set<MoneyOwed> payer,
+                           Set<Friend> friends_a,
+                           Set<Friend> friends_b) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -66,6 +82,10 @@ public class ApplicationUser {
         this.lastname = lastname;
         this.tripAssignments = tripAssignments;
         this.dayActivityAssignments = dayActivityAssignments;
+        this.payee = payee;
+        this.payer = payer;
+        this.friends_a = friends_a;
+        this.friends_b = friends_b;
     }
 
 
@@ -91,6 +111,8 @@ public class ApplicationUser {
         this.isOwner = isOwner;
         this.tripAssignments = Sets.newHashSet();
         this.dayActivityAssignments = Sets.newHashSet();
+        this.friends_a = Sets.newHashSet();
+        this.friends_b = Sets.newHashSet();
     }
 
     public Long getId() {
@@ -169,8 +191,8 @@ public class ApplicationUser {
         return tripAssignments;
     }
 
-    public void setTripAssignements(Set<TripAssignment> tripAssignements) {
-        this.tripAssignments = tripAssignements;
+    public void setTripAssignments(Set<TripAssignment> tripAssignments) {
+        this.tripAssignments = tripAssignments;
     }
 
     public Set<DayActivityAssignment> getDayActivityAssignments() {
@@ -179,5 +201,37 @@ public class ApplicationUser {
 
     public void setDayActivityAssignments(Set<DayActivityAssignment> dayActivityAssignments) {
         this.dayActivityAssignments = dayActivityAssignments;
+    }
+
+    public Set<MoneyOwed> getPayee() {
+        return payee;
+    }
+
+    public void setPayee(Set<MoneyOwed> payee) {
+        this.payee = payee;
+    }
+
+    public Set<MoneyOwed> getPayer() {
+        return payer;
+    }
+
+    public void setPayer(Set<MoneyOwed> payer) {
+        this.payer = payer;
+    }
+
+    public Set<Friend> getFriends_a() {
+        return friends_a;
+    }
+
+    public void setFriends_a(Set<Friend> friends_a) {
+        this.friends_a = friends_a;
+    }
+
+    public Set<Friend> getFriends_b() {
+        return friends_b;
+    }
+
+    public void setFriends_b(Set<Friend> friends_b) {
+        this.friends_b = friends_b;
     }
 }

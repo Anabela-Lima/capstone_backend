@@ -2,7 +2,9 @@ package com.sgone.capstone.project.controller;
 
 import com.sgone.capstone.dto.request.NewTripDto;
 import com.sgone.capstone.dto.response.StandardResponseDto;
+import com.sgone.capstone.project.model.Enum.DayActivityType;
 import com.sgone.capstone.project.model.Trip;
+import com.sgone.capstone.project.repository.TripRepository;
 import com.sgone.capstone.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,6 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
@@ -25,16 +31,43 @@ public class UserController {
         this.userService = userService;
     }
 
+    @Autowired
+    private TripRepository tripRepository;
 
-    @GetMapping("/trip/{id}")
-    public ResponseEntity<StandardResponseDto<?>> getTrip(@PathVariable Long id) {
+
+    // get trip by tripcode
+
+    @GetMapping("/trip")
+    public ResponseEntity<StandardResponseDto<?>> getTrip(
+            @RequestParam String tripCode
+    ) {
+        System.out.println(tripCode);
+        String tripName = userService.getTrip(tripCode).getName();                                      // ? = wildcard and allows us to return whatever we placed inside diamond brackets
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new StandardResponseDto<>(
-                        false,
-                        "Endpoint not yet implemented",
-                        String.format("The ID provided: %s", id)
+                        true,
+                        "Your trip is " + tripName ,
+//                        "message",
+                        String.format("The  provided: %s", tripCode)                                      // string interpolation
                 ));
+    }
+
+
+    // get all trips
+
+
+// ? = wildcard and allows us to return whatever we placed inside diamond brackets
+// ? = wildcard and allows us to return whatever we placed inside diamond brackets
+//string format =  string interpolation
+
+
+    // get trips
+
+    @GetMapping("/trips")
+    public ResponseEntity<List<Trip>> getTrips() {
+        List<Trip> trips = userService.getAllTrips();
+        return ResponseEntity.status(HttpStatus.OK).body(trips);
     }
 
 
@@ -88,6 +121,8 @@ public class UserController {
     }
 
 
+
+
     @PatchMapping("/trip/add_friend")
     public ResponseEntity<StandardResponseDto<?>> addFriendToTrip() {
         return ResponseEntity
@@ -98,4 +133,52 @@ public class UserController {
                         null
                 ));
     }
+
+
+
+    // delete/ cancel trip
+    @DeleteMapping("/cancelTrip/{tripCode}")
+    public ResponseEntity<String> cancelTrip(String tripCode) {
+
+        // get a trip passing the UUID
+//        Optional<Trip> requested_trip = tripRepository.findByTripCode(tripCode);
+
+//        List<String> tripCodes = userService.getAllTrips().stream();
+
+        List<String> tripCodes = userService.getAllTrips()
+                .stream()
+                .map(trip -> {return trip.getTripCode();})
+                .filter(trip -> {return trip.equals(tripCode);})
+                .collect(Collectors.toList());
+
+//        .map(TripDto::tripCode)                                          // create a list of tripcodes
+//                .filter(f -> f.equals(tripCode)).toList();
+        if (!tripCodes.isEmpty()) {
+            ResponseEntity<String> OUT = ResponseEntity.ok("Trip" + userService.getAllTrips()
+                    .stream()
+                    .map(Trip::getName).collect(Collectors.toList())
+                    + " has been cancelled.");
+            tripRepository.cancelTrip(tripCode);
+            return OUT;
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
+
+
+
+
+

@@ -12,11 +12,10 @@ import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +33,7 @@ public class UserService {
     public UserService() {}
 
     @Autowired
+
     public UserService(UserRepository userRepository,
                        TripRepository tripRepository,
                        TripAssignmentRepository tripAssignmentRepository) {
@@ -45,8 +45,34 @@ public class UserService {
 
     public Trip getTrip() {
         return null;
+
+    // get trip by tripCode
+
+    public Trip getTrip(String tripCode) {
+
+        System.out.println(tripCode);
+       Optional <Trip> tripOptional = tripRepository.findByTripCode(tripCode);
+
+       if(!tripOptional.isPresent()){
+           throw new RuntimeException("trip code is invalid, please try again!");
+       }
+
+       System.out.println(tripOptional.get());
+
+       return tripOptional.get();
+
+
     }
 
+
+    // get all trips
+
+    public List<Trip> getAllTrips() {
+        return tripRepository.findAll();
+    }
+
+
+    // create Trip
 
     public Trip createTrip(NewTripDto newTripDto) {
 
@@ -78,6 +104,7 @@ public class UserService {
     }
 
 
+    // add friend
     public Trip addFriendToTrip() {
         return null;
     }

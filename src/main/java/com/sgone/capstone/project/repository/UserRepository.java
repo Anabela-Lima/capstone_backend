@@ -9,3 +9,10 @@ public interface UserRepository extends JpaRepository<ApplicationUser, Long> {
 
 
 }
+
+//For addFriend logic:
+
+//Search through list of application users by name
+//Attach id to friend_b
+//Attach current logged in user value to friend_a
+//create new friend object containing friend

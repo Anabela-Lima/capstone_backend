@@ -1,10 +1,13 @@
 package com.sgone.capstone.project.controller;
 
 import com.sgone.capstone.dto.CustomApplicationUserDto;
+import com.sgone.capstone.dto.CustomTripDto;
 import com.sgone.capstone.dto.request.NewTripDto;
 import com.sgone.capstone.dto.response.StandardResponseDto;
 import com.sgone.capstone.project.model.ApplicationUser;
 import com.sgone.capstone.project.model.Trip;
+import com.sgone.capstone.project.model.TripAssignment;
+import com.sgone.capstone.project.repository.TripAssignmentRepository;
 import com.sgone.capstone.project.repository.TripRepository;
 import com.sgone.capstone.project.repository.UserRepository;
 import com.sgone.capstone.project.service.UserService;
@@ -29,6 +32,8 @@ public class UserController {
     private UserRepository userRepository;
     @Autowired
     private TripRepository tripRepository;
+    @Autowired
+    private TripAssignmentRepository tripAssignmentRepository;
 
     public UserController() {}
 
@@ -51,9 +56,24 @@ public class UserController {
 
     // get trips
     @GetMapping("/trips")
-    public ResponseEntity<List<Trip>> getTrips() {
+    public ResponseEntity<List<CustomTripDto>> getTrips() {
         List<Trip> trips = userService.getAllTrips();
-        return ResponseEntity.status(HttpStatus.OK).body(trips);
+        System.out.println(trips);
+        List<CustomTripDto> customTripDtos = trips
+                .stream()
+                .map(trip -> {
+                    return new CustomTripDto(
+                            trip.getId(),
+                            trip.getTripCode(),
+                            trip.getName(),
+                            trip.getStartDate(),
+                            trip.getEndDate(),
+                            trip.getDescription(),
+                            trip.getCountry()
+                    );
+                })
+                .collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(customTripDtos);
     }
 
 
@@ -106,6 +126,24 @@ public class UserController {
     }
 
 
+    @PutMapping("/trips/assign_user")
+    public ResponseEntity<Trip> assignUserToTrip(
+            @RequestParam(required = true) Long userId,
+            @RequestParam(required = true) String tripCode
+    ) {
+        ApplicationUser user = userRepository.getUser(userId).get();
+        Trip trip = tripRepository.findByTripCode(tripCode).get();
+
+        TripAssignment newTripAssignment = new TripAssignment(
+                trip,
+                user
+        );
+
+        tripAssignmentRepository.save(newTripAssignment);
+
+        return ResponseEntity.status(HttpStatus.OK).body(trip);
+    }
+
 
 
     @PatchMapping("/trip/add_friend")
@@ -129,6 +167,13 @@ public class UserController {
         List<CustomApplicationUserDto> customUsers = users
                 .stream()
                 .map(user -> {
+                    Set<TripAssignment> tripAssignments = user.getTripAssignments();
+                    Set<Long> tripAssignmentId = tripAssignments
+                            .stream()
+                            .map(tripAssignment -> {
+                                return tripAssignment.getId();
+                            })
+                            .collect(Collectors.toSet());
                     return new CustomApplicationUserDto(
                             user.getId(),
                             user.getUsername(),
@@ -136,7 +181,8 @@ public class UserController {
                             user.getEmail(),
                             user.getMobile(),
                             user.getFirstname(),
-                            user.getLastname()
+                            user.getLastname(),
+                            tripAssignmentId
                     );
                 })
                 .collect(Collectors.toList());

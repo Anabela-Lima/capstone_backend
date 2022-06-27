@@ -62,7 +62,7 @@ public class UserService {
     public Trip createTrip(NewTripDto newTripDto) {
 
         Optional<ApplicationUser> userOptional =
-                userRepository.getAllUsers(newTripDto.getUserId());
+                userRepository.getUser(newTripDto.getUserId());
 
         if (!userOptional.isPresent()){
             throw new RuntimeException("User does not exist!");

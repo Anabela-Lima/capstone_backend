@@ -11,6 +11,7 @@ public class CustomApplicationUserDto {
     private Long mobile;
     private String firstname;
     private String lastname;
+    private Set<Long> tripAssignmentId;
 
     public CustomApplicationUserDto(Long id,
                                     String username,
@@ -18,7 +19,8 @@ public class CustomApplicationUserDto {
                                     String email,
                                     Long mobile,
                                     String firstname,
-                                    String lastname) {
+                                    String lastname,
+                                    Set<Long> tripAssignmentId) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -26,6 +28,7 @@ public class CustomApplicationUserDto {
         this.mobile = mobile;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.tripAssignmentId = tripAssignmentId;
     }
 
     public Long getId() {
@@ -84,4 +87,11 @@ public class CustomApplicationUserDto {
         this.lastname = lastname;
     }
 
+    public Set<Long> getTripAssignmentId() {
+        return tripAssignmentId;
+    }
+
+    public void setTripAssignmentId(Set<Long> tripAssignmentId) {
+        this.tripAssignmentId = tripAssignmentId;
+    }
 }

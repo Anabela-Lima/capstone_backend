@@ -19,35 +19,23 @@ import java.util.UUID;
 public class DataLoader implements ApplicationRunner {
 
     // Repository dependency goes here
+    @Autowired
     private DataLoaderApplicationUserRepository dataLoaderApplicationUserRepository;
+    @Autowired
     private DataLoaderTripRepository dataLoaderTripRepository;
-    private DataLoaderTripAssignmentRepository dataLoaderTripAssignmentRepository;
+    @Autowired
     private DataLoaderDayRepository dataLoaderDayRepository;
+    @Autowired
     private DataLoaderDayActivityRepository dataLoaderDayActivityRepository;
+    @Autowired
     private DataLoaderDayActivityAssignmentRepository dataLoaderDayActivityAssignmentRepository;
+    @Autowired
     private DataLoaderFriendRepository dataLoaderFriendRepository;
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public DataLoader(){}
 
-    @Autowired
-    public DataLoader(DataLoaderApplicationUserRepository dataLoaderApplicationUserRepository,
-                      DataLoaderTripRepository dataLoaderTripRepository,
-                      DataLoaderTripAssignmentRepository dataLoaderTripAssignmentRepository,
-                      DataLoaderDayRepository dataLoaderDayRepository,
-                      DataLoaderDayActivityRepository dataLoaderDayActivityRepository,
-                      DataLoaderDayActivityAssignmentRepository dataLoaderDayActivityAssignmentRepository,
-                      DataLoaderFriendRepository dataLoaderFriendRepository,
-                      PasswordEncoder passwordEncoder) {
-        this.dataLoaderApplicationUserRepository = dataLoaderApplicationUserRepository;
-        this.dataLoaderTripRepository = dataLoaderTripRepository;
-        this.dataLoaderTripAssignmentRepository = dataLoaderTripAssignmentRepository;
-        this.dataLoaderDayRepository = dataLoaderDayRepository;
-        this.dataLoaderDayActivityRepository = dataLoaderDayActivityRepository;
-        this.dataLoaderDayActivityAssignmentRepository = dataLoaderDayActivityAssignmentRepository;
-        this.dataLoaderFriendRepository = dataLoaderFriendRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -150,15 +138,15 @@ public class DataLoader implements ApplicationRunner {
         dataLoaderTripRepository.save(trip3);
         dataLoaderTripRepository.save(trip4);
 
-        TripAssignment tripAssignment1 = new TripAssignment(trip1, ana);
-        TripAssignment tripAssignment2 = new TripAssignment(trip1, jenna);
-        TripAssignment tripAssignment3 = new TripAssignment(trip3, scott);
-        TripAssignment tripAssignment4 = new TripAssignment(trip4, naeem);
-
-        dataLoaderTripAssignmentRepository.save(tripAssignment1);
-        dataLoaderTripAssignmentRepository.save(tripAssignment2);
-        dataLoaderTripAssignmentRepository.save(tripAssignment3);
-        dataLoaderTripAssignmentRepository.save(tripAssignment4);
+//        TripAssignment tripAssignment1 = new TripAssignment(trip1, ana);
+//        TripAssignment tripAssignment2 = new TripAssignment(trip1, jenna);
+//        TripAssignment tripAssignment3 = new TripAssignment(trip3, scott);
+//        TripAssignment tripAssignment4 = new TripAssignment(trip4, naeem);
+//
+//        dataLoaderTripAssignmentRepository.save(tripAssignment1);
+//        dataLoaderTripAssignmentRepository.save(tripAssignment2);
+//        dataLoaderTripAssignmentRepository.save(tripAssignment3);
+//        dataLoaderTripAssignmentRepository.save(tripAssignment4);
 
         Day trip1Day1 = new Day("trip_1_day_1", 200.00, java.sql.Date.valueOf(LocalDate.now()), trip1);
         Day trip1Day2 = new Day("trip_1_day_2", 200.00, java.sql.Date.valueOf(LocalDate.now().plusDays(1)), trip1);

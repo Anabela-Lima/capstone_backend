@@ -2,9 +2,7 @@ package com.sgone.capstone.project.service;
 
 import com.sgone.capstone.dto.request.NewTripDto;
 import com.sgone.capstone.project.model.ApplicationUser;
-import com.sgone.capstone.project.model.TripAssignment;
 import com.sgone.capstone.project.model.Trip;
-import com.sgone.capstone.project.repository.TripAssignmentRepository;
 import com.sgone.capstone.project.repository.TripRepository;
 import com.sgone.capstone.project.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,20 +17,12 @@ import static org.thymeleaf.util.StringUtils.concat;
 @Service
 public class UserService {
 
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
     private TripRepository tripRepository;
-    private TripAssignmentRepository tripAssignmentRepository;
 
     public UserService() {}
-
-    @Autowired
-    public UserService(UserRepository userRepository,
-                       TripRepository tripRepository,
-                       TripAssignmentRepository tripAssignmentRepository) {
-        this.userRepository = userRepository;
-        this.tripRepository = tripRepository;
-        this.tripAssignmentRepository = tripAssignmentRepository;
-    }
 
 
     public Trip getTrip() {
@@ -82,8 +72,6 @@ public class UserService {
         );
 
         tripRepository.save(newTrip);
-        TripAssignment tripAssignment = new TripAssignment(newTrip, user);
-        tripAssignmentRepository.save(tripAssignment);
 
         return newTrip;
     }

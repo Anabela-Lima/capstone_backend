@@ -2,6 +2,7 @@ package com.sgone.capstone.project.model;
 
 import javax.persistence.*;
 
+
 @Entity
 @Table(name = "money_owed")
 public class MoneyOwed {

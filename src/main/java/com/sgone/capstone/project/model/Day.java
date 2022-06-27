@@ -1,6 +1,7 @@
 package com.sgone.capstone.project.model;
 
 
+
 import com.google.common.collect.Sets;
 
 import javax.persistence.*;

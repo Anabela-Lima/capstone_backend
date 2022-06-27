@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import com.sgone.capstone.security.authentication.AuthenticationUserDetailsRepository;
 
 import static com.sgone.capstone.security.access_definitions.UserRole.*;
 
@@ -28,15 +29,14 @@ import java.util.Set;
  *  <br><br>
  *  <b>This service is only called during the authentication process.</b>
  */
+
 @Service
 public class AuthenticationUserDetailsService implements UserDetailsService {
 
     private AuthenticationUserDetailsRepository authenticationUserDetailsRepository;
 
     @Autowired
-    public AuthenticationUserDetailsService(
-            AuthenticationUserDetailsRepository authenticationUserDetailsRepository
-    ) {
+    public AuthenticationUserDetailsService(AuthenticationUserDetailsRepository authenticationUserDetailsRepository) {
         this.authenticationUserDetailsRepository = authenticationUserDetailsRepository;
     }
 

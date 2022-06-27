@@ -42,18 +42,13 @@ public class UserService {
 
     public Trip getTrip(String tripCode) {
 
-        System.out.println(tripCode);
-       Optional <Trip> tripOptional = tripRepository.findByTripCode(tripCode);
+       Optional<Trip> tripOptional = tripRepository.findByTripCode(tripCode);
 
        if(!tripOptional.isPresent()){
-           throw new RuntimeException("trip code is invalid, please try again!");
+           throw new RuntimeException("Trip code is invalid, please try again!");
        }
 
-       System.out.println(tripOptional.get());
-
        return tripOptional.get();
-
-
     }
 
 
@@ -117,9 +112,6 @@ public class UserService {
 
 
         return concat(targetUserFirstName + targetUserLastName);
-
-
-
     }
 
 }

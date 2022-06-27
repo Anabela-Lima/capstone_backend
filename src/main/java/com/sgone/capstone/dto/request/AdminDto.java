@@ -1,5 +1,6 @@
 package com.sgone.capstone.dto.request;
 
+
 public class AdminDto {
 
     private String username;

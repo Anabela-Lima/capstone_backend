@@ -16,11 +16,18 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
 
 
     // custom query 1
+
     // ?1 means the first input parameter
-
-    @Query (value = "SELECT * FROM trip WHERE trip_code = :tripCode", nativeQuery = true)
-
     // writing query method - "repository method"
+    @Query (
+            value = "SELECT " +
+                    "* " +
+                    "FROM " +
+                    "trip " +
+                    "WHERE " +
+                    "trip_code = :tripCode",
+            nativeQuery = true
+    )
     Optional<Trip> findByTripCode(@Param("tripCode") String tripCode);
 
 

@@ -6,6 +6,7 @@ import com.sgone.capstone.project.model.Enum.DayActivityType;
 import javax.persistence.*;
 import java.util.Set;
 
+
 @Entity
 @Table(name = "day_activity")
 public class DayActivity {

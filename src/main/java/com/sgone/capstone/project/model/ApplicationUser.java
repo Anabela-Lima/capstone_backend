@@ -1,8 +1,13 @@
 package com.sgone.capstone.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.collect.Sets;
+import com.sgone.capstone.project.model.DayActivityAssignment;
+import com.sgone.capstone.project.model.MoneyOwed;
+
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -32,8 +37,16 @@ public class ApplicationUser {
     @Column(name = "lastname")
     private String lastname;
 
-    @OneToMany(mappedBy = "applicationUser")
-    private Set<TripAssignment> tripAssignments;
+//    @OneToMany(mappedBy = "applicationUser")
+//    private Set<TripAssignment> tripAssignments;
+
+    @ManyToMany
+    @JoinTable(
+            name = "trip_assignments",
+            joinColumns = @JoinColumn(name = "application_user_id"),
+            inverseJoinColumns = @JoinColumn(name = "trip_id")
+    )
+    private Set<Trip> trips = new HashSet<>();
 
     @OneToMany(mappedBy = "applicationUser")
     private Set<DayActivityAssignment> dayActivityAssignments;
@@ -63,7 +76,7 @@ public class ApplicationUser {
                            Long mobile,
                            String firstname,
                            String lastname,
-                           Set<TripAssignment> tripAssignments,
+                           Set<Trip> trips,
                            Set<DayActivityAssignment> dayActivityAssignments,
                            Set<MoneyOwed> payee,
                            Set<MoneyOwed> payer,
@@ -78,7 +91,7 @@ public class ApplicationUser {
         this.mobile = mobile;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.tripAssignments = tripAssignments;
+        this.trips = trips;
         this.dayActivityAssignments = dayActivityAssignments;
         this.payee = payee;
         this.payer = payer;
@@ -98,19 +111,15 @@ public class ApplicationUser {
                            String lastname,
                            Boolean isAdmin,
                            Boolean isOwner
-    ) {
+                           ) {
         this.username = username;
         this.password = password;
+        this.isAdmin = isAdmin;
+        this.isOwner = isOwner;
         this.email = email;
         this.mobile = mobile;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.isAdmin = isAdmin;
-        this.isOwner = isOwner;
-        this.tripAssignments = Sets.newHashSet();
-        this.dayActivityAssignments = Sets.newHashSet();
-        this.friends_a = Sets.newHashSet();
-        this.friends_b = Sets.newHashSet();
     }
 
     public Long getId() {
@@ -185,12 +194,12 @@ public class ApplicationUser {
         this.lastname = lastname;
     }
 
-    public Set<TripAssignment> getTripAssignments() {
-        return tripAssignments;
+    public Set<Trip> getTrips() {
+        return trips;
     }
 
-    public void setTripAssignments(Set<TripAssignment> tripAssignments) {
-        this.tripAssignments = tripAssignments;
+    public void setTrips(Set<Trip> trips) {
+        this.trips = trips;
     }
 
     public Set<DayActivityAssignment> getDayActivityAssignments() {

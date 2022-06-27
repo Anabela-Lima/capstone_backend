@@ -1,6 +1,5 @@
 package com.sgone.capstone.project.model;
 
-
 import javax.persistence.*;
 
 @Entity

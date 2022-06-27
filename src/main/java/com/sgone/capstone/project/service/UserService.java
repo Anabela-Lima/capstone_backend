@@ -2,24 +2,17 @@ package com.sgone.capstone.project.service;
 
 import com.sgone.capstone.dto.request.NewTripDto;
 import com.sgone.capstone.project.model.ApplicationUser;
-import com.sgone.capstone.project.model.ApplicationUser;
-import com.sgone.capstone.project.model.Trip;
 import com.sgone.capstone.project.model.TripAssignment;
+import com.sgone.capstone.project.model.Trip;
 import com.sgone.capstone.project.repository.TripAssignmentRepository;
 import com.sgone.capstone.project.repository.TripRepository;
 import com.sgone.capstone.project.repository.UserRepository;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.thymeleaf.util.StringUtils.concat;
 
@@ -33,7 +26,6 @@ public class UserService {
     public UserService() {}
 
     @Autowired
-
     public UserService(UserRepository userRepository,
                        TripRepository tripRepository,
                        TripAssignmentRepository tripAssignmentRepository) {
@@ -45,8 +37,8 @@ public class UserService {
 
     public Trip getTrip() {
         return null;
+    }
 
-    // get trip by tripCode
 
     public Trip getTrip(String tripCode) {
 
@@ -65,14 +57,12 @@ public class UserService {
     }
 
 
-    // get all trips
 
     public List<Trip> getAllTrips() {
         return tripRepository.findAll();
     }
 
 
-    // create Trip
 
     public Trip createTrip(NewTripDto newTripDto) {
 
@@ -104,7 +94,6 @@ public class UserService {
     }
 
 
-    // add friend
     public Trip addFriendToTrip() {
         return null;
     }

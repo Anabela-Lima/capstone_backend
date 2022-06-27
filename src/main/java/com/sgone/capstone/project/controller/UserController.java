@@ -2,7 +2,6 @@ package com.sgone.capstone.project.controller;
 
 import com.sgone.capstone.dto.request.NewTripDto;
 import com.sgone.capstone.dto.response.StandardResponseDto;
-import com.sgone.capstone.project.model.Enum.DayActivityType;
 import com.sgone.capstone.project.model.Trip;
 import com.sgone.capstone.project.repository.TripRepository;
 import com.sgone.capstone.project.service.UserService;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,35 +32,24 @@ public class UserController {
     private TripRepository tripRepository;
 
 
-    // get trip by tripcode
-
+    // get trip by trip code
     @GetMapping("/trip")
+    // ? = wildcard and allows us to return whatever we placed inside diamond brackets
     public ResponseEntity<StandardResponseDto<?>> getTrip(
             @RequestParam String tripCode
     ) {
-        System.out.println(tripCode);
-        String tripName = userService.getTrip(tripCode).getName();                                      // ? = wildcard and allows us to return whatever we placed inside diamond brackets
+        String tripName = userService.getTrip(tripCode).getName();
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new StandardResponseDto<>(
                         true,
                         "Your trip is " + tripName ,
-//                        "message",
-                        String.format("The  provided: %s", tripCode)                                      // string interpolation
+                        String.format("The  provided: %s", tripCode) // string interpolation
                 ));
     }
 
 
-    // get all trips
-
-
-// ? = wildcard and allows us to return whatever we placed inside diamond brackets
-// ? = wildcard and allows us to return whatever we placed inside diamond brackets
-//string format =  string interpolation
-
-
     // get trips
-
     @GetMapping("/trips")
     public ResponseEntity<List<Trip>> getTrips() {
         List<Trip> trips = userService.getAllTrips();
@@ -81,7 +67,6 @@ public class UserController {
             @RequestParam(required = true) LocalDateTime startDate,
             @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
             @RequestParam(required = true) LocalDateTime endDate
-//            @RequestBody NewTripDto newTripDto
     ) {
         /*
             1. we get userId from the frontend
@@ -136,7 +121,7 @@ public class UserController {
 
 
 
-    // delete/ cancel trip
+    // delete and/or cancel trip
     @DeleteMapping("/cancelTrip/{tripCode}")
     public ResponseEntity<String> cancelTrip(String tripCode) {
 

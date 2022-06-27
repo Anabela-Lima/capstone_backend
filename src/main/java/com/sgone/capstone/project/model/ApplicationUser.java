@@ -1,11 +1,9 @@
 package com.sgone.capstone.project.model;
 
 import com.google.common.collect.Sets;
-import org.checkerframework.checker.units.qual.A;
 
 import javax.persistence.*;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 public class ApplicationUser {

@@ -3,13 +3,10 @@ package com.sgone.capstone.project.model;
 
 
 import com.google.common.collect.Sets;
-import org.checkerframework.checker.units.qual.C;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "trip")

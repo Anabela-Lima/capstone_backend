@@ -42,8 +42,8 @@ public class UserController {
     public UserController() {}
 
     // get trip by trip code
-    @GetMapping("/trip")
     // ? = wildcard and allows us to return whatever we placed inside diamond brackets
+    @GetMapping("/trip")
     public ResponseEntity<StandardResponseDto<?>> getTrip(
             @RequestParam String tripCode
     ) {
@@ -196,7 +196,7 @@ public class UserController {
 
 
     // delete and/or cancel trip
-    @DeleteMapping("/cancelTrip")
+    @DeleteMapping("/trip/cancel_trip")
     public ResponseEntity<String> cancelTrip(
             @RequestParam(required = true) String tripCode
     ) {

@@ -9,8 +9,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 
 @Component
@@ -108,27 +110,39 @@ public class DataLoader implements ApplicationRunner {
         dataLoaderApplicationUserRepository.save(scott);
 
         Trip trip1 = new Trip(
+                UUID.randomUUID().toString(),
                 "trip1",
-                5,
-                "test trip 1"
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(3),
+                "trip1 description",
+                "Portugal"
         );
 
         Trip trip2 = new Trip(
+                UUID.randomUUID().toString(),
                 "trip2",
-                1,
-                "test trip 2"
+                LocalDateTime.now().plusDays(2),
+                LocalDateTime.now().plusDays(6),
+                "trip2 description",
+                "Dubai"
         );
 
         Trip trip3 = new Trip(
+                UUID.randomUUID().toString(),
                 "trip3",
-                2,
-                "test trip 3"
+                LocalDateTime.now().plusDays(2),
+                LocalDateTime.now().plusDays(10),
+                "trip3 description",
+                "Cyprus"
         );
 
         Trip trip4 = new Trip(
+                UUID.randomUUID().toString(),
                 "trip4",
-                4,
-                "test trip 4"
+                LocalDateTime.now().plusDays(11),
+                LocalDateTime.now().plusDays(15),
+                "trip4 description",
+                "Germany"
         );
 
         dataLoaderTripRepository.save(trip1);

@@ -3,9 +3,13 @@ package com.sgone.capstone.project.model;
 
 
 import com.google.common.collect.Sets;
+import org.checkerframework.checker.units.qual.C;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "trip")
@@ -14,13 +18,18 @@ public class Trip {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(name = "trip_code", nullable = false, unique = true)
+    private String tripCode;
     @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "number_of_days", nullable = false)
-    private Integer numberOfDays;
+    @Column(name = "start_date")
+    private LocalDateTime startDate;
+    @Column(name = "end_date")
+    private LocalDateTime endDate;
     @Column(name = "description")
     private String description;
+    @Column(name = "country")
+    private String country;
 
     @OneToMany(mappedBy = "trip")
     private Set<TripAssignment> tripAssignments;
@@ -31,25 +40,37 @@ public class Trip {
     public Trip() {}
 
     public Trip(Long id,
+                String tripCode,
                 String name,
-                Integer numberOfDays,
+                LocalDateTime startDate,
+                LocalDateTime endDate,
                 String description,
+                String country,
                 Set<TripAssignment> tripAssignments,
                 Set<Day> days) {
         this.id = id;
+        this.tripCode = tripCode;
         this.name = name;
-        this.numberOfDays = numberOfDays;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.description = description;
+        this.country = country;
         this.tripAssignments = tripAssignments;
         this.days = days;
     }
 
-    public Trip(String name,
-                Integer numberOfDays,
-                String description) {
+    public Trip(String tripCode,
+                String name,
+                LocalDateTime startDate,
+                LocalDateTime endDate,
+                String description,
+                String country) {
+        this.tripCode = tripCode;
         this.name = name;
-        this.numberOfDays = numberOfDays;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.description = description;
+        this.country = country;
         this.tripAssignments = Sets.newHashSet();
         this.days = Sets.newHashSet();
     }
@@ -62,6 +83,14 @@ public class Trip {
         this.id = id;
     }
 
+    public String getTripCode() {
+        return tripCode;
+    }
+
+    public void setTripCode(String tripCode) {
+        this.tripCode = tripCode;
+    }
+
     public String getName() {
         return name;
     }
@@ -70,12 +99,20 @@ public class Trip {
         this.name = name;
     }
 
-    public Integer getNumberOfDays() {
-        return numberOfDays;
+    public LocalDateTime getStartDate() {
+        return startDate;
     }
 
-    public void setNumberOfDays(Integer numberOfDays) {
-        this.numberOfDays = numberOfDays;
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
     }
 
     public String getDescription() {
@@ -86,12 +123,20 @@ public class Trip {
         this.description = description;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     public Set<TripAssignment> getTripAssignments() {
         return tripAssignments;
     }
 
-    public void setTripAssignements(Set<TripAssignment> tripAssignements) {
-        this.tripAssignments = tripAssignements;
+    public void setTripAssignments(Set<TripAssignment> tripAssignments) {
+        this.tripAssignments = tripAssignments;
     }
 
     public Set<Day> getDays() {

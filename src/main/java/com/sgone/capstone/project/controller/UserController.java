@@ -119,6 +119,10 @@ public class UserController {
                 ));
     }
 
+    /**
+     *  BELOW IS USING DTO TO PREVENT INFINITE JSON LOOP PROBLEM ;)
+     * @return
+     */
     @GetMapping("/get_all_users")
     public ResponseEntity<List<CustomApplicationUserDto>> getAllOfTheUsers(){
         List<ApplicationUser> users = userRepository.findAll();

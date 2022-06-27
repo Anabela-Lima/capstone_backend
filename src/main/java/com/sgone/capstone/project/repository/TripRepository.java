@@ -34,11 +34,14 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
 
     // custom query 2
     // query to cancel trip given a uuid
-
+    // INSERT, DELETE queries will return an integer indicating how many rows were modified
     @Modifying
-    @Query(value = "DELETE FROM trip WHERE trip_code = ?1" , nativeQuery = true)
     @Transactional
-    Optional<Trip> cancelTrip(String tripCode);
+    @Query(
+            value = "DELETE FROM trip WHERE trip_code = ?1" ,
+            nativeQuery = true
+    )
+    Integer cancelTrip(String tripCode);
 
 
 

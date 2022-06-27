@@ -31,7 +31,7 @@ public class ApplicationUser {
     @Column(name = "lastname")
     private String lastname;
 
-    @OneToMany(mappedBy = "applicationUser")
+    @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
     private Set<TripAssignment> tripAssignments;
 
 //    @ManyToMany
@@ -42,18 +42,18 @@ public class ApplicationUser {
 //    )
 //    private Set<Trip> trips = new HashSet<>();
 
-    @OneToMany(mappedBy = "applicationUser")
+    @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
     private Set<DayActivityAssignment> dayActivityAssignments;
 
-    @OneToMany(mappedBy = "payee")
+    @OneToMany(mappedBy = "payee", cascade = CascadeType.ALL)
     private Set<MoneyOwed> payee;
-    @OneToMany(mappedBy = "payer")
+    @OneToMany(mappedBy = "payer", cascade = CascadeType.ALL)
     private Set<MoneyOwed> payer;
 
-    @OneToMany(mappedBy = "friend_a")
+    @OneToMany(mappedBy = "friend_a", cascade = CascadeType.ALL)
     private Set<Friend> friends_a;
 
-    @OneToMany(mappedBy = "friend_b")
+    @OneToMany(mappedBy = "friend_b", cascade = CascadeType.ALL)
     private Set<Friend> friends_b;
     // TODO: User Entity properties goes here
 

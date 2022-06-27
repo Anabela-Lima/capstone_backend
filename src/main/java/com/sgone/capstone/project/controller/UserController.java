@@ -4,12 +4,8 @@ import com.sgone.capstone.dto.CustomApplicationUserDto;
 import com.sgone.capstone.dto.CustomTripDto;
 import com.sgone.capstone.dto.request.NewTripDto;
 import com.sgone.capstone.dto.response.StandardResponseDto;
-import com.sgone.capstone.project.model.ApplicationUser;
-import com.sgone.capstone.project.model.Trip;
-import com.sgone.capstone.project.model.TripAssignment;
-import com.sgone.capstone.project.repository.TripAssignmentRepository;
-import com.sgone.capstone.project.repository.TripRepository;
-import com.sgone.capstone.project.repository.UserRepository;
+import com.sgone.capstone.project.model.*;
+import com.sgone.capstone.project.repository.*;
 import com.sgone.capstone.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,7 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,6 +32,12 @@ public class UserController {
     private TripRepository tripRepository;
     @Autowired
     private TripAssignmentRepository tripAssignmentRepository;
+    @Autowired
+    private DayRepository dayRepository;
+    @Autowired
+    private DayActivityRepository dayActivityRepository;
+    @Autowired
+    private DayActivityAssignmentRepository dayActivityAssignmentRepository;
 
     public UserController() {}
 
@@ -192,30 +196,119 @@ public class UserController {
 
 
     // delete and/or cancel trip
-    @DeleteMapping("/cancelTrip/{tripCode}")
-    public ResponseEntity<String> cancelTrip(String tripCode) {
+    @DeleteMapping("/cancelTrip")
+    public ResponseEntity<String> cancelTrip(
+            @RequestParam(required = true) String tripCode
+    ) {
 
-        // get a trip passing the UUID
-//        Optional<Trip> requested_trip = tripRepository.findByTripCode(tripCode);
+        /*
+             1. Get the trip object to be deleted
+             2. Get the trip ID from trip object
+         */
+        Trip tripToBeDeleted = tripRepository.findByTripCode(tripCode).get();
+        Long tripToBeDeletedId = tripToBeDeleted.getId();
+
+        /*
+            3. Delete the trip assignment, removing all users assigned to this trip
+         */
+        tripAssignmentRepository.deleteByTripId(tripToBeDeletedId);
+
+        /*
+            4. Get all days belonging to this trip
+         */
+        List<Day> allDaysBelongToTrip =
+                dayRepository.getAllDaysByTripId(tripToBeDeletedId);
+
+        /*
+            5. Get all day IDs from all days array above
+         */
+        List<Long> allDayIdsBelongToTrip = allDaysBelongToTrip
+                .stream()
+                .map(day -> {
+                    return day.getId();
+                })
+                .collect(Collectors.toList());
+
+        /*
+            6. Create new empty day activity array to store all activity belonging
+                to this trip
+         */
+        List<DayActivity> dayActivities = new ArrayList<>();
+
+        /*
+            7. Loop through day IDs array to get activities for each day
+         */
+        for (Long dayId: allDayIdsBelongToTrip) {
+            List<DayActivity> activities =
+                    dayActivityRepository.getAllDayActivityByDayId(dayId);
+
+            /*
+                8. Add current day activity to all activities array from step 6
+             */
+            dayActivities.addAll(activities);
+        }
+
+        /*
+            9. If there aren't any activities, then stop and clean Day and Trip table
+         */
+        if (dayActivities.isEmpty()) {
+            // remove from Day Table
+            // then remove from Trip Table
+        }
+
+        /*
+            10. Get all activities IDs from all activities array
+         */
+        List<Long> allDayActivityIds = dayActivities
+                .stream()
+                .map(dayActivity -> {
+                    return dayActivity.getId();
+                })
+                .collect(Collectors.toList());
+
+        /*
+            11. Remove activities assignments, removing all users assigned
+                to all activities
+         */
+        for (Long dayActivityId: allDayActivityIds) {
+            dayActivityAssignmentRepository.deleteByDayActivityId(dayActivityId);
+        }
+
+        /*
+            12. Then remove all trip activities
+         */
+        for (Long dayId: allDayIdsBelongToTrip) {
+            dayActivityRepository.removeByDayId(dayId);
+        }
+
+        /*
+            13. Then remove all days belonging to trip
+         */
+        dayRepository.deleteByTripId(tripToBeDeletedId);
+
+        /*
+            14. Lastly, remove said trip from Trip table
+         */
+        tripRepository.cancelTrip(tripCode);
+
 
 //        List<String> tripCodes = userService.getAllTrips().stream();
 
-        List<String> tripCodes = userService.getAllTrips()
-                .stream()
-                .map(trip -> {return trip.getTripCode();})
-                .filter(trip -> {return trip.equals(tripCode);})
-                .collect(Collectors.toList());
-
-//        .map(TripDto::tripCode)                                          // create a list of tripcodes
-//                .filter(f -> f.equals(tripCode)).toList();
-        if (!tripCodes.isEmpty()) {
-            ResponseEntity<String> OUT = ResponseEntity.ok("Trip" + userService.getAllTrips()
-                    .stream()
-                    .map(Trip::getName).collect(Collectors.toList())
-                    + " has been cancelled.");
-            tripRepository.cancelTrip(tripCode);
-            return OUT;
-        }
+//        List<String> tripCodes = userService.getAllTrips()
+//                .stream()
+//                .map(trip -> {return trip.getTripCode();})
+//                .filter(trip -> {return trip.equals(tripCode);})
+//                .collect(Collectors.toList());
+//
+////        .map(TripDto::tripCode)                                          // create a list of tripcodes
+//        if (!tripCodes.isEmpty()) {
+//            tripRepository.cancelTrip(tripCode);
+//            ResponseEntity<String> OUT = ResponseEntity.ok("Trip" + userService.getAllTrips()
+//                    .stream()
+//                    .map(Trip::getName).collect(Collectors.toList())
+//                    + " has been cancelled.");
+//            return OUT;
+//        }
         return ResponseEntity.badRequest().build();
     }
 

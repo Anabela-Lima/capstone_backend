@@ -24,10 +24,10 @@ public class Trip {
     @Column(name = "country")
     private String country;
 
-    @OneToMany(mappedBy = "trip")
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
     private Set<TripAssignment> tripAssignments;
 
-    @OneToMany(mappedBy = "trip")
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
     private Set<Day> days;
 
 //    @ManyToMany(mappedBy = "trips", cascade = CascadeType.ALL)

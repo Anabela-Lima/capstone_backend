@@ -1,9 +1,12 @@
 package com.sgone.capstone.project.controller;
 
+import com.sgone.capstone.dto.CustomApplicationUserDto;
 import com.sgone.capstone.dto.request.NewTripDto;
 import com.sgone.capstone.dto.response.StandardResponseDto;
+import com.sgone.capstone.project.model.ApplicationUser;
 import com.sgone.capstone.project.model.Trip;
 import com.sgone.capstone.project.repository.TripRepository;
+import com.sgone.capstone.project.repository.UserRepository;
 import com.sgone.capstone.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,24 +16,21 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
-    private UserService userService;
-
-    public UserController() {}
-
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
+    private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private TripRepository tripRepository;
 
+    public UserController() {}
 
     // get trip by trip code
     @GetMapping("/trip")
@@ -117,6 +117,26 @@ public class UserController {
                         "Endpoint not yet implemented",
                         null
                 ));
+    }
+
+    @GetMapping("/get_all_users")
+    public ResponseEntity<List<CustomApplicationUserDto>> getAllOfTheUsers(){
+        List<ApplicationUser> users = userRepository.findAll();
+        List<CustomApplicationUserDto> customUsers = users
+                .stream()
+                .map(user -> {
+                    return new CustomApplicationUserDto(
+                            user.getId(),
+                            user.getUsername(),
+                            user.getPassword(),
+                            user.getEmail(),
+                            user.getMobile(),
+                            user.getFirstname(),
+                            user.getLastname()
+                    );
+                })
+                .collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(customUsers);
     }
 
 

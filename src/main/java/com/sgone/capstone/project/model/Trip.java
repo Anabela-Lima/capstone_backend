@@ -1,13 +1,7 @@
 package com.sgone.capstone.project.model;
 
-
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.collect.Sets;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -30,15 +24,15 @@ public class Trip {
     @Column(name = "country")
     private String country;
 
-//    @OneToMany(mappedBy = "trip")
-//    private Set<TripAssignment> tripAssignments;
-//
-//    @OneToMany(mappedBy = "trip")
-//    private Set<Day> days;
+    @OneToMany(mappedBy = "trip")
+    private Set<TripAssignment> tripAssignments;
 
-    @ManyToMany(mappedBy = "trips", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Set<ApplicationUser> users;
+    @OneToMany(mappedBy = "trip")
+    private Set<Day> days;
+
+//    @ManyToMany(mappedBy = "trips", cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    private Set<ApplicationUser> users;
 
 
     public Trip() {}
@@ -50,7 +44,8 @@ public class Trip {
                 LocalDateTime endDate,
                 String description,
                 String country,
-                Set<ApplicationUser> users) {
+                Set<TripAssignment> tripAssignments,
+                Set<Day> days) {
         this.id = id;
         this.tripCode = tripCode;
         this.name = name;
@@ -58,7 +53,8 @@ public class Trip {
         this.endDate = endDate;
         this.description = description;
         this.country = country;
-        this.users = users;
+        this.tripAssignments = tripAssignments;
+        this.days = days;
     }
 
     public Trip(String tripCode,
@@ -73,7 +69,6 @@ public class Trip {
         this.endDate = endDate;
         this.description = description;
         this.country = country;
-        this.users = new HashSet<>();
     }
 
     public Long getId() {
@@ -132,11 +127,19 @@ public class Trip {
         this.country = country;
     }
 
-    public Set<ApplicationUser> getUsers() {
-        return users;
+    public Set<TripAssignment> getTripAssignments() {
+        return tripAssignments;
     }
 
-    public void setUsers(Set<ApplicationUser> users) {
-        this.users = users;
+    public void setTripAssignments(Set<TripAssignment> tripAssignments) {
+        this.tripAssignments = tripAssignments;
+    }
+
+    public Set<Day> getDays() {
+        return days;
+    }
+
+    public void setDays(Set<Day> days) {
+        this.days = days;
     }
 }

@@ -1,13 +1,7 @@
 package com.sgone.capstone.project.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.google.common.collect.Sets;
-import com.sgone.capstone.project.model.DayActivityAssignment;
-import com.sgone.capstone.project.model.MoneyOwed;
-
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -37,16 +31,16 @@ public class ApplicationUser {
     @Column(name = "lastname")
     private String lastname;
 
-//    @OneToMany(mappedBy = "applicationUser")
-//    private Set<TripAssignment> tripAssignments;
+    @OneToMany(mappedBy = "applicationUser")
+    private Set<TripAssignment> tripAssignments;
 
-    @ManyToMany
-    @JoinTable(
-            name = "trip_assignments",
-            joinColumns = @JoinColumn(name = "application_user_id"),
-            inverseJoinColumns = @JoinColumn(name = "trip_id")
-    )
-    private Set<Trip> trips = new HashSet<>();
+//    @ManyToMany
+//    @JoinTable(
+//            name = "trip_assignments",
+//            joinColumns = @JoinColumn(name = "application_user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "trip_id")
+//    )
+//    private Set<Trip> trips = new HashSet<>();
 
     @OneToMany(mappedBy = "applicationUser")
     private Set<DayActivityAssignment> dayActivityAssignments;
@@ -76,7 +70,7 @@ public class ApplicationUser {
                            Long mobile,
                            String firstname,
                            String lastname,
-                           Set<Trip> trips,
+                           Set<TripAssignment> tripAssignments,
                            Set<DayActivityAssignment> dayActivityAssignments,
                            Set<MoneyOwed> payee,
                            Set<MoneyOwed> payer,
@@ -91,7 +85,7 @@ public class ApplicationUser {
         this.mobile = mobile;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.trips = trips;
+        this.tripAssignments = tripAssignments;
         this.dayActivityAssignments = dayActivityAssignments;
         this.payee = payee;
         this.payer = payer;
@@ -194,12 +188,12 @@ public class ApplicationUser {
         this.lastname = lastname;
     }
 
-    public Set<Trip> getTrips() {
-        return trips;
+    public Set<TripAssignment> getTripAssignments() {
+        return tripAssignments;
     }
 
-    public void setTrips(Set<Trip> trips) {
-        this.trips = trips;
+    public void setTripAssignments(Set<TripAssignment> tripAssignments) {
+        this.tripAssignments = tripAssignments;
     }
 
     public Set<DayActivityAssignment> getDayActivityAssignments() {

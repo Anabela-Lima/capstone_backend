@@ -14,6 +14,7 @@ public class Friend {
     @ManyToOne
     @JoinColumn(name = "friend_a_id")
     private ApplicationUser friend_a;
+
     @ManyToOne
     @JoinColumn(name = "friend_b_id")
     private ApplicationUser friend_b;

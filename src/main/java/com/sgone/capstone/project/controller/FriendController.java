@@ -16,6 +16,13 @@ import java.util.List;
 public class FriendController {
 
     @Autowired
+    private final FriendRepository friendRepository;
+    private FriendService friendService;
+
+    public FriendController(FriendRepository friendRepository, FriendService friendService) {
+        this.friendRepository = friendRepository;
+        this.friendService = friendService;
+    }
 
     @GetMapping("/friend")
     public ResponseEntity<List<Friend>> findAllFriends() {

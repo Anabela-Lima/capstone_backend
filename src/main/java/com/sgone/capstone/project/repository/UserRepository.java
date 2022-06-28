@@ -39,7 +39,7 @@ public interface UserRepository extends JpaRepository<ApplicationUser, Long> {
                     "firstname = ?1 ",
             nativeQuery = true
     )
-    Optional<ApplicationUser> getUserByName(String firstname);
+    ApplicationUser getUserByName(String firstname);
 
     @Query(value = "SELECT * FROM users WHERE id = ?", nativeQuery = true)
     Optional<ApplicationUser> getUser(Long userId);

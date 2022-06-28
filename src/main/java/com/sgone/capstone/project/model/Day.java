@@ -5,6 +5,7 @@ package com.sgone.capstone.project.model;
 import com.google.common.collect.Sets;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -20,7 +21,7 @@ public class Day {
     @Column(name = "budget")
     private Double budget;
     @Column(name = "date")
-    private Date date;
+    private LocalDateTime date;
 
     @ManyToOne
     @JoinColumn(name = "trip_id")
@@ -34,7 +35,7 @@ public class Day {
     public Day(Long id,
                String name,
                Double budget,
-               Date date,
+               LocalDateTime date,
                Trip trip,
                Set<DayActivity> dayActivities) {
         this.id = id;
@@ -47,7 +48,7 @@ public class Day {
 
     public Day(String name,
                Double budget,
-               Date date,
+               LocalDateTime date,
                Trip trip) {
         this.name = name;
         this.budget = budget;
@@ -80,11 +81,11 @@ public class Day {
         this.budget = budget;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

@@ -2,8 +2,10 @@ package com.sgone.capstone.project.service;
 
 import com.sgone.capstone.dto.request.NewTripDto;
 import com.sgone.capstone.project.model.ApplicationUser;
+import com.sgone.capstone.project.model.Day;
 import com.sgone.capstone.project.model.TripAssignment;
 import com.sgone.capstone.project.model.Trip;
+import com.sgone.capstone.project.repository.DayRepository;
 import com.sgone.capstone.project.repository.TripAssignmentRepository;
 import com.sgone.capstone.project.repository.TripRepository;
 import com.sgone.capstone.project.repository.UserRepository;
@@ -19,20 +21,16 @@ import static org.thymeleaf.util.StringUtils.concat;
 @Service
 public class UserService {
 
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
     private TripRepository tripRepository;
+    @Autowired
     private TripAssignmentRepository tripAssignmentRepository;
+    @Autowired
+    private DayRepository dayRepository;
 
     public UserService() {}
-
-    @Autowired
-    public UserService(UserRepository userRepository,
-                       TripRepository tripRepository,
-                       TripAssignmentRepository tripAssignmentRepository) {
-        this.userRepository = userRepository;
-        this.tripRepository = tripRepository;
-        this.tripAssignmentRepository = tripAssignmentRepository;
-    }
 
 
     public Trip getTrip() {
@@ -84,6 +82,17 @@ public class UserService {
         tripRepository.save(newTrip);
         TripAssignment tripAssignment = new TripAssignment(newTrip, user);
         tripAssignmentRepository.save(tripAssignment);
+        Day firstDayOfTrip = new Day(
+                "New Day",
+                0.00,
+                newTripDto.getStartDate(),
+                newTrip
+        );
+        dayRepository.save(firstDayOfTrip);
+
+        /*
+            TODO: Get Trip from Database
+         */
 
         return newTrip;
     }

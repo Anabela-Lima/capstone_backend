@@ -160,8 +160,8 @@ public class DataLoader implements ApplicationRunner {
         dataLoaderTripAssignmentRepository.save(tripAssignment3);
         dataLoaderTripAssignmentRepository.save(tripAssignment4);
 
-        Day trip1Day1 = new Day("trip_1_day_1", 200.00, java.sql.Date.valueOf(LocalDate.now()), trip1);
-        Day trip1Day2 = new Day("trip_1_day_2", 200.00, java.sql.Date.valueOf(LocalDate.now().plusDays(1)), trip1);
+        Day trip1Day1 = new Day("trip_1_day_1", 200.00, LocalDateTime.now(), trip1);
+        Day trip1Day2 = new Day("trip_1_day_2", 200.00, LocalDateTime.now().plusDays(1), trip1);
 
         dataLoaderDayRepository.save(trip1Day1);
         dataLoaderDayRepository.save(trip1Day2);

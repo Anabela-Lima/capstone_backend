@@ -197,7 +197,7 @@ public class UserController {
 
     // delete and/or cancel trip
     @DeleteMapping("/trip/cancel_trip")
-    public ResponseEntity<String> cancelTrip(
+    public ResponseEntity<StandardResponseDto<?>> cancelTrip(
             @RequestParam(required = true) String tripCode
     ) {
 
@@ -239,75 +239,54 @@ public class UserController {
             7. Loop through day IDs array to get activities for each day
          */
 
-        List<DayActivity> activitiesBelongingToDay =
-                dayActivityRepository.findAll();
+        for (Long dayId: allDayIdsBelongToTrip) {
+            List<DayActivity> activitiesBelongingToDay =
+                    dayActivityRepository.getAllDayActivityByDayId(dayId);
 
-        System.out.println(activitiesBelongingToDay.size());
-        for (int i = 0; i < activitiesBelongingToDay.size(); i++) {
-            System.out.println(activitiesBelongingToDay.get(i));
-//            List<DayActivity> activitiesBelongingToDay =
-//                        dayActivityRepository.getAllDayActivityByDayId(allDayIdsBelongToTrip.get(i));
+            /*
+                8. Add current day activities to all activities belonging to trip
+             */
+            allDayActivitiesBelongingToTrip.addAll(activitiesBelongingToDay);
         }
-
-//        for (Long dayId: allDayIdsBelongToTrip) {
-//            List<DayActivity> activitiesBelongingToDay =
-//                    dayActivityRepository.getAllDayActivityByDayId(dayId);
-//
-//            /*
-//                8. Add current day activities to all activities belonging to trip
-//             */
-//            allDayActivitiesBelongingToTrip.addAll(activitiesBelongingToDay);
-//        }
-
-//        for (DayActivity activity: allDayActivitiesBelongingToTrip) {
-//            System.out.println(activity.getId());
-//        }
-
-        /*
-            9. If there aren't any activities, then stop and clean Day and Trip table
-         */
-//        if (dayActivities.isEmpty()) {
-//            // remove from Day Table
-//            // then remove from Trip Table
-//        }
 
         /*
             10. Get all activities IDs from all activities array
          */
-//        List<Long> allDayActivityIds = dayActivities
-//                .stream()
-//                .map(dayActivity -> {
-//                    return dayActivity.getId();
-//                })
-//                .collect(Collectors.toList());
+        List<Long> allDayActivityIds = allDayActivitiesBelongingToTrip
+                .stream()
+                .map(dayActivity -> {
+                    return dayActivity.getId();
+                })
+                .collect(Collectors.toList());
+
 
         /*
             11. Remove activities assignments, removing all users assigned
                 to all activities
+
+                (Clearing activity_assignment table data)
          */
-//        for (Long dayActivityId: allDayActivityIds) {
-//            dayActivityAssignmentRepository.deleteByDayActivityId(dayActivityId);
-//        }
+        for (Long dayActivityId: allDayActivityIds) {
+            dayActivityAssignmentRepository.deleteByDayActivityId(dayActivityId);
+        }
 
         /*
             12. Then remove all trip activities
          */
-//        for (Long dayId: allDayIdsBelongToTrip) {
-//            dayActivityRepository.removeByDayId(dayId);
-//        }
+        for (Long dayId: allDayIdsBelongToTrip) {
+            dayActivityRepository.removeByDayId(dayId);
+        }
 
         /*
             13. Then remove all days belonging to trip
          */
-//        dayRepository.deleteByTripId(tripToBeDeletedId);
+        dayRepository.deleteByTripId(tripToBeDeletedId);
 
         /*
             14. Lastly, remove said trip from Trip table
          */
-//        tripRepository.cancelTrip(tripCode);
+        tripRepository.cancelTrip(tripCode);
 
-
-//        List<String> tripCodes = userService.getAllTrips().stream();
 
 //        List<String> tripCodes = userService.getAllTrips()
 //                .stream()
@@ -324,7 +303,18 @@ public class UserController {
 //                    + " has been cancelled.");
 //            return OUT;
 //        }
-        return ResponseEntity.badRequest().build();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new StandardResponseDto<>(
+                        true,
+                        String.format(
+                                "Trip %s to %s has been cancelled.",
+                                tripToBeDeleted.getName(),
+                                tripToBeDeleted.getCountry()
+                        ),
+                        null
+                ));
     }
 
 

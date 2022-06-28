@@ -46,5 +46,13 @@ public interface DayActivityAssignmentRepository extends JpaRepository<DayActivi
     @Transactional
     void insertEmptyRows(@Param("USER_ID") Long userID, @Param("DAY_ACTIVITY_ID") Long dayActivityID);
 
+    @Modifying
+    @Query(value="UPDATE day_activity_assignment\n" +
+            "SET (paid, should_pay) = (:PAID, :SHOULD_PAY) WHERE " +
+            "application_user_id = :USER_ID AND day_activity_id = :DAY_ACTIVITY_ID ", nativeQuery = true)
+    @Transactional
+    void changeActivityAssignmentRow(@Param("USER_ID") Long userID, @Param("DAY_ACTIVITY_ID") Long dayActivityID,
+                                     @Param("PAID") Double paid, @Param("SHOULD_PAY") Double shouldPay);
+
 
 }

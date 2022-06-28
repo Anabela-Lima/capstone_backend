@@ -29,8 +29,9 @@ public class DayActivityAssignmentController {
     }
 
     @PutMapping("/changePaymentOfDayActivity")
-    void changPaymentOfDayActivity() {
-
+    void changPaymentOfDayActivity(@RequestParam Long userID, @RequestParam Long dayActivityID,
+                                   @RequestParam Double paid, @RequestParam Double shouldPay) {
+        dayActivityAssignmentRepository.changeActivityAssignmentRow(userID, dayActivityID, paid, shouldPay);
     }
 
 

@@ -2,6 +2,7 @@ package com.sgone.capstone.project.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Sets;
 
 import javax.persistence.*;
@@ -27,6 +28,7 @@ public class Day {
     private Trip trip;
 
     @OneToMany(mappedBy = "day", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<DayActivity> dayActivities;
 
     public Day() {}

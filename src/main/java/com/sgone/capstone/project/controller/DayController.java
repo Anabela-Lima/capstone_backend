@@ -3,14 +3,18 @@ package com.sgone.capstone.project.controller;
 import com.sgone.capstone.dto.CustomDayDto;
 import com.sgone.capstone.dto.response.StandardResponseDto;
 import com.sgone.capstone.project.model.Day;
+import com.sgone.capstone.project.model.Trip;
+import com.sgone.capstone.project.repository.DayRepository;
 import com.sgone.capstone.project.repository.TripRepository;
 import com.sgone.capstone.project.service.DayService;
 import com.sgone.capstone.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -20,6 +24,9 @@ public class DayController {
 
     @Autowired
     DayService dayService;
+
+    @Autowired
+    DayRepository dayRepository;
 
     @Autowired
     TripRepository tripRepository;
@@ -72,6 +79,41 @@ public class DayController {
 
     // update day details
 
+    // add a new day
+
+
+    @PostMapping("/addDay")
+
+    // annotated properties dont need to be requested because JPA will take care of it
+    public ResponseEntity<CustomDayDto> addDay(
+            @RequestParam String tripCode,
+            @RequestParam  String name,
+            @RequestParam Double budget,
+            @RequestParam @DateTimeFormat(pattern= "yyyy-MM-dd HH:mm:ss")LocalDateTime date)    // needed datetimeformat to format the date
+    {
+
+        Trip tripForDay = userService.getTrip(tripCode);
+
+        Day day = new Day(name, budget, date,tripForDay );
+        Day daysaved=  dayRepository.save(day);
+
+        // custom day dto needs to have an id, so lets get it back and pass it in
+
+       Long id = daysaved.getId();
+
+
+        return (ResponseEntity.ok().body(
+
+                new CustomDayDto(
+                        daysaved.getId(),
+                        daysaved.getName(),
+                        daysaved.getBudget(),
+                        daysaved.getDate()
+                )
+        ));
+
+
+    }
 
 
 
@@ -79,8 +121,6 @@ public class DayController {
 
 
 
-
-    // delete a day
 
 
 

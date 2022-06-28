@@ -3,8 +3,11 @@ package com.sgone.capstone.project.controller;
 import com.sgone.capstone.dto.CustomDayDto;
 import com.sgone.capstone.dto.response.StandardResponseDto;
 import com.sgone.capstone.project.model.Day;
+import com.sgone.capstone.project.model.DayActivity;
 import com.sgone.capstone.project.model.DayActivityAssignment;
 import com.sgone.capstone.project.model.Trip;
+import com.sgone.capstone.project.repository.DayActivityAssignmentRepository;
+import com.sgone.capstone.project.repository.DayActivityRepository;
 import com.sgone.capstone.project.repository.DayRepository;
 import com.sgone.capstone.project.repository.TripRepository;
 import com.sgone.capstone.project.service.DayService;
@@ -16,8 +19,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/day")         // first forward slash of url
@@ -37,7 +43,10 @@ public class DayController {
     UserService userService;
 
     @Autowired
-    DayActivityAssignment dayActivityAssignment;
+    DayActivityAssignmentRepository dayActivityAssignmentRepository;
+
+    @Autowired
+    DayActivityRepository dayActivityRepository;
 
 
 
@@ -141,30 +150,46 @@ public class DayController {
 
         Optional<Day> dayToBeDeleted = dayService.getDayById(id);
 
+        // get daytobedeleted id
+
+        Long dayId= dayToBeDeleted.get().getId();
+
+        // get all activities belonging to that day
+
+        List<DayActivity> activitiesForDayToBeDeleted = dayActivityRepository.getAllDayActivityByDayId(id);
 
 
-           /*
+        // create dayActivity array of long
 
-           2.delete all activities assined to that day - need id so get it
+        List<Long> dayActivityIds = activitiesForDayToBeDeleted
+                .stream()
+                        .map(dayActivity -> {
 
-           */
+                            return( dayActivity.getId());
 
-
-        Long dayId = dayToBeDeleted.get().getId();
-        dayActivityAssignment.removeById(dayToBeDeleted);
-
-
+                        }).collect(Collectors.toList());
 
 
+        // for loop to loop through dayActivityids
+
+        for(int i=0 ; i<dayActivityIds.size(); i++){                        // list of activity ids
+
+            dayActivityAssignmentRepository.deleteByDayActivityId(dayActivityIds.get(i));
+
+        }
+
+
+         // remove users assigned to the activities
+
+         dayActivityRepository.removeByDayId(id);
+
+         // remove day from day table
+        dayRepository.deleteDayById(id);
 
 
 
 
-
-
-
-
-        return ();
+        return (ResponseEntity.ok("Day removed"));
     }
 
 

@@ -174,6 +174,7 @@ public class DataLoader implements ApplicationRunner {
                 trip1Day1
         );
 
+
         dataLoaderDayActivityRepository.save(dayActivity1);
 
         DayActivityAssignment dayActivityAssignment1 = new DayActivityAssignment(

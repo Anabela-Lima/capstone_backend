@@ -233,63 +233,78 @@ public class UserController {
             6. Create new empty day activity array to store all activity belonging
                 to this trip
          */
-        List<DayActivity> dayActivities = new ArrayList<>();
+        List<DayActivity> allDayActivitiesBelongingToTrip = new ArrayList<>();
 
         /*
             7. Loop through day IDs array to get activities for each day
          */
-        for (Long dayId: allDayIdsBelongToTrip) {
-            List<DayActivity> activities =
-                    dayActivityRepository.getAllDayActivityByDayId(dayId);
 
-            /*
-                8. Add current day activity to all activities array from step 6
-             */
-            dayActivities.addAll(activities);
+        List<DayActivity> activitiesBelongingToDay =
+                dayActivityRepository.findAll();
+
+        System.out.println(activitiesBelongingToDay.size());
+        for (int i = 0; i < activitiesBelongingToDay.size(); i++) {
+            System.out.println(activitiesBelongingToDay.get(i));
+//            List<DayActivity> activitiesBelongingToDay =
+//                        dayActivityRepository.getAllDayActivityByDayId(allDayIdsBelongToTrip.get(i));
         }
+
+//        for (Long dayId: allDayIdsBelongToTrip) {
+//            List<DayActivity> activitiesBelongingToDay =
+//                    dayActivityRepository.getAllDayActivityByDayId(dayId);
+//
+//            /*
+//                8. Add current day activities to all activities belonging to trip
+//             */
+//            allDayActivitiesBelongingToTrip.addAll(activitiesBelongingToDay);
+//        }
+
+//        for (DayActivity activity: allDayActivitiesBelongingToTrip) {
+//            System.out.println(activity.getId());
+//        }
 
         /*
             9. If there aren't any activities, then stop and clean Day and Trip table
          */
-        if (dayActivities.isEmpty()) {
-            // remove from Day Table
-            // then remove from Trip Table
-        }
+//        if (dayActivities.isEmpty()) {
+//            // remove from Day Table
+//            // then remove from Trip Table
+//        }
 
         /*
             10. Get all activities IDs from all activities array
          */
-        List<Long> allDayActivityIds = dayActivities
-                .stream()
-                .map(dayActivity -> {
-                    return dayActivity.getId();
-                })
-                .collect(Collectors.toList());
+//        List<Long> allDayActivityIds = dayActivities
+//                .stream()
+//                .map(dayActivity -> {
+//                    return dayActivity.getId();
+//                })
+//                .collect(Collectors.toList());
 
         /*
             11. Remove activities assignments, removing all users assigned
                 to all activities
          */
-        for (Long dayActivityId: allDayActivityIds) {
-            dayActivityAssignmentRepository.deleteByDayActivityId(dayActivityId);
-        }
+//        for (Long dayActivityId: allDayActivityIds) {
+//            dayActivityAssignmentRepository.deleteByDayActivityId(dayActivityId);
+//        }
 
         /*
             12. Then remove all trip activities
          */
-        for (Long dayId: allDayIdsBelongToTrip) {
-            dayActivityRepository.removeByDayId(dayId);
-        }
+//        for (Long dayId: allDayIdsBelongToTrip) {
+//            dayActivityRepository.removeByDayId(dayId);
+//        }
 
         /*
             13. Then remove all days belonging to trip
          */
-        dayRepository.deleteByTripId(tripToBeDeletedId);
+//        dayRepository.deleteByTripId(tripToBeDeletedId);
 
         /*
             14. Lastly, remove said trip from Trip table
          */
-        tripRepository.cancelTrip(tripCode);
+//        tripRepository.cancelTrip(tripCode);
 
 
 //        List<String> tripCodes = userService.getAllTrips().stream();

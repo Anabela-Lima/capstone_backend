@@ -1,6 +1,5 @@
 package com.sgone.capstone.project.service;
 
-import com.sgone.capstone.dto.CustomApplicationUserDto;
 import com.sgone.capstone.dto.CustomDayDto;
 import com.sgone.capstone.dto.CustomTripDto;
 import com.sgone.capstone.dto.UserTripAssignmentDto;
@@ -13,7 +12,6 @@ import com.sgone.capstone.project.repository.DayRepository;
 import com.sgone.capstone.project.repository.TripAssignmentRepository;
 import com.sgone.capstone.project.repository.TripRepository;
 import com.sgone.capstone.project.repository.UserRepository;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +43,11 @@ public class UserService {
     }
 
 
+    public List<Trip> getAllTrips() {
+        return tripRepository.findAll();
+    }
+
+
     public Trip getTrip(String tripCode) {
 
        Optional<Trip> tripOptional = tripRepository.findByTripCode(tripCode);
@@ -59,13 +62,6 @@ public class UserService {
 
        return tripOptional.get();
     }
-
-
-
-    public List<Trip> getAllTrips() {
-        return tripRepository.findAll();
-    }
-
 
 
     public CustomTripDto createTrip(NewTripDto newTripDto) {

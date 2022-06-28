@@ -61,12 +61,14 @@ private UserController userController;
             return "Deleted Friend " + friend.getId() + ". If this was a mistake, you can add a new post using the Add post function!";
         }
         catch(InvalidDataAccessApiUsageException e){
+//            System.out.println(e);
             return "Id entered does not exist!";
         }
     }
 
-    public Friend addFriend(String currentUser, String friendToAdd){
+    public Friend addFriend(String currentUser, String friendToAdd) {
 
+        try {
             ApplicationUser userF = userRepository.getUserByName(friendToAdd);
             ApplicationUser userC = userRepository.getUserByName(currentUser);
             Friend friendTA = new Friend(userC, userF);
@@ -74,8 +76,14 @@ private UserController userController;
             //creating two new Users - userT (the target user, who's list we want to update) and the userF (friend to be added)
             //creating two new Friends - friendLT and friendLF for the corresponding users
             //the friend objects call getters from the corresponding user class
+           return friendRepository.save(friendTA);
 
-        return friendRepository.save(friendTA);
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+        //Cannot call sendError() after the response has been committed - java.lang.IllegalStateException
+
 
 //        List<ApplicationUser> users = userRepository.findAll();
 //        List<CustomApplicationUserDto> usersNamedKeyword = users
@@ -101,7 +109,6 @@ private UserController userController;
 //                })
 //                .filter(s -> s.getFirstname().contains(firstname)).collect(Collectors.toList());
 //        return ResponseEntity.status(HttpStatus.OK).body(usersNamedKeyword);
-
 
         }
     }

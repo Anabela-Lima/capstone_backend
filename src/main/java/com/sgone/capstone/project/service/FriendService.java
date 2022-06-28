@@ -11,6 +11,7 @@ import com.sgone.capstone.project.repository.FriendRepository;
 import com.sgone.capstone.project.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -48,18 +49,20 @@ private UserController userController;
 
     public String deleteFriendById(Long id){
 
-        Friend friend = friendRepository.findFriendPair(id);
-        friendRepository.delete(friend);
-
 //        try {
 //        } catch (NullPointerException e){
 //            if(friend == null) {
 //                e.printStackTrace();
 //                System.out.println("No matching friend pairing could be found for id: " + id);
 //            }
-
-        return "Deleted Friend " + friend.getId() + ". If this was a mistake, you can add a new post using the Add post function!";
-
+        try {
+            Friend friend = friendRepository.findFriendPair(id);
+            friendRepository.delete(friend);
+            return "Deleted Friend " + friend.getId() + ". If this was a mistake, you can add a new post using the Add post function!";
+        }
+        catch(InvalidDataAccessApiUsageException e){
+            return "Id entered does not exist!";
+        }
     }
 
     public Friend addFriend(String currentUser, String friendToAdd){

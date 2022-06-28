@@ -44,10 +44,11 @@ public class FriendController {
         return friendService.deleteFriendById(id);
     }
 
-
+//works but error 200 is outputted - this produced infinite JSON response
     @PostMapping("/friend/{currentUser}/{friendToAdd}")
-    public Friend addFriend(@PathVariable("currentUser") String currentUser, @PathVariable("friendToAdd") String friendToAdd) {
-        return friendService.addFriend(currentUser, friendToAdd);
+    public ResponseEntity <Friend> addFriend(@PathVariable("currentUser") String currentUser, @PathVariable("friendToAdd") String friendToAdd) {
+        Friend friend = friendService.addFriend(currentUser, friendToAdd);
+        return new ResponseEntity<>(friend,HttpStatus.OK);
     }
 
 }

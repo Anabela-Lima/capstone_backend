@@ -1,9 +1,15 @@
 package com.sgone.capstone.dataloader;
 
 import com.sgone.capstone.project.model.ApplicationUser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.persistence.Entity;
+import java.beans.BeanProperty;
 import java.util.ArrayList;
-
 
 public class DataLoaderUsersArray {
 

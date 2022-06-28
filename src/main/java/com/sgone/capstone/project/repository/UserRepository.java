@@ -6,7 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -26,8 +29,10 @@ public interface UserRepository extends JpaRepository<ApplicationUser, Long> {
             nativeQuery = true
     )
     Optional<ApplicationUser> getAllUsers(Long userId);
-    @Query(value = "SELECT * FROM users WHERE firstname = ?1 AND lastname = ?2", nativeQuery = true)
-    ApplicationUser findUserByFirstAndLastNames(@Param("first_name") String firstname, @Param("last_name") String lastname);
+
+
+    @Query(value = "SELECT * FROM users WHERE firstname = ?", nativeQuery = true)
+    Optional<ApplicationUser> getUserByName(String firstname);
 }
 
 //For addFriend logic:

@@ -38,4 +38,15 @@ public interface UserManagementRepository extends JpaRepository<ApplicationUser,
             nativeQuery = true
     )
     Optional<ApplicationUser> getSingle(Long userId);
+
+    @Query(
+            value = "SELECT " +
+                    "* " +
+                    "FROM " +
+                    "APPLICATION_USER " +
+                    "WHERE " +
+                    "firstname = ?1 ",
+            nativeQuery = true
+    )
+    Optional<ApplicationUser> getUserByName(String firstname);
 }

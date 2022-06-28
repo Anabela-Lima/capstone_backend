@@ -52,19 +52,18 @@ public class DayActivityAssignmentController {
         return Collections.singletonMap("success", false);
     }
 
-    @GetMapping("/generateTripCostByUserAndTrip")
-    public List<Map<Long, Long>> generateTripCostByUser(@RequestParam Long userID,
-                                                          @RequestParam Long tripID) {
+    // move to service
+    @GetMapping("/generateActivityCostByUserAndTrip")
+    public List<Map<Long, Long>> generateActivityCostByUser(@RequestParam Long userID,
+                                                          @RequestParam Long dayActivityID) {
         List<Map<Long, Long>> userOwesList = new ArrayList<>();
 
         List<DayActivityAssignment> dayActivityAssignments = dayActivityAssignmentRepository
-                .getActivityAssignmentsByTripID(tripID);
+                .returnActivityAssignmentsByActivityID(dayActivityID);
 
-        Double paid = dayActivityAssignmentRepository.getTotalPaidOfUserFromTrip(tripID,
-                userID);
+        Double paid = dayActivityAssignmentRepository.userPaidForCertainActivity(dayActivityID, userID);
 
-        Double shouldPay = dayActivityAssignmentRepository.getTotalShouldPayOfUserFromTrip(tripID,
-                userID);
+        Double shouldPay = dayActivityAssignmentRepository.userShouldPayForCertainActivity(dayActivityID, userID);
 
         Long remainsToPay;
         Long userHasPaidOver;
@@ -72,15 +71,20 @@ public class DayActivityAssignmentController {
         remainsToPay = Math.round(shouldPay) - Math.round(paid) ;
 
         for (DayActivityAssignment dayActivityAssignment : dayActivityAssignments) {
-            if (remainsToPay > 0 && dayActivityAssignment.getApplicationUser().getId() != userID ) {
-                userHasPaidOver = Math.round(dayActivityAssignment.getPaid()) -
-                        Math.round(dayActivityAssignment.getShouldPay());
+            userHasPaidOver = Math.round(dayActivityAssignment.getPaid()) -
+                    Math.round(dayActivityAssignment.getShouldPay());
+            if (remainsToPay > 0 && dayActivityAssignment.getApplicationUser().getId() != userID
+            && userHasPaidOver > 0) {
                 if ((remainsToPay - userHasPaidOver) >= 0) {
                     userOwesList.add(Collections.singletonMap(dayActivityAssignment.getApplicationUser().getId(),
                             userHasPaidOver));
                     dayActivityAssignmentRepository.changeActivityAssignmentRow(dayActivityAssignment
                             .getApplicationUser().getId(), dayActivityAssignment.getDayActivity().getId(),
                             dayActivityAssignment.getShouldPay(), dayActivityAssignment.getShouldPay());
+                    dayActivityAssignmentRepository.changeActivityAssignmentRow(userID, dayActivityID,
+                            dayActivityAssignmentRepository.userPaidForCertainActivity(dayActivityID, userID)
+                    + userHasPaidOver, dayActivityAssignmentRepository
+                                    .userShouldPayForCertainActivity(dayActivityID, userID));
                     remainsToPay = remainsToPay - userHasPaidOver;
                 } else {
                     userOwesList.add(Collections.singletonMap(dayActivityAssignment.getApplicationUser().getId(),
@@ -89,6 +93,11 @@ public class DayActivityAssignmentController {
                             .getApplicationUser().getId(), dayActivityAssignment.getDayActivity().getId(),
                             dayActivityAssignment.getPaid() - remainsToPay,
                             dayActivityAssignment.getShouldPay());
+                    dayActivityAssignmentRepository.changeActivityAssignmentRow(userID, dayActivityID,
+                            dayActivityAssignmentRepository
+                                    .userShouldPayForCertainActivity(dayActivityID, userID),
+                            dayActivityAssignmentRepository
+                                    .userShouldPayForCertainActivity(dayActivityID, userID));
                     remainsToPay = 0l;
                 }
             }

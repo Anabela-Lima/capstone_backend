@@ -54,5 +54,13 @@ public interface DayActivityAssignmentRepository extends JpaRepository<DayActivi
     void changeActivityAssignmentRow(@Param("USER_ID") Long userID, @Param("DAY_ACTIVITY_ID") Long dayActivityID,
                                      @Param("PAID") Double paid, @Param("SHOULD_PAY") Double shouldPay);
 
+    @Query(value="SELECT SUM(should_pay)\n" +
+            "FROM day_activity_assignment\n" +
+            "WHERE day_activity_id = :DAY_ACTIVITY_ID\n", nativeQuery = true)
+    Double getShouldPayTotalByActivity(@Param("DAY_ACTIVITY_ID") Long dayActivityID);
 
+    @Query(value="SELECT SUM(paid)\n" +
+            "FROM day_activity_assignment\n" +
+            "WHERE day_activity_id = :DAY_ACTIVITY_ID\n", nativeQuery = true)
+    Double getPaidTotalByActivity(@Param("DAY_ACTIVITY_ID") Long dayActivityID);
 }

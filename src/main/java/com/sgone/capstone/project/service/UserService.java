@@ -1,5 +1,8 @@
 package com.sgone.capstone.project.service;
 
+import com.sgone.capstone.dto.CustomApplicationUserDto;
+import com.sgone.capstone.dto.CustomTripDto;
+import com.sgone.capstone.dto.UserTripAssignmentDto;
 import com.sgone.capstone.dto.request.NewTripDto;
 import com.sgone.capstone.project.model.ApplicationUser;
 import com.sgone.capstone.project.model.Day;
@@ -9,12 +12,14 @@ import com.sgone.capstone.project.repository.DayRepository;
 import com.sgone.capstone.project.repository.TripAssignmentRepository;
 import com.sgone.capstone.project.repository.TripRepository;
 import com.sgone.capstone.project.repository.UserRepository;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.thymeleaf.util.StringUtils.concat;
 
@@ -46,6 +51,10 @@ public class UserService {
            throw new RuntimeException("Trip code is invalid, please try again!");
        }
 
+        /*
+            TODO: switch to new CustomTripDto
+         */
+
        return tripOptional.get();
     }
 
@@ -57,7 +66,7 @@ public class UserService {
 
 
 
-    public Trip createTrip(NewTripDto newTripDto) {
+    public CustomTripDto createTrip(NewTripDto newTripDto) {
 
         Optional<ApplicationUser> userOptional =
                 userRepository.getUser(newTripDto.getUserId());
@@ -90,11 +99,43 @@ public class UserService {
         );
         dayRepository.save(firstDayOfTrip);
 
-        /*
-            TODO: Get Trip from Database
-         */
+        Trip trip = tripRepository.findByTripCode(tripCode).get();
+        CustomTripDto customTripDto = new CustomTripDto(
+                trip.getId(),
+                trip.getTripCode(),
+                trip.getName(),
+                trip.getStartDate(),
+                trip.getEndDate(),
+                trip.getDescription(),
+                trip.getCountry(),
+                getAllUsersByTripCode(trip.getTripCode())
+        );
 
-        return newTrip;
+        return customTripDto;
+    }
+
+
+    public List<UserTripAssignmentDto> getAllUsersByTripCode(String tripCode) {
+
+        List<ApplicationUser> applicationUsers =
+                userRepository.getAllUsersByTripCode(tripCode);
+
+        List<UserTripAssignmentDto> customApplicationUserDtos =
+                applicationUsers
+                        .stream()
+                        .map(applicationUser -> {
+                            return new UserTripAssignmentDto(
+                                    applicationUser.getId(),
+                                    applicationUser.getUsername(),
+                                    applicationUser.getEmail(),
+                                    applicationUser.getMobile(),
+                                    applicationUser.getFirstname(),
+                                    applicationUser.getLastname()
+                            );
+                        })
+                        .collect(Collectors.toList());
+
+        return customApplicationUserDtos;
     }
 
 

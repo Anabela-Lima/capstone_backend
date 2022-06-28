@@ -73,7 +73,8 @@ public class UserController {
                             trip.getStartDate(),
                             trip.getEndDate(),
                             trip.getDescription(),
-                            trip.getCountry()
+                            trip.getCountry(),
+                            new ArrayList<>()
                     );
                 })
                 .collect(Collectors.toList());
@@ -109,7 +110,7 @@ public class UserController {
         );
 
         try {
-            Trip newTrip = userService.createTrip(newTripDto);
+            CustomTripDto newTrip = userService.createTrip(newTripDto);
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .body(new StandardResponseDto<>(

@@ -16,22 +16,32 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
 
 
     // custom query 1
+
     // ?1 means the first input parameter
-
-    @Query (value = "SELECT * FROM trip WHERE trip_code = :tripCode", nativeQuery = true)
-
     // writing query method - "repository method"
+    @Query (
+            value = "SELECT " +
+                    "* " +
+                    "FROM " +
+                    "trip " +
+                    "WHERE " +
+                    "trip_code = :tripCode",
+            nativeQuery = true
+    )
     Optional<Trip> findByTripCode(@Param("tripCode") String tripCode);
 
 
 
     // custom query 2
     // query to cancel trip given a uuid
-
+    // INSERT, DELETE queries will return an integer indicating how many rows were modified
     @Modifying
-    @Query(value = "DELETE FROM trip WHERE trip_code = ?1" , nativeQuery = true)
     @Transactional
-    Optional<Trip> cancelTrip(String tripCode);
+    @Query(
+            value = "DELETE FROM trip WHERE trip_code = ?1" ,
+            nativeQuery = true
+    )
+    Integer cancelTrip(String tripCode);
 
 
 

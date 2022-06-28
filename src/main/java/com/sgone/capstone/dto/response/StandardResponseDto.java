@@ -1,5 +1,6 @@
 package com.sgone.capstone.dto.response;
 
+
 public class StandardResponseDto <T> {
 
     private Boolean success;

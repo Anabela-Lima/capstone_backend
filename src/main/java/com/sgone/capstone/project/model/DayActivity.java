@@ -6,6 +6,7 @@ import com.sgone.capstone.project.model.Enum.DayActivityType;
 import javax.persistence.*;
 import java.util.Set;
 
+
 @Entity
 @Table(name = "day_activity")
 public class DayActivity {
@@ -27,7 +28,7 @@ public class DayActivity {
     @JoinColumn(name = "day_id")
     private Day day;
 
-    @OneToMany(mappedBy = "dayActivity")
+    @OneToMany(mappedBy = "dayActivity", cascade = CascadeType.ALL)
     private Set<DayActivityAssignment> dayActivityAssignmentSet;
 
 
@@ -70,6 +71,22 @@ public class DayActivity {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public Double getPrice() {
         return price;
     }
@@ -92,5 +109,13 @@ public class DayActivity {
 
     public void setDay(Day day) {
         this.day = day;
+    }
+
+    public Set<DayActivityAssignment> getDayActivityAssignmentSet() {
+        return dayActivityAssignmentSet;
+    }
+
+    public void setDayActivityAssignmentSet(Set<DayActivityAssignment> dayActivityAssignmentSet) {
+        this.dayActivityAssignmentSet = dayActivityAssignmentSet;
     }
 }

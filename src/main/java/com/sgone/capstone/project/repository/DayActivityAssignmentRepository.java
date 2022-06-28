@@ -1,6 +1,6 @@
 package com.sgone.capstone.project.repository;
 
-import com.sgone.capstone.project.model.TripAssignment;
+import com.sgone.capstone.project.model.DayActivityAssignment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,13 +9,13 @@ import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
 
 @Repository
-public interface TripAssignmentRepository extends JpaRepository<TripAssignment, Long> {
+public interface DayActivityAssignmentRepository extends JpaRepository<DayActivityAssignment, Long> {
 
     @Transactional
     @Modifying
     @Query(
-            value = "DELETE FROM trip_assignment WHERE trip_id = ?1",
+            value = "DELETE FROM day_activity_assignment WHERE day_activity_id = ?1",
             nativeQuery = true
     )
-    Integer deleteByTripId(Long tripId);
+    Integer deleteByDayActivityId(Long dayActivityId);
 }

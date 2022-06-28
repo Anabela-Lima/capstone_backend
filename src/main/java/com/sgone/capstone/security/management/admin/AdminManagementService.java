@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
+import com.sgone.capstone.security.management.admin.AdminManagementRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +20,6 @@ public class AdminManagementService {
 
     public AdminManagementService() {}
 
-    @Autowired
     public AdminManagementService(
             AdminManagementRepository adminManagementRepository,
             PasswordEncoder passwordEncoder) {

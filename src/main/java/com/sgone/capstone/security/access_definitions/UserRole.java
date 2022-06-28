@@ -25,6 +25,7 @@ import static com.sgone.capstone.security.access_definitions.UserPermission.*;
  * each permission enum constant.
  */
 
+
 // TODO: Add additional permissions to OWNER, ADMIN and USER as application functionalities develops
 public enum UserRole {
     APP_OWNER(Sets.newHashSet(

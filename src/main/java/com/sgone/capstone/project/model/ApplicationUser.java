@@ -1,11 +1,8 @@
 package com.sgone.capstone.project.model;
 
-import com.google.common.collect.Sets;
-import org.checkerframework.checker.units.qual.A;
 
 import javax.persistence.*;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 public class ApplicationUser {
@@ -34,21 +31,29 @@ public class ApplicationUser {
     @Column(name = "lastname")
     private String lastname;
 
-    @OneToMany(mappedBy = "applicationUser")
+    @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
     private Set<TripAssignment> tripAssignments;
 
-    @OneToMany(mappedBy = "applicationUser")
+//    @ManyToMany
+//    @JoinTable(
+//            name = "trip_assignments",
+//            joinColumns = @JoinColumn(name = "application_user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "trip_id")
+//    )
+//    private Set<Trip> trips = new HashSet<>();
+
+    @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
     private Set<DayActivityAssignment> dayActivityAssignments;
 
-    @OneToMany(mappedBy = "payee")
+    @OneToMany(mappedBy = "payee", cascade = CascadeType.ALL)
     private Set<MoneyOwed> payee;
-    @OneToMany(mappedBy = "payer")
+    @OneToMany(mappedBy = "payer", cascade = CascadeType.ALL)
     private Set<MoneyOwed> payer;
 
-    @OneToMany(mappedBy = "friend_a")
+    @OneToMany(mappedBy = "friend_a", cascade = CascadeType.ALL)
     private Set<Friend> friends_a;
 
-    @OneToMany(mappedBy = "friend_b")
+    @OneToMany(mappedBy = "friend_b", cascade = CascadeType.ALL)
     private Set<Friend> friends_b;
     // TODO: User Entity properties goes here
 
@@ -100,19 +105,15 @@ public class ApplicationUser {
                            String lastname,
                            Boolean isAdmin,
                            Boolean isOwner
-    ) {
+                           ) {
         this.username = username;
         this.password = password;
+        this.isAdmin = isAdmin;
+        this.isOwner = isOwner;
         this.email = email;
         this.mobile = mobile;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.isAdmin = isAdmin;
-        this.isOwner = isOwner;
-        this.tripAssignments = Sets.newHashSet();
-        this.dayActivityAssignments = Sets.newHashSet();
-        this.friends_a = Sets.newHashSet();
-        this.friends_b = Sets.newHashSet();
     }
 
     public Long getId() {

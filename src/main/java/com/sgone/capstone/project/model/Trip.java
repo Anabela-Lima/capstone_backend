@@ -1,15 +1,8 @@
 package com.sgone.capstone.project.model;
 
-
-
-import com.google.common.collect.Sets;
-import org.checkerframework.checker.units.qual.C;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "trip")
@@ -31,11 +24,16 @@ public class Trip {
     @Column(name = "country")
     private String country;
 
-    @OneToMany(mappedBy = "trip")
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
     private Set<TripAssignment> tripAssignments;
 
-    @OneToMany(mappedBy = "trip")
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
     private Set<Day> days;
+
+//    @ManyToMany(mappedBy = "trips", cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    private Set<ApplicationUser> users;
+
 
     public Trip() {}
 
@@ -71,8 +69,6 @@ public class Trip {
         this.endDate = endDate;
         this.description = description;
         this.country = country;
-        this.tripAssignments = Sets.newHashSet();
-        this.days = Sets.newHashSet();
     }
 
     public Long getId() {

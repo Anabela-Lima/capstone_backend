@@ -1,5 +1,6 @@
 package com.sgone.capstone.project.service;
 
+
 import com.sgone.capstone.project.model.ApplicationUser;
 import com.sgone.capstone.project.model.Friend;
 import com.sgone.capstone.project.repository.FriendRepository;

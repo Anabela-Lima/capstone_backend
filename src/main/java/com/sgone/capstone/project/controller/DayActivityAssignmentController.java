@@ -1,10 +1,11 @@
 package com.sgone.capstone.project.controller;
 
+import com.sgone.capstone.project.model.DayActivityAssignment;
 import com.sgone.capstone.project.repository.DayActivityAssignmentRepository;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class DayActivityAssignmentController {
@@ -15,6 +16,11 @@ public class DayActivityAssignmentController {
         this.dayActivityAssignmentRepository = dayActivityAssignmentRepository;
     }
 
+    @GetMapping("/dayActivityAssignments")
+    public ResponseEntity<List<DayActivityAssignment>> getActivityAssignments() {
+        List<DayActivityAssignment> dayActivityAssignments = dayActivityAssignmentRepository.findAll();
+        return ResponseEntity.ok().body(dayActivityAssignments);
+    }
 
     @DeleteMapping("/deleteUserFromActivity")
     void deleteUserFromActivity(@RequestParam Long userID, @RequestParam Long dayActivityID) {

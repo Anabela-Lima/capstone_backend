@@ -1,6 +1,8 @@
 package com.sgone.capstone.project.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -32,6 +34,7 @@ public class ApplicationUser {
     private String lastname;
 
     @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<TripAssignment> tripAssignments;
 
 //    @ManyToMany
@@ -43,17 +46,22 @@ public class ApplicationUser {
 //    private Set<Trip> trips = new HashSet<>();
 
     @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<DayActivityAssignment> dayActivityAssignments;
 
     @OneToMany(mappedBy = "payee", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<MoneyOwed> payee;
     @OneToMany(mappedBy = "payer", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<MoneyOwed> payer;
 
     @OneToMany(mappedBy = "friend_a", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Friend> friends_a;
 
     @OneToMany(mappedBy = "friend_b", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Friend> friends_b;
     // TODO: User Entity properties goes here
 

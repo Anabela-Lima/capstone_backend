@@ -1,5 +1,6 @@
 package com.sgone.capstone.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Sets;
 import com.sgone.capstone.project.model.Enum.DayActivityType;
 
@@ -29,6 +30,7 @@ public class DayActivity {
     private Day day;
 
     @OneToMany(mappedBy = "dayActivity", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<DayActivityAssignment> dayActivityAssignmentSet;
 
 

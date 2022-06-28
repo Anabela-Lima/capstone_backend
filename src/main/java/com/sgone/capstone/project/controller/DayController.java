@@ -3,6 +3,7 @@ package com.sgone.capstone.project.controller;
 import com.sgone.capstone.dto.CustomDayDto;
 import com.sgone.capstone.dto.response.StandardResponseDto;
 import com.sgone.capstone.project.model.Day;
+import com.sgone.capstone.project.model.DayActivityAssignment;
 import com.sgone.capstone.project.model.Trip;
 import com.sgone.capstone.project.repository.DayRepository;
 import com.sgone.capstone.project.repository.TripRepository;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/day")         // first forward slash of url
@@ -33,6 +35,10 @@ public class DayController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    DayActivityAssignment dayActivityAssignment;
+
 
 
 
@@ -116,6 +122,50 @@ public class DayController {
     }
 
 
+    // delete a day
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> cancelDay(
+            @RequestParam(required = true) Long id
+
+
+
+    ){
+
+
+           /*
+
+           1. Get day object to be deleted using the id
+
+           */
+
+        Optional<Day> dayToBeDeleted = dayService.getDayById(id);
+
+
+
+           /*
+
+           2.delete all activities assined to that day - need id so get it
+
+           */
+
+
+        Long dayId = dayToBeDeleted.get().getId();
+        dayActivityAssignment.removeById(dayToBeDeleted);
+
+
+
+
+
+
+
+
+
+
+
+
+        return ();
+    }
 
 
 

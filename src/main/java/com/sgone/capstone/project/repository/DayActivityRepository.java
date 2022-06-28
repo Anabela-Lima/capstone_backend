@@ -27,4 +27,7 @@ public interface DayActivityRepository extends JpaRepository<DayActivity, Long> 
     )
     Integer removeByDayId(Long dayId);
 
+
+
+
 }

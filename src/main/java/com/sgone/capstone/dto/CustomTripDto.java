@@ -13,6 +13,7 @@ public class CustomTripDto {
     private String description;
     private String country;
     private List<UserTripAssignmentDto> users;
+    private List<CustomDayDto> days;
 
     public CustomTripDto(Long id,
                          String tripCode,
@@ -21,7 +22,8 @@ public class CustomTripDto {
                          LocalDateTime endDate,
                          String description,
                          String country,
-                         List<UserTripAssignmentDto> users) {
+                         List<UserTripAssignmentDto> users,
+                         List<CustomDayDto> days) {
         this.id = id;
         this.tripCode = tripCode;
         this.name = name;
@@ -30,6 +32,7 @@ public class CustomTripDto {
         this.description = description;
         this.country = country;
         this.users = users;
+        this.days = days;
     }
 
     public Long getId() {
@@ -94,5 +97,13 @@ public class CustomTripDto {
 
     public void setUsers(List<UserTripAssignmentDto> users) {
         this.users = users;
+    }
+
+    public List<CustomDayDto> getDays() {
+        return days;
+    }
+
+    public void setDays(List<CustomDayDto> days) {
+        this.days = days;
     }
 }

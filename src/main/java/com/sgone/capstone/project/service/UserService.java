@@ -1,6 +1,7 @@
 package com.sgone.capstone.project.service;
 
 import com.sgone.capstone.dto.CustomApplicationUserDto;
+import com.sgone.capstone.dto.CustomDayDto;
 import com.sgone.capstone.dto.CustomTripDto;
 import com.sgone.capstone.dto.UserTripAssignmentDto;
 import com.sgone.capstone.dto.request.NewTripDto;
@@ -16,6 +17,7 @@ import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -91,13 +93,22 @@ public class UserService {
         tripRepository.save(newTrip);
         TripAssignment tripAssignment = new TripAssignment(newTrip, user);
         tripAssignmentRepository.save(tripAssignment);
-        Day firstDayOfTrip = new Day(
-                "New Day",
-                0.00,
-                newTripDto.getStartDate(),
-                newTrip
+
+        Period period = Period.between(
+                newTripDto.getStartDate().toLocalDate(),
+                newTripDto.getEndDate().toLocalDate()
         );
-        dayRepository.save(firstDayOfTrip);
+        Integer dayDiff = period.getDays();
+
+        for (int i = 0; i <= dayDiff; i++) {
+            Day day = new Day(
+                    String.format("New Day %s", i + 1),
+                    0.00,
+                    newTripDto.getStartDate().plusDays(i),
+                    newTrip
+            );
+            dayRepository.save(day);
+        }
 
         Trip trip = tripRepository.findByTripCode(tripCode).get();
         CustomTripDto customTripDto = new CustomTripDto(
@@ -108,7 +119,8 @@ public class UserService {
                 trip.getEndDate(),
                 trip.getDescription(),
                 trip.getCountry(),
-                getAllUsersByTripCode(trip.getTripCode())
+                getAllUsersByTripCode(trip.getTripCode()),
+                getAllDaysByTripCode(trip.getTripCode())
         );
 
         return customTripDto;
@@ -136,6 +148,28 @@ public class UserService {
                         .collect(Collectors.toList());
 
         return customApplicationUserDtos;
+    }
+
+
+    public List<CustomDayDto> getAllDaysByTripCode(String tripCode) {
+
+        Trip trip = tripRepository.findByTripCode(tripCode).get();
+        Long tripId = trip.getId();
+
+        List<Day> days = dayRepository.getAllDaysByTripId(tripId);
+        List<CustomDayDto> customDayDtos =
+                days.stream()
+                        .map(day -> {
+                            return new CustomDayDto(
+                                    day.getId(),
+                                    day.getName(),
+                                    day.getBudget(),
+                                    day.getDate()
+                            );
+                        })
+                        .collect(Collectors.toList());
+
+        return customDayDtos;
     }
 
 

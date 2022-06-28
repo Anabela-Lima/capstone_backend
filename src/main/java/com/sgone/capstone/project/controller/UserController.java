@@ -74,6 +74,7 @@ public class UserController {
                             trip.getEndDate(),
                             trip.getDescription(),
                             trip.getCountry(),
+                            new ArrayList<>(),
                             new ArrayList<>()
                     );
                 })
@@ -84,14 +85,14 @@ public class UserController {
 
     @PostMapping("/trip/new")
     public ResponseEntity<StandardResponseDto<?>> createTrip(
-            @RequestParam(required = true) Long userId,
-            @RequestParam(required = true) String name,
-            @RequestParam(required = true) String country,
-            @RequestParam(required = true) String description,
+            @RequestParam(required = true, defaultValue = "7") Long userId,
+            @RequestParam(required = true, defaultValue = "girls trip") String name,
+            @RequestParam(required = true, defaultValue = "Morocco") String country,
+            @RequestParam(required = true, defaultValue = "girls trip in Morocco, let's party!") String description,
             @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-            @RequestParam(required = true) LocalDateTime startDate,
+            @RequestParam(required = true, defaultValue = "2022-06-28 14:01:25") LocalDateTime startDate,
             @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-            @RequestParam(required = true) LocalDateTime endDate
+            @RequestParam(required = true, defaultValue = "2022-06-30 14:01:25") LocalDateTime endDate
     ) {
         /*
             1. we get userId from the frontend

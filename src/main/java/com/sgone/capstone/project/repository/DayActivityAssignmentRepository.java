@@ -63,4 +63,32 @@ public interface DayActivityAssignmentRepository extends JpaRepository<DayActivi
             "FROM day_activity_assignment\n" +
             "WHERE day_activity_id = :DAY_ACTIVITY_ID\n", nativeQuery = true)
     Double getPaidTotalByActivity(@Param("DAY_ACTIVITY_ID") Long dayActivityID);
+
+    @Query(value = "SELECT day_activity_assignment.id, paid, " +
+            "should_pay, application_user_id, day_activity_id FROM day_activity_assignment\n" +
+            "INNER JOIN day_activity\n" +
+            "ON day_activity_assignment.day_activity_id = day_activity.id\n" +
+            "INNER JOIN day \n" +
+            "ON day.id = day_activity.day_id\n" +
+            "WHERE trip_id = :TRIP_ID \n" +
+            "ORDER BY PAID DESC",
+    nativeQuery = true)
+    List<DayActivityAssignment> getActivityAssignmentsByTripID(@Param("TRIP_ID") Long tripID);
+
+    @Query(value="SELECT SUM(paid) FROM day_activity_assignment\n" +
+            "INNER JOIN day_activity\n" +
+            "ON day_activity_assignment.day_activity_id = day_activity.id\n" +
+            "INNER JOIN day \n" +
+            "ON day.id = day_activity.day_id\n" +
+            "WHERE trip_id = :TRIP_ID AND application_user_id = :USER_ID\n", nativeQuery = true)
+    Double getTotalPaidOfUserFromTrip(@Param("TRIP_ID") Long tripID, @Param("USER_ID") Long userID);
+
+    @Query(value="SELECT SUM(should_pay) FROM day_activity_assignment\n" +
+            "INNER JOIN day_activity\n" +
+            "ON day_activity_assignment.day_activity_id = day_activity.id\n" +
+            "INNER JOIN day \n" +
+            "ON day.id = day_activity.day_id\n" +
+            "WHERE trip_id = :TRIP_ID AND application_user_id = :USER_ID\n", nativeQuery = true)
+    Double getTotalShouldPayOfUserFromTrip(@Param("TRIP_ID") Long tripID, @Param("USER_ID") Long userID);
+
 }

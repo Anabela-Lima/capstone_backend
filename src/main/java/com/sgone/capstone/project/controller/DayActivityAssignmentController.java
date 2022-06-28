@@ -53,10 +53,10 @@ public class DayActivityAssignmentController {
     }
 
     // move to service
-    @GetMapping("/generateActivityCostByUserAndTrip")
-    public List<Map<Long, Long>> generateActivityCostByUser(@RequestParam Long userID,
+    @GetMapping("/generateCostByUserAndActivity")
+    public List<Map<Map<Long, Long>, Long>> generateActivityCostByUser(@RequestParam Long userID,
                                                           @RequestParam Long dayActivityID) {
-        List<Map<Long, Long>> userOwesList = new ArrayList<>();
+        List<Map<Map<Long, Long>, Long>> userOwesList = new ArrayList<>();
 
         List<DayActivityAssignment> dayActivityAssignments = dayActivityAssignmentRepository
                 .returnActivityAssignmentsByActivityID(dayActivityID);
@@ -76,7 +76,9 @@ public class DayActivityAssignmentController {
             if (remainsToPay > 0 && dayActivityAssignment.getApplicationUser().getId() != userID
             && userHasPaidOver > 0) {
                 if ((remainsToPay - userHasPaidOver) >= 0) {
-                    userOwesList.add(Collections.singletonMap(dayActivityAssignment.getApplicationUser().getId(),
+                    userOwesList.add(Collections.singletonMap(
+                            Collections.singletonMap(dayActivityAssignment.getApplicationUser().getId(),
+                                    userID),
                             userHasPaidOver));
                     dayActivityAssignmentRepository.changeActivityAssignmentRow(dayActivityAssignment
                             .getApplicationUser().getId(), dayActivityAssignment.getDayActivity().getId(),
@@ -87,7 +89,9 @@ public class DayActivityAssignmentController {
                                     .userShouldPayForCertainActivity(dayActivityID, userID));
                     remainsToPay = remainsToPay - userHasPaidOver;
                 } else {
-                    userOwesList.add(Collections.singletonMap(dayActivityAssignment.getApplicationUser().getId(),
+                    userOwesList.add(Collections.singletonMap(
+                            Collections.singletonMap(dayActivityAssignment.getApplicationUser().getId(),
+                                    userID),
                             remainsToPay));
                     dayActivityAssignmentRepository.changeActivityAssignmentRow(dayActivityAssignment
                             .getApplicationUser().getId(), dayActivityAssignment.getDayActivity().getId(),
@@ -105,6 +109,14 @@ public class DayActivityAssignmentController {
 
         return userOwesList;
     }
+
+//    @GetMapping("/generateOwingFromTrip")
+//    public List<Map<Map<Long, Long>, Long>> generateTripCostByUser(@RequestParam Long userID,
+//                                                                   @RequestParam Long tripID) {
+//
+//    }
+
+
 
 
 }

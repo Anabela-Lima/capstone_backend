@@ -4,6 +4,7 @@ import com.sgone.capstone.project.model.DayActivity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -26,5 +27,14 @@ public interface DayActivityRepository extends JpaRepository<DayActivity, Long> 
             nativeQuery = true
     )
     Integer removeByDayId(Long dayId);
+
+    @Query(value="SELECT application_user_id FROM day_activity \n" +
+            "INNER JOIN day\n" +
+            "ON day_activity.day_id = day.id\n" +
+            "INNER JOIN trip_assignment \n" +
+            "ON day.trip_id = trip_assignment.trip_id\n" +
+            "WHERE day_activity.id = :DAY_ACTIVITY_ID",
+            nativeQuery = true)
+    List<Long> findUsersByDayActivityID(@Param("DAY_ACTIVITY_ID") Long dayActivityID);
 
 }

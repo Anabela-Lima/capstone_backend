@@ -188,10 +188,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(customUsers);
     }
 
-
-
-    @GetMapping("/getUserByName/{firstname}")
-    public ResponseEntity<List<CustomApplicationUserDto>> getUserByName(@PathVariable("firstname") String firstname){
+    // Search user by first name
+    @GetMapping("/getUserByFirstName/{firstname}")
+    public ResponseEntity<List<CustomApplicationUserDto>> getUserByFirstName(@PathVariable("firstname") String firstname){
         List<ApplicationUser> users = userRepository.findAll();
         List<CustomApplicationUserDto> usersNamedKeyword = users
                 .stream()
@@ -218,8 +217,34 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(usersNamedKeyword);
     }
 
-
-
+    // Search user by last name
+    @GetMapping("/getUserByLastName/{lastname}")
+    public ResponseEntity<List<CustomApplicationUserDto>> getUserByLastName(@PathVariable("lastname") String lastname){
+        List<ApplicationUser> users = userRepository.findAll();
+        List<CustomApplicationUserDto> usersNamedKeyword = users
+                .stream()
+                .map(user -> {
+                    Set<TripAssignment> tripAssignments = user.getTripAssignments();
+                    Set<Long> tripAssignmentId = tripAssignments
+                            .stream()
+                            .map(tripAssignment -> {
+                                return tripAssignment.getId();
+                            })
+                            .collect(Collectors.toSet());
+                    return new CustomApplicationUserDto(
+                            user.getId(),
+                            user.getUsername(),
+                            user.getPassword(),
+                            user.getEmail(),
+                            user.getMobile(),
+                            user.getFirstname(),
+                            user.getLastname(),
+                            tripAssignmentId
+                    );
+                })
+                .filter(s -> s.getLastname().contains(lastname)).collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(usersNamedKeyword);
+    }
 
 
     // delete and/or cancel trip

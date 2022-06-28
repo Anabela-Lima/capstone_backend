@@ -51,6 +51,7 @@ public class FriendController {
         return new ResponseEntity<>(friend,HttpStatus.OK);
     }
 
+
 }
 //get all friends from friends list
 //delete friends from friends list

@@ -52,22 +52,24 @@ public class UserService {
     }
 
 
+//    public List<ApplicationUser> getUserByName(String firstname) {
+//
+//        List<ApplicationUser> targetUser = userRepository.getUserByName(firstname);
+//
+//        return targetUser;
+//    }
+
+
     public Trip getTrip() {
         return null;
     }
 
 
     public Trip getTrip(String tripCode) {
-    public Optional<ApplicationUser> getUserByName(String firstname) {
 
-        Optional<ApplicationUser> targetUser = userManagementRepository.getUserByName(firstname);
-       Optional<Trip> tripOptional = tripRepository.findByTripCode(tripCode);
+        Optional<Trip> tripOptional = tripRepository.findByTripCode(tripCode);
 
-        return targetUser;
-    }
-
-}
-       if(!tripOptional.isPresent()){
+        if(!tripOptional.isPresent()){
            throw new RuntimeException("Trip code is invalid, please try again!");
        }
 
@@ -116,142 +118,8 @@ public class UserService {
         return null;
     }
 
-    public String findUserByFirstAndLastNames(String inputFirstName, String inputLastName){
-
-        String targetUserFirstName = userRepository.findAll().stream()
-                .map(user -> user.getFirstname().toLowerCase())
-                        .filter(s -> s.contains(inputFirstName.toLowerCase())).toString();
-
-        String targetUserLastName = userRepository.findAll().stream()
-                .map(user -> user.getLastname().toLowerCase())
-                .filter(s -> s.contains(inputLastName.toLowerCase())).toString();
-
-
-//        if (targetUserFirstName.isEmpty()) {
-//            ArrayList<String> noMatches = new ArrayList<>();
-//            noMatches.add("No users found :(");
-//            return noMatches;
-//        }
-
-
-        return concat(targetUserFirstName + targetUserLastName);
-    }
-
 }
-//    public Trip getTrip() {
-//        return null;
-//
-//        // get trip by tripCode
-//
-//        public Trip getTrip(String tripCode){
-//
-//            System.out.println(tripCode);
-//            Optional<Trip> tripOptional = tripRepository.findByTripCode(tripCode);
-//
-//            if (!tripOptional.isPresent()) {
-//                throw new RuntimeException("trip code is invalid, please try again!");
-//            }
-//
-//            System.out.println(tripOptional.get());
-//
-//            return tripOptional.get();
-//
-//
-//        }
-//
-//
-//        // get all trips
-//
-////        public List<Trip> getAllTrips () {
-////            return tripRepository.findAll();
-////        }
-//
-//
-//        // create Trip
-//
-//        public Trip createTrip (NewTripDto newTripDto){
-//
-//            Optional<ApplicationUser> userOptional =
-//                    userRepository.getAllUsers(newTripDto.getUserId());
-//
-//            if (!userOptional.isPresent()) {
-//                throw new RuntimeException("User does not exist!");
-//            }
-//
-//            ApplicationUser user = userOptional.get();
-//
-//            String tripCode = UUID.randomUUID().toString();
-//
-//            Trip newTrip = new Trip(
-//                    tripCode,
-//                    newTripDto.getName(),
-//                    newTripDto.getStartDate(),
-//                    newTripDto.getEndDate(),
-//                    newTripDto.getDescription(),
-//                    newTripDto.getCountry()
-//            );
-//
-//            tripRepository.save(newTrip);
-//            TripAssignment tripAssignment = new TripAssignment(newTrip, user);
-//            tripAssignmentRepository.save(tripAssignment);
-//
-//            return newTrip;
-//        }
-//
-//
-//        // add friend
-//        public Trip addFriendToTrip () {
-//            return null;
-//        }
-//
-//
-////        if (targetUserFirstName.isEmpty()) {
-////            ArrayList<String> noMatches = new ArrayList<>();
-////            noMatches.add("No users found :(");
-////            return noMatches;
-////        }
-//
-//
-//            public List<Product> returnRelevantProducts ( int stockRequired, String manufacturer, String model, Double
-//            minPrice, Double maxPrice) throws Exception {
-//
-//                if (minPrice > maxPrice) {
-//                    throw new Exception("Minimum price must be lower than maximum price!");
-//                }
-//
-//                List<Product> inStock = productRepository.findProductsMinStock(stockRequired);
-//                List<Product> priceRange = productRepository.findByPriceGreaterThanEqualAndPriceLessThanEqual(minPrice, maxPrice);
-//                List<Product> result = inStock.stream().filter(priceRange::contains).collect(Collectors.toList());
-//                if (manufacturer != null) {
-//                    List<Product> byManufacturer = productRepository.findByManufacturerContainingIgnoreCase(manufacturer.trim());
-//                    if (byManufacturer.isEmpty()) {
-//                        throw new Exception("No cars by this manufacturer stocked!");
-//                    }
-//                    result = result.stream().filter(o -> byManufacturer.contains(o)).collect(Collectors.toList());
-//                }
-//                if (model != null) {
-//                    List<Product> byModel = productRepository.findByModelContainingIgnoreCase(model.trim());
-//                    if (byModel.isEmpty()) {
-//                        throw new Exception("Model not stocked!");
-//                    }
-//                    result = result.stream().filter(byModel::contains).collect(Collectors.toList());
-//                }
-//                if (inStock.isEmpty()) {
-//                    throw new Exception("No cars in stock!");
-//                }
-//                if (priceRange.isEmpty()) {
-//                    throw new Exception("No cars in this price range!");
-//                }
-//                if (result.isEmpty()) {
-//                    throw new Exception("No cars found to meet this criteria!");
-//                }
-//                return result;
-//            }
-//
-//
-//        }
-//
-//    }
+
 
 //For addFriend logic:
 

@@ -24,84 +24,54 @@ import java.util.stream.Collectors;
 @Service
 public class FriendService {
 
-@Autowired
+    @Autowired
     private FriendRepository friendRepository;
 
-@Autowired
-private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
 
-@Autowired
-private UserController userController;
+    @Autowired
+    private UserController userController;
 
-    public FriendService (FriendRepository friendRepository, UserController userController, UserRepository userRepository){
+    public FriendService(FriendRepository friendRepository, UserController userController, UserRepository userRepository) {
         this.friendRepository = friendRepository;
         this.userController = userController;
         this.userRepository = userRepository;
     }
 
 
-
     public Friend findFriendPair(Long id) {
         return friendRepository.findFriendPair(id);
     }
 
-    public String deleteFriendById(Long id){
+    public String deleteFriendById(Long id) {
 
         Friend friend = friendRepository.findFriendPair(id);
         friendRepository.delete(friend);
-
-//        try {
-//        } catch (NullPointerException e){
-//            if(friend == null) {
-//                e.printStackTrace();
-//                System.out.println("No matching friend pairing could be found for id: " + id);
-//            }
 
         return "Deleted Friend " + friend.getId() + ". If this was a mistake, you can add a new post using the Add post function!";
 
     }
 
-    public Friend addFriend(String currentUser, String friendToAdd){
+    public String addFriend(String currentUser, String friendToAdd) throws Exception {
 
-            ApplicationUser userF = userRepository.getUserByName(friendToAdd);
-            ApplicationUser userC = userRepository.getUserByName(currentUser);
-            Friend friendTA = new Friend(userC, userF);
+        ApplicationUser userF = userRepository.getUserByName(friendToAdd);
+        ApplicationUser userC = userRepository.getUserByName(currentUser);
 
-            //creating two new Users - userT (the target user, who's list we want to update) and the userF (friend to be added)
-            //creating two new Friends - friendLT and friendLF for the corresponding users
-            //the friend objects call getters from the corresponding user class
-
-        return friendRepository.save(friendTA);
-
-//        List<ApplicationUser> users = userRepository.findAll();
-//        List<CustomApplicationUserDto> usersNamedKeyword = users
-//                .stream()
-//                .map(user -> {
-//                    Set<TripAssignment> tripAssignments = user.getTripAssignments();
-//                    Set<Long> tripAssignmentId = tripAssignments
-//                            .stream()
-//                            .map(tripAssignment -> {
-//                                return tripAssignment.getId();
-//                            })
-//                            .collect(Collectors.toSet());
-//                    return new CustomApplicationUserDto(
-//                            user.getId(),
-//                            user.getUsername(),
-//                            user.getPassword(),
-//                            user.getEmail(),
-//                            user.getMobile(),
-//                            user.getFirstname(),
-//                            user.getLastname(),
-//                            tripAssignmentId
-//                    );
-//                })
-//                .filter(s -> s.getFirstname().contains(firstname)).collect(Collectors.toList());
-//        return ResponseEntity.status(HttpStatus.OK).body(usersNamedKeyword);
-
-
+        if(userF == null) {
+            throw new Exception("User does not exist! Check the details are right and try again, " + userC.getFirstname() + " " + userC.getLastname());
         }
+
+        //creating two new Users - userT (the target user, who's list we want to update) and the userF (friend to be added)
+        //creating two new Friends - friendLT and friendLF for the corresponding users
+        //the friend objects call getters from the corresponding user class
+        Friend friendTA = new Friend(userC, userF);
+        friendRepository.save(friendTA);
+
+        return "You have added " + userF.getFirstname() + " to your friend list, " + userC.getFirstname() + " " + userC.getLastname();
     }
+}
 
 
 

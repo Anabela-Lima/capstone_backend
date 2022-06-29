@@ -6,11 +6,9 @@ import com.sgone.capstone.dto.request.NewTripDto;
 import com.sgone.capstone.dto.response.StandardResponseDto;
 import com.sgone.capstone.project.model.*;
 import com.sgone.capstone.project.repository.*;
-import com.sgone.capstone.dataloader.DataLoaderUsersArray;
 import com.sgone.capstone.project.model.ApplicationUser;
 import com.sgone.capstone.project.repository.TripRepository;
 import com.sgone.capstone.project.service.UserService;
-import com.sgone.capstone.security.management.user.UserManagementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -30,19 +28,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    UserManagementRepository userManagementRepository;
-
-    public UserController() {}
-
     @Autowired
     private UserRepository userRepository;
-    public UserController(UserService userService, UserManagementRepository userManagementRepository) {
-        this.userService = userService;
-        this.userManagementRepository = userManagementRepository;
-    }
-
     @Autowired
     private TripRepository tripRepository;
     @Autowired

@@ -1,16 +1,22 @@
 package com.sgone.capstone.project.controller;
 
 import com.sgone.capstone.dto.CustomApplicationUserDto;
+import com.sgone.capstone.dto.request.NewFriendDto;
 import com.sgone.capstone.project.model.ApplicationUser;
 import com.sgone.capstone.project.model.Friend;
+import com.sgone.capstone.project.model.TripAssignment;
 import com.sgone.capstone.project.repository.FriendRepository;
+import com.sgone.capstone.project.repository.UserRepository;
 import com.sgone.capstone.project.service.FriendService;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -21,15 +27,19 @@ public class FriendController {
     private final FriendRepository friendRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private UserController userController;
 
     @Autowired
     private FriendService friendService;
 
-    public FriendController(FriendRepository friendRepository, FriendService friendService, UserController userController) {
+    public FriendController(FriendRepository friendRepository, UserRepository userRepository, FriendService friendService, UserController userController) {
         this.friendRepository = friendRepository;
         this.friendService = friendService;
         this.userController = userController;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/friend")
@@ -44,13 +54,15 @@ public class FriendController {
         return friendService.deleteFriendById(id);
     }
 
-//works but error 200 is outputted - this produced infinite JSON response
-    @PostMapping("/friend/{currentUser}/{friendToAdd}")
-    public ResponseEntity <Friend> addFriend(@PathVariable("currentUser") String currentUser, @PathVariable("friendToAdd") String friendToAdd) {
-        Friend friend = friendService.addFriend(currentUser, friendToAdd);
-        return new ResponseEntity<>(friend,HttpStatus.OK);
-    }
 
+    @PostMapping("/addFriend/{currentUserFirstName}/{currentUserLastName}/{friendToAddFirstName}/{friendToAddLastName}")
+    public String addFriend(@PathVariable("currentUserFirstName") String currentUserFirstName,
+                            @PathVariable("currentUserLastName") String currentUserLastName,
+                            @PathVariable("friendToAddFirstName") String friendToAddFirstName,
+                            @PathVariable("friendToAddLastName") String friendToAddLastName
+                            ) throws Exception{
+        return friendService.addFriend(currentUserFirstName, currentUserLastName, friendToAddFirstName, friendToAddLastName);
+    }
 
 }
 //get all friends from friends list

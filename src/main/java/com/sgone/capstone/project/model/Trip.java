@@ -1,5 +1,7 @@
 package com.sgone.capstone.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -25,9 +27,11 @@ public class Trip {
     private String country;
 
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<TripAssignment> tripAssignments;
 
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Day> days;
 
 //    @ManyToMany(mappedBy = "trips", cascade = CascadeType.ALL)

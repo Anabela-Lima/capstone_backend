@@ -155,11 +155,15 @@ public class DataLoader implements ApplicationRunner {
         TripAssignment tripAssignment2 = new TripAssignment(trip1, jenna);
         TripAssignment tripAssignment3 = new TripAssignment(trip3, scott);
         TripAssignment tripAssignment4 = new TripAssignment(trip4, naeem);
+        TripAssignment tripAssignment5 = new TripAssignment(trip1, scott);
+        TripAssignment tripAssignment6 = new TripAssignment(trip1, naeem);
 
         dataLoaderTripAssignmentRepository.save(tripAssignment1);
         dataLoaderTripAssignmentRepository.save(tripAssignment2);
         dataLoaderTripAssignmentRepository.save(tripAssignment3);
         dataLoaderTripAssignmentRepository.save(tripAssignment4);
+        dataLoaderTripAssignmentRepository.save(tripAssignment5);
+        dataLoaderTripAssignmentRepository.save(tripAssignment6);
 
         Day trip1Day1 = new Day("trip_1_day_1", 200.00, LocalDateTime.now(), trip1);
         Day trip1Day2 = new Day("trip_1_day_2", 200.00, LocalDateTime.now().plusDays(1), trip1);
@@ -168,15 +172,23 @@ public class DataLoader implements ApplicationRunner {
         dataLoaderDayRepository.save(trip1Day2);
 
         DayActivity dayActivity1 = new DayActivity(
-                "pizza with the boys",
+                "Pizza",
                 "London",
                 100.00,
                 null,
                 trip1Day1
         );
 
+        DayActivity dayActivity2 = new DayActivity(
+                "Pizza again",
+                "London",
+                100.00,
+                null,
+                trip1Day1
+        );
 
         dataLoaderDayActivityRepository.save(dayActivity1);
+        dataLoaderDayActivityRepository.save(dayActivity2);
 
         DayActivityAssignment dayActivityAssignment1 = new DayActivityAssignment(
                 0.00,
@@ -203,10 +215,33 @@ public class DataLoader implements ApplicationRunner {
                 ana
         );
 
+        DayActivityAssignment dayActivityAssignment5 = new DayActivityAssignment(
+                0.00,
+                25.00,
+                dayActivity2,
+                ana
+        );
+        DayActivityAssignment dayActivityAssignment6 = new DayActivityAssignment(
+                0.00,
+                25.00,
+                dayActivity2,
+                jenna
+        );
+        DayActivityAssignment dayActivityAssignment7 = new DayActivityAssignment(
+                0.00,
+                25.00,
+                dayActivity2,
+                naeem
+        );
+
         dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment1);
         dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment2);
         dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment3);
         dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment4);
+        dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment5);
+        dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment6);
+        dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment7);
+
 
 
         Friend friend1 = new Friend(jenna, ana);

@@ -230,7 +230,7 @@ public class UserController {
 
     // Search user by username
     @GetMapping("/getUserByUserName/{username}")
-    public ResponseEntity<List<CustomApplicationUserDto>> getUserByName(@PathVariable("username") String username) throws Exception {
+    public ResponseEntity<List<CustomApplicationUserDto>> getUserByUserName(@PathVariable("username") String username) throws Exception {
         List<ApplicationUser> users = userRepository.findAll();
         List<CustomApplicationUserDto> usersNameKeyword = users
                 .stream()

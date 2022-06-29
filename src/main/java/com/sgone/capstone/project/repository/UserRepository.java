@@ -45,6 +45,17 @@ public interface UserRepository extends JpaRepository<ApplicationUser, Long> {
     ApplicationUser getUserByName(String firstname, String lastname);
 
 
+    @Query(
+            value = "SELECT " +
+                    "* " +
+                    "FROM " +
+                    "APPLICATION_USER " +
+                    "WHERE " +
+                    "username = ?1 ",
+            nativeQuery = true
+    )
+    ApplicationUser getUserByUserName(String username);
+
     @Query(value = "SELECT * FROM users WHERE id = ?", nativeQuery = true)
     Optional<ApplicationUser> getUser(Long userId);
 

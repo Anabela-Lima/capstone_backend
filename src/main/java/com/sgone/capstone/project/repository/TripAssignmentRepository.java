@@ -18,4 +18,7 @@ public interface TripAssignmentRepository extends JpaRepository<TripAssignment, 
             nativeQuery = true
     )
     Integer deleteByTripId(Long tripId);
+
+
+
 }

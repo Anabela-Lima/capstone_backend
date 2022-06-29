@@ -2,6 +2,7 @@ package com.sgone.capstone.project.model;
 
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Entity
 @Table(name = "day_activity_assignment")
@@ -90,4 +91,5 @@ public class DayActivityAssignment {
     public void setApplicationUser(ApplicationUser applicationUser) {
         this.applicationUser = applicationUser;
     }
+
 }

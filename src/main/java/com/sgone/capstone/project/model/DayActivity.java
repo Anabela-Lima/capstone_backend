@@ -60,7 +60,7 @@ public class DayActivity {
         this.name = name;
         this.location = location;
         this.price = price;
-        this.dayActivityType = dayActivityType;
+        this.dayActivityType = "dayActivityType";
         this.day = day;
         this.dayActivityAssignmentSet = Sets.newHashSet();
     }

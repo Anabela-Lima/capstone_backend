@@ -54,6 +54,7 @@ public class UserController {
     @Autowired
     private DayActivityAssignmentRepository dayActivityAssignmentRepository;
 
+    public UserController() {}
 
     // get trip by trip code
     // ? = wildcard and allows us to return whatever we placed inside diamond brackets
@@ -87,7 +88,9 @@ public class UserController {
                             trip.getStartDate(),
                             trip.getEndDate(),
                             trip.getDescription(),
-                            trip.getCountry()
+                            trip.getCountry(),
+                            new ArrayList<>(),
+                            new ArrayList<>()
                     );
                 })
                 .collect(Collectors.toList());
@@ -95,35 +98,54 @@ public class UserController {
     }
 
 
-//    @PostMapping("/trip/new")
-//    public ResponseEntity<StandardResponseDto<?>> createTrip(
-//            @RequestParam(required = true) Long userId,
-//            @RequestParam(required = true) String name,
-//            @RequestParam(required = true) String country,
-//            @RequestParam(required = true) String description,
-//            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-//            @RequestParam(required = true) LocalDateTime startDate,
-//            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-//            @RequestParam(required = true) LocalDateTime endDate
-//    ) {
-//        /*
-//            1. we get userId from the frontend
-//            2. we get trip information from the frontend
-//            3. get the user who created the trip from database using userId
-//            4. create the trip
-//            5. assign the user we just got to the newly created trip
-//        */
-//        NewTripDto newTripDto = new NewTripDto(
-//                userId,
-//                name,
-//                country,
-//                description,
-//                startDate,
-//                endDate
-//        );
-//
-//
-//    }
+    @PostMapping("/trip/new")
+    public ResponseEntity<StandardResponseDto<?>> createTrip(
+            @RequestParam(required = true, defaultValue = "7") Long userId,
+            @RequestParam(required = true, defaultValue = "girls trip") String name,
+            @RequestParam(required = true, defaultValue = "Morocco") String country,
+            @RequestParam(required = true, defaultValue = "girls trip in Morocco, let's party!") String description,
+            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+            @RequestParam(required = true, defaultValue = "2022-06-28 14:01:25") LocalDateTime startDate,
+            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+            @RequestParam(required = true, defaultValue = "2022-06-30 14:01:25") LocalDateTime endDate
+    ) {
+        /*
+            1. we get userId from the frontend
+            2. we get trip information from the frontend
+            3. get the user who created the trip from database using userId
+            4. create the trip
+            5. assign the user we just got to the newly created trip
+        */
+        NewTripDto newTripDto = new NewTripDto(
+                userId,
+                name,
+                country,
+                description,
+                startDate,
+                endDate
+        );
+
+        try {
+            CustomTripDto newTrip = userService.createTrip(newTripDto);
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(new StandardResponseDto<>(
+                            true,
+                            "New trip created.",
+                            newTrip
+                    ));
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new StandardResponseDto<>(
+                            false,
+                            re.getMessage(),
+                            null
+                    ));
+        }
+    }
+
 
     @PutMapping("/trips/assign_user")
     public ResponseEntity<Trip> assignUserToTrip(
@@ -249,7 +271,7 @@ public class UserController {
 
     // delete and/or cancel trip
     @DeleteMapping("/trip/cancel_trip")
-    public ResponseEntity<String> cancelTrip(
+    public ResponseEntity<StandardResponseDto<?>> cancelTrip(
             @RequestParam(required = true) String tripCode
     ) {
 
@@ -285,33 +307,25 @@ public class UserController {
             6. Create new empty day activity array to store all activity belonging
                 to this trip
          */
-        List<DayActivity> dayActivities = new ArrayList<>();
+        List<DayActivity> allDayActivitiesBelongingToTrip = new ArrayList<>();
 
         /*
             7. Loop through day IDs array to get activities for each day
          */
         for (Long dayId: allDayIdsBelongToTrip) {
-            List<DayActivity> activities =
+            List<DayActivity> activitiesBelongingToDay =
                     dayActivityRepository.getAllDayActivityByDayId(dayId);
 
             /*
-                8. Add current day activity to all activities array from step 6
+                8. Add current day activities to all activities belonging to trip
              */
-            dayActivities.addAll(activities);
-        }
-
-        /*
-            9. If there aren't any activities, then stop and clean Day and Trip table
-         */
-        if (dayActivities.isEmpty()) {
-            // remove from Day Table
-            // then remove from Trip Table
+            allDayActivitiesBelongingToTrip.addAll(activitiesBelongingToDay);
         }
 
         /*
             10. Get all activities IDs from all activities array
          */
-        List<Long> allDayActivityIds = dayActivities
+        List<Long> allDayActivityIds = allDayActivitiesBelongingToTrip
                 .stream()
                 .map(dayActivity -> {
                     return dayActivity.getId();
@@ -321,6 +335,8 @@ public class UserController {
         /*
             11. Remove activities assignments, removing all users assigned
                 to all activities
+
+                (Clearing activity_assignment table data)
          */
         for (Long dayActivityId: allDayActivityIds) {
             dayActivityAssignmentRepository.deleteByDayActivityId(dayActivityId);
@@ -344,8 +360,6 @@ public class UserController {
         tripRepository.cancelTrip(tripCode);
 
 
-//        List<String> tripCodes = userService.getAllTrips().stream();
-
 //        List<String> tripCodes = userService.getAllTrips()
 //                .stream()
 //                .map(trip -> {return trip.getTripCode();})
@@ -361,7 +375,18 @@ public class UserController {
 //                    + " has been cancelled.");
 //            return OUT;
 //        }
-        return ResponseEntity.badRequest().build();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new StandardResponseDto<>(
+                        true,
+                        String.format(
+                                "Trip %s to %s has been cancelled.",
+                                tripToBeDeleted.getName(),
+                                tripToBeDeleted.getCountry()
+                        ),
+                        null
+                ));
     }
 
 

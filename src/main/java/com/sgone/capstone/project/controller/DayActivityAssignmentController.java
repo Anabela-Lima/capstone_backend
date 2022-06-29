@@ -1,16 +1,15 @@
 package com.sgone.capstone.project.controller;
 
 import com.sgone.capstone.project.model.DayActivityAssignment;
+import com.sgone.capstone.project.model.PayeeAndPayer;
 import com.sgone.capstone.project.repository.DayActivityAssignmentRepository;
 import com.sgone.capstone.project.repository.DayActivityRepository;
 import com.sgone.capstone.project.service.DayActivityAssignmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 public class DayActivityAssignmentController {
@@ -58,9 +57,11 @@ public class DayActivityAssignmentController {
     }
 
     @GetMapping("/generateOwingFromTrip")
-    public List<Map<Map<Long, Long>, Long>> generateTripCosts(@RequestParam Long tripID) {
+    public List<PayeeAndPayer> generateTripCosts(@RequestParam Long tripID) {
 
-        List<Map<Map<Long, Long>, Long>> oweListWithoutCancellations = new ArrayList<>();
+        List<PayeeAndPayer> oweListWithoutCancellations = new ArrayList<>();
+        List<PayeeAndPayer> oweListWithoutRepeats = new ArrayList<>();
+        List<PayeeAndPayer> oweList = new ArrayList<>();
 
         List<DayActivityAssignment> dayActivitiesByTrip = dayActivityAssignmentRepository
                 .getActivityAssignmentsByTripID(tripID);
@@ -73,12 +74,58 @@ public class DayActivityAssignmentController {
             );
         }
 
-        return oweListWithoutCancellations;
+        // add up all payments with same payee and payer
 
+        for (int i=0; i < oweListWithoutCancellations.size();i++) {
+
+            PayeeAndPayer payeeAndPayer = oweListWithoutCancellations.get(i);
+
+            Long total = payeeAndPayer.getOwed();
+            int indexOfSamePayeeAndPayer = dayActivityAssignmentService
+                    .findIndexOfSamePayeeAndPayer(oweListWithoutCancellations,
+                            payeeAndPayer.getPayee(), payeeAndPayer.getPayer(),
+                            i);
+
+            int j=0;
+            while (indexOfSamePayeeAndPayer != -1 && j<10) {
+                PayeeAndPayer samePayeeAndPayer = oweListWithoutCancellations.get(indexOfSamePayeeAndPayer);
+                total += samePayeeAndPayer.getOwed();
+                indexOfSamePayeeAndPayer = dayActivityAssignmentService
+                        .findIndexOfSamePayeeAndPayer(oweListWithoutCancellations,
+                                payeeAndPayer.getPayee(), payeeAndPayer.getPayer(),
+                                i);
+                j++;
+            }
+
+            payeeAndPayer.setOwed(total);
+        }
+
+        // cancel out money owed both ways
+
+            for (int i=0; i < oweListWithoutCancellations.size(); i++){
+
+                PayeeAndPayer payeeAndPayer = oweListWithoutCancellations.get(i);
+
+                int indexOfInverse = dayActivityAssignmentService.findIndexOfInversePayeeAndPayer(
+                    oweListWithoutCancellations, payeeAndPayer.getPayee(), payeeAndPayer.getPayer());
+                if (indexOfInverse != -1) {
+                    PayeeAndPayer inversePayeeAndPayer = oweListWithoutCancellations.get(indexOfInverse);
+                    if (payeeAndPayer.getOwed() > inversePayeeAndPayer.getOwed()  && indexOfInverse > i) {
+                        oweList.add(new PayeeAndPayer(payeeAndPayer.getPayee(),
+                            payeeAndPayer.getPayer(), payeeAndPayer.getOwed() -
+                            oweListWithoutCancellations.get(indexOfInverse).getOwed()));
+                    } else if (payeeAndPayer.getOwed() < inversePayeeAndPayer.getOwed()  && indexOfInverse > i) {
+                        oweList.add(new PayeeAndPayer(payeeAndPayer.getPayer(), payeeAndPayer.getPayee(),
+                            inversePayeeAndPayer.getOwed() - payeeAndPayer.getOwed()));
+                    }
+                 } else {
+                    oweList.add(new PayeeAndPayer(payeeAndPayer.getPayee(), payeeAndPayer.getPayer(),
+                        payeeAndPayer.getOwed()));
+                }
+            }
+        return oweList;
 
     }
-
-
 
 
 }

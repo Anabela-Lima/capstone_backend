@@ -1,6 +1,7 @@
 package com.sgone.capstone.project.service;
 
 import com.sgone.capstone.project.model.DayActivityAssignment;
+import com.sgone.capstone.project.model.PayeeAndPayer;
 import com.sgone.capstone.project.repository.DayActivityAssignmentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,11 +20,11 @@ public class DayActivityAssignmentService {
         this.dayActivityAssignmentRepository = dayActivityAssignmentRepository;
     }
 
-    public List<Map<Map<Long, Long>, Long>> generateActivityCostByUser(Long userID, Long dayActivityID) {
-        List<Map<Map<Long, Long>, Long>> userOwesList = new ArrayList<>();
-
+    public List<PayeeAndPayer> generateActivityCostByUser(Long userID, Long dayActivityID) {
         List<DayActivityAssignment> dayActivityAssignments = dayActivityAssignmentRepository
                 .returnActivityAssignmentsByActivityID(dayActivityID);
+
+        List<PayeeAndPayer> userOwesList = new ArrayList<>();
 
         Double paid = dayActivityAssignmentRepository.userPaidForCertainActivity(dayActivityID, userID);
 
@@ -40,10 +41,12 @@ public class DayActivityAssignmentService {
             if (remainsToPay > 0 && dayActivityAssignment.getApplicationUser().getId() != userID
                     && userHasPaidOver > 0) {
                 if ((remainsToPay - userHasPaidOver) >= 0) {
-                    userOwesList.add(Collections.singletonMap(
-                            Collections.singletonMap(dayActivityAssignment.getApplicationUser().getId(),
-                                    userID),
+
+                    userOwesList.add(new PayeeAndPayer(
+                            dayActivityAssignment.getApplicationUser().getId(),
+                            userID,
                             userHasPaidOver));
+
                     dayActivityAssignmentRepository.changeActivityAssignmentRow(dayActivityAssignment
                                     .getApplicationUser().getId(), dayActivityAssignment.getDayActivity().getId(),
                             dayActivityAssignment.getShouldPay(), dayActivityAssignment.getShouldPay());
@@ -53,10 +56,13 @@ public class DayActivityAssignmentService {
                                     .userShouldPayForCertainActivity(dayActivityID, userID));
                     remainsToPay = remainsToPay - userHasPaidOver;
                 } else {
-                    userOwesList.add(Collections.singletonMap(
-                            Collections.singletonMap(dayActivityAssignment.getApplicationUser().getId(),
-                                    userID),
+
+
+                    userOwesList.add(new PayeeAndPayer(
+                            dayActivityAssignment.getApplicationUser().getId(),
+                            userID,
                             remainsToPay));
+
                     dayActivityAssignmentRepository.changeActivityAssignmentRow(dayActivityAssignment
                                     .getApplicationUser().getId(), dayActivityAssignment.getDayActivity().getId(),
                             dayActivityAssignment.getPaid() - remainsToPay,
@@ -73,4 +79,29 @@ public class DayActivityAssignmentService {
 
         return userOwesList;
     }
+
+    public int findIndexOfInversePayeeAndPayer(List<PayeeAndPayer> payeeAndPayerList,
+                                               Long payeeID, Long payerID) {
+        for (int i = 0; i < payeeAndPayerList.size(); i++) {
+            PayeeAndPayer payeeAndPayer = payeeAndPayerList.get(i);
+            if (payeeID == payeeAndPayer.getPayer() && payerID == payeeAndPayer.getPayee()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int findIndexOfSamePayeeAndPayer(List<PayeeAndPayer> payeeAndPayerList,
+                                               Long payeeID, Long payerID,
+                                            int indexMustBeLargerThan) {
+        for (int i = 0; i < payeeAndPayerList.size(); i++) {
+            PayeeAndPayer samePayeeAndPayer = payeeAndPayerList.get(i);
+            if (payeeID == samePayeeAndPayer.getPayee() && payerID == samePayeeAndPayer.getPayer()
+            && i > indexMustBeLargerThan) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }
+

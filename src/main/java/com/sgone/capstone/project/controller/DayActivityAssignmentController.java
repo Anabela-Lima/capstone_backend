@@ -3,6 +3,7 @@ package com.sgone.capstone.project.controller;
 import com.sgone.capstone.project.model.DayActivityAssignment;
 import com.sgone.capstone.project.repository.DayActivityAssignmentRepository;
 import com.sgone.capstone.project.repository.DayActivityRepository;
+import com.sgone.capstone.project.service.DayActivityAssignmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,10 +17,14 @@ public class DayActivityAssignmentController {
 
     private DayActivityAssignmentRepository dayActivityAssignmentRepository;
     private DayActivityRepository dayActivityRepository;
+    private DayActivityAssignmentService dayActivityAssignmentService;
 
-    public DayActivityAssignmentController(DayActivityAssignmentRepository dayActivityAssignmentRepository, DayActivityRepository dayActivityRepository) {
+    public DayActivityAssignmentController(DayActivityAssignmentRepository dayActivityAssignmentRepository,
+                                           DayActivityRepository dayActivityRepository,
+                                           DayActivityAssignmentService dayActivityAssignmentService) {
         this.dayActivityAssignmentRepository = dayActivityAssignmentRepository;
         this.dayActivityRepository = dayActivityRepository;
+        this.dayActivityAssignmentService = dayActivityAssignmentService;
     }
 
     @GetMapping("/dayActivityAssignments")
@@ -52,69 +57,27 @@ public class DayActivityAssignmentController {
         return Collections.singletonMap("success", false);
     }
 
-    // move to service
-    @GetMapping("/generateCostByUserAndActivity")
-    public List<Map<Map<Long, Long>, Long>> generateActivityCostByUser(@RequestParam Long userID,
-                                                          @RequestParam Long dayActivityID) {
-        List<Map<Map<Long, Long>, Long>> userOwesList = new ArrayList<>();
+    @GetMapping("/generateOwingFromTrip")
+    public List<Map<Map<Long, Long>, Long>> generateTripCosts(@RequestParam Long tripID) {
 
-        List<DayActivityAssignment> dayActivityAssignments = dayActivityAssignmentRepository
-                .returnActivityAssignmentsByActivityID(dayActivityID);
+        List<Map<Map<Long, Long>, Long>> oweListWithoutCancellations = new ArrayList<>();
 
-        Double paid = dayActivityAssignmentRepository.userPaidForCertainActivity(dayActivityID, userID);
+        List<DayActivityAssignment> dayActivitiesByTrip = dayActivityAssignmentRepository
+                .getActivityAssignmentsByTripID(tripID);
 
-        Double shouldPay = dayActivityAssignmentRepository.userShouldPayForCertainActivity(dayActivityID, userID);
-
-        Long remainsToPay;
-        Long userHasPaidOver;
-
-        remainsToPay = Math.round(shouldPay) - Math.round(paid) ;
-
-        for (DayActivityAssignment dayActivityAssignment : dayActivityAssignments) {
-            userHasPaidOver = Math.round(dayActivityAssignment.getPaid()) -
-                    Math.round(dayActivityAssignment.getShouldPay());
-            if (remainsToPay > 0 && dayActivityAssignment.getApplicationUser().getId() != userID
-            && userHasPaidOver > 0) {
-                if ((remainsToPay - userHasPaidOver) >= 0) {
-                    userOwesList.add(Collections.singletonMap(
-                            Collections.singletonMap(dayActivityAssignment.getApplicationUser().getId(),
-                                    userID),
-                            userHasPaidOver));
-                    dayActivityAssignmentRepository.changeActivityAssignmentRow(dayActivityAssignment
-                            .getApplicationUser().getId(), dayActivityAssignment.getDayActivity().getId(),
-                            dayActivityAssignment.getShouldPay(), dayActivityAssignment.getShouldPay());
-                    dayActivityAssignmentRepository.changeActivityAssignmentRow(userID, dayActivityID,
-                            dayActivityAssignmentRepository.userPaidForCertainActivity(dayActivityID, userID)
-                    + userHasPaidOver, dayActivityAssignmentRepository
-                                    .userShouldPayForCertainActivity(dayActivityID, userID));
-                    remainsToPay = remainsToPay - userHasPaidOver;
-                } else {
-                    userOwesList.add(Collections.singletonMap(
-                            Collections.singletonMap(dayActivityAssignment.getApplicationUser().getId(),
-                                    userID),
-                            remainsToPay));
-                    dayActivityAssignmentRepository.changeActivityAssignmentRow(dayActivityAssignment
-                            .getApplicationUser().getId(), dayActivityAssignment.getDayActivity().getId(),
-                            dayActivityAssignment.getPaid() - remainsToPay,
-                            dayActivityAssignment.getShouldPay());
-                    dayActivityAssignmentRepository.changeActivityAssignmentRow(userID, dayActivityID,
-                            dayActivityAssignmentRepository
-                                    .userShouldPayForCertainActivity(dayActivityID, userID),
-                            dayActivityAssignmentRepository
-                                    .userShouldPayForCertainActivity(dayActivityID, userID));
-                    remainsToPay = 0l;
-                }
-            }
+        for (DayActivityAssignment dayActivityAssignment : dayActivitiesByTrip) {
+            oweListWithoutCancellations.addAll(
+                    dayActivityAssignmentService.generateActivityCostByUser(
+                            dayActivityAssignment.getApplicationUser().getId(),
+                            dayActivityAssignment.getDayActivity().getId()
+                    )
+            );
         }
 
-        return userOwesList;
-    }
+        return oweListWithoutCancellations;
 
-//    @GetMapping("/generateOwingFromTrip")
-//    public List<Map<Map<Long, Long>, Long>> generateTripCostByUser(@RequestParam Long userID,
-//                                                                   @RequestParam Long tripID) {
-//
-//    }
+
+    }
 
 
 

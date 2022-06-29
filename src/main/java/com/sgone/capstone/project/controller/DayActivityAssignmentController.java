@@ -69,8 +69,7 @@ public class DayActivityAssignmentController {
             oweListWithoutCancellations.addAll(
                     dayActivityAssignmentService.generateActivityCostByUser(
                             dayActivityAssignment.getApplicationUser().getId(),
-                            dayActivityAssignment.getDayActivity().getId()
-                    )
+                            dayActivityAssignment.getDayActivity().getId())
             );
         }
 

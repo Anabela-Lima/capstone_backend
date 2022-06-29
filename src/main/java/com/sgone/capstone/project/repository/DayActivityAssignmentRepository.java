@@ -46,7 +46,7 @@ public interface DayActivityAssignmentRepository extends JpaRepository<DayActivi
     @Transactional
     void insertEmptyRows(@Param("USER_ID") Long userID, @Param("DAY_ACTIVITY_ID") Long dayActivityID);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query(value="UPDATE day_activity_assignment\n" +
             "SET (paid, should_pay) = (:PAID, :SHOULD_PAY) WHERE " +
             "application_user_id = :USER_ID AND day_activity_id = :DAY_ACTIVITY_ID ", nativeQuery = true)
@@ -76,7 +76,7 @@ public interface DayActivityAssignmentRepository extends JpaRepository<DayActivi
     List<DayActivityAssignment> getActivityAssignmentsByTripID(@Param("TRIP_ID") Long tripID);
 
     @Query(value="SELECT * FROM day_activity_assignment\n" +
-            "WHERE day_activity_id = DAY_ACTIVITY_ID " +
+            "WHERE day_activity_id = :DAY_ACTIVITY_ID " +
             "ORDER BY PAID DESC", nativeQuery = true)
     List<DayActivityAssignment> returnActivityAssignmentsByActivityID(@Param("DAY_ACTIVITY_ID") Long dayActivityID);
 

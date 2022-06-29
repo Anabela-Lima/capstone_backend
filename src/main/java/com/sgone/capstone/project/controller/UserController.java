@@ -194,7 +194,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(customUsers);
     }
 
-    // Search user by first name
+    // Search user by first name and last name
     @GetMapping("/getUserByName/{firstname}/{lastname}")
     public ResponseEntity<List<CustomApplicationUserDto>> getUserByName(@PathVariable("firstname") String firstname, @PathVariable("lastname") String lastname) throws Exception {
         List<ApplicationUser> users = userRepository.findAll();
@@ -227,11 +227,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(usersNameKeyword);
     }
 
-    // Search user by last name
-    @GetMapping("/getUserByLastName/{lastname}")
-    public ResponseEntity<List<CustomApplicationUserDto>> getUserByLastName(@PathVariable("lastname") String lastname){
+
+    // Search user by username
+    @GetMapping("/getUserByUserName/{username}")
+    public ResponseEntity<List<CustomApplicationUserDto>> getUserByName(@PathVariable("username") String username) throws Exception {
         List<ApplicationUser> users = userRepository.findAll();
-        List<CustomApplicationUserDto> usersNamedKeyword = users
+        List<CustomApplicationUserDto> usersNameKeyword = users
                 .stream()
                 .map(user -> {
                     Set<TripAssignment> tripAssignments = user.getTripAssignments();
@@ -252,10 +253,12 @@ public class UserController {
                             tripAssignmentId
                     );
                 })
-                .filter(s -> s.getLastname().contains(lastname)).collect(Collectors.toList());
-        return ResponseEntity.status(HttpStatus.OK).body(usersNamedKeyword);
+                .filter(s -> s.getUsername().contains(username)).collect(Collectors.toList());
+        if (usersNameKeyword.equals(Collections.emptyList())) {
+            throw new Exception("That Username you entered does not exist. Please enter a valid username");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(usersNameKeyword);
     }
-
 
     // delete and/or cancel trip
     @DeleteMapping("/trip/cancel_trip")

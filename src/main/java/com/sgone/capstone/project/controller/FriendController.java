@@ -60,6 +60,7 @@ public class FriendController {
         return friendService.addFriend(currentUser, friendToAdd);
     }
 
+
 }
 //get all friends from friends list
 //delete friends from friends list

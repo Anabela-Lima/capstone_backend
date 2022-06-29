@@ -1,6 +1,7 @@
 package com.sgone.capstone.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class CustomTripDto {
 
@@ -11,6 +12,8 @@ public class CustomTripDto {
     private LocalDateTime endDate;
     private String description;
     private String country;
+    private List<UserTripAssignmentDto> users;
+    private List<CustomDayDto> days;
 
     public CustomTripDto(Long id,
                          String tripCode,
@@ -18,7 +21,9 @@ public class CustomTripDto {
                          LocalDateTime startDate,
                          LocalDateTime endDate,
                          String description,
-                         String country) {
+                         String country,
+                         List<UserTripAssignmentDto> users,
+                         List<CustomDayDto> days) {
         this.id = id;
         this.tripCode = tripCode;
         this.name = name;
@@ -26,8 +31,9 @@ public class CustomTripDto {
         this.endDate = endDate;
         this.description = description;
         this.country = country;
+        this.users = users;
+        this.days = days;
     }
-
 
     public Long getId() {
         return id;
@@ -83,5 +89,21 @@ public class CustomTripDto {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public List<UserTripAssignmentDto> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserTripAssignmentDto> users) {
+        this.users = users;
+    }
+
+    public List<CustomDayDto> getDays() {
+        return days;
+    }
+
+    public void setDays(List<CustomDayDto> days) {
+        this.days = days;
     }
 }

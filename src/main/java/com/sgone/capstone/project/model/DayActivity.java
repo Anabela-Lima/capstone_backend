@@ -1,5 +1,6 @@
 package com.sgone.capstone.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Sets;
 import com.sgone.capstone.project.model.Enum.DayActivityType;
 
@@ -22,13 +23,14 @@ public class DayActivity {
     @Column(name = "price")
     private Double price;
     @Column(name = "activity_type")
-    private DayActivityType dayActivityType;
+    private String dayActivityType;
 
     @ManyToOne
     @JoinColumn(name = "day_id")
     private Day day;
 
     @OneToMany(mappedBy = "dayActivity", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<DayActivityAssignment> dayActivityAssignmentSet;
 
 
@@ -38,7 +40,7 @@ public class DayActivity {
                        String name,
                        String location,
                        Double price,
-                       DayActivityType dayActivityType,
+                       String dayActivityType,
                        Day day,
                        Set<DayActivityAssignment> dayActivityAssignmentSet) {
         this.id = id;
@@ -53,12 +55,12 @@ public class DayActivity {
     public DayActivity(String name,
                        String location,
                        Double price,
-                       DayActivityType dayActivityType,
+                       String dayActivityType,
                        Day day) {
         this.name = name;
         this.location = location;
         this.price = price;
-        this.dayActivityType = dayActivityType;
+        this.dayActivityType = "dayActivityType";
         this.day = day;
         this.dayActivityAssignmentSet = Sets.newHashSet();
     }
@@ -95,11 +97,11 @@ public class DayActivity {
         this.price = price;
     }
 
-    public DayActivityType getDayActivityType() {
+    public String getDayActivityType() {
         return dayActivityType;
     }
 
-    public void setDayActivityType(DayActivityType dayActivityType) {
+    public void setDayActivityType(String dayActivityType) {
         this.dayActivityType = dayActivityType;
     }
 

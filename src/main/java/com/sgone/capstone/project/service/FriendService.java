@@ -41,17 +41,28 @@ public class FriendService {
     }
 
 
+
     public Friend findFriendPair(Long id) {
         return friendRepository.findFriendPair(id);
     }
 
     public String deleteFriendById(Long id) {
 
-        Friend friend = friendRepository.findFriendPair(id);
-        friendRepository.delete(friend);
-
-        return "Deleted Friend " + friend.getId() + ". If this was a mistake, you can add a new post using the Add post function!";
-
+//        try {
+//        } catch (NullPointerException e){
+//            if(friend == null) {
+//                e.printStackTrace();
+//                System.out.println("No matching friend pairing could be found for id: " + id);
+//            }
+        try {
+            Friend friend = friendRepository.findFriendPair(id);
+            friendRepository.delete(friend);
+            return "Deleted Friend " + friend.getId() + ". If this was a mistake, you can add a new post using the Add post function!";
+        }
+        catch(InvalidDataAccessApiUsageException e){
+//            System.out.println(e);
+            return "Id entered does not exist!";
+        }
     }
 
     public String addFriend(String currentUser, String friendToAdd) throws Exception {

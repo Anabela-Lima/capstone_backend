@@ -26,4 +26,14 @@ public interface DayRepository extends JpaRepository<Day, Long> {
             nativeQuery = true
     )
     Integer deleteByTripId(Long tripId);
+
+
+
+    @Transactional
+    @Modifying
+    @Query(
+            value = "DELETE FROM day WHERE id = ?1",
+            nativeQuery = true
+    )
+    Integer deleteDayById(Long dayId);
 }

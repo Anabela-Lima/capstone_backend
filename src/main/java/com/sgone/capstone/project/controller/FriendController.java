@@ -48,11 +48,16 @@ public class FriendController {
         return new ResponseEntity<>(friendList, HttpStatus.OK);
     }
 
-
-    @DeleteMapping("/friend/{id}")
-    public String deleteFriendById(@PathVariable(value = "id") Long id) {
-        return friendService.deleteFriendById(id);
+    @GetMapping("/findFriendPair/{friend_a_name}/{friend_b_name}")
+    public Friend findFriendPair(String friend_a_name, String friend_b_name) {
+        return friendService.findFriendPair(friend_a_name, friend_b_name);
     }
+
+
+//    @DeleteMapping("/friend/{id}")
+//    public String deleteFriendById(@PathVariable(value = "id") Long id) {
+//        return friendService.deleteFriendById(id);
+//    }
 
 
     @PostMapping("/addFriend/{currentUserFirstName}/{currentUserLastName}/{friendToAddFirstName}/{friendToAddLastName}")

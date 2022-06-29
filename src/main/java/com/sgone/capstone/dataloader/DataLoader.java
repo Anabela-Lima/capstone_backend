@@ -244,9 +244,9 @@ public class DataLoader implements ApplicationRunner {
 
 
 
-        Friend friend1 = new Friend(jenna, ana);
-        Friend friend2 = new Friend(jenna, scott);
-        Friend friend3 = new Friend(jenna, naeem);
+        Friend friend1 = new Friend(jenna.getFirstname(), jenna, ana.getFirstname(), ana);
+        Friend friend2 = new Friend(jenna.getFirstname(), jenna, scott.getFirstname(), scott);
+        Friend friend3 = new Friend(jenna.getFirstname(), jenna, naeem.getFirstname(), naeem);
 
         dataLoaderFriendRepository.save(friend1);
         dataLoaderFriendRepository.save(friend2);

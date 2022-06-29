@@ -16,10 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -198,10 +195,10 @@ public class UserController {
     }
 
     // Search user by first name
-    @GetMapping("/getUserByFirstName/{firstname}")
-    public ResponseEntity<List<CustomApplicationUserDto>> getUserByFirstName(@PathVariable("firstname") String firstname){
+    @GetMapping("/getUserByName/{firstname}/{lastname}")
+    public ResponseEntity<List<CustomApplicationUserDto>> getUserByName(@PathVariable("firstname") String firstname, @PathVariable("lastname") String lastname) throws Exception {
         List<ApplicationUser> users = userRepository.findAll();
-        List<CustomApplicationUserDto> usersNamedKeyword = users
+        List<CustomApplicationUserDto> usersNameKeyword = users
                 .stream()
                 .map(user -> {
                     Set<TripAssignment> tripAssignments = user.getTripAssignments();
@@ -222,8 +219,12 @@ public class UserController {
                             tripAssignmentId
                     );
                 })
-                .filter(s -> s.getFirstname().contains(firstname)).collect(Collectors.toList());
-        return ResponseEntity.status(HttpStatus.OK).body(usersNamedKeyword);
+                .filter(s -> s.getFirstname().contains(firstname)).collect(Collectors.toList())
+                .stream().filter(s -> s.getLastname().contains(lastname)).collect(Collectors.toList());
+            if (usersNameKeyword.equals(Collections.emptyList())) {
+                throw new Exception("User does not exist.");
+            }
+        return ResponseEntity.status(HttpStatus.OK).body(usersNameKeyword);
     }
 
     // Search user by last name

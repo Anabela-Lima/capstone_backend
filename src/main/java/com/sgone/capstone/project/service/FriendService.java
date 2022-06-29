@@ -11,9 +11,11 @@ import com.sgone.capstone.project.repository.FriendRepository;
 import com.sgone.capstone.project.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -48,12 +50,6 @@ public class FriendService {
 
     public String deleteFriendById(Long id) {
 
-//        try {
-//        } catch (NullPointerException e){
-//            if(friend == null) {
-//                e.printStackTrace();
-//                System.out.println("No matching friend pairing could be found for id: " + id);
-//            }
         try {
             Friend friend = friendRepository.findFriendPair(id);
             friendRepository.delete(friend);
@@ -65,18 +61,19 @@ public class FriendService {
         }
     }
 
-    public String addFriend(String currentUser, String friendToAdd) throws Exception {
+    public String addFriend(String currentUserFirstName, String currentUserLastName, String friendToAddFirstName, String friendToAddLastName) {
 
-        ApplicationUser userF = userRepository.getUserByName(friendToAdd);
-        ApplicationUser userC = userRepository.getUserByName(currentUser);
-
-        if(userF == null) {
-            throw new Exception("User does not exist! Check the details are right and try again, " + userC.getFirstname() + " " + userC.getLastname());
-        }
+        ApplicationUser userC = userRepository.getUserByName(currentUserFirstName, currentUserLastName);
+        ApplicationUser userF = userRepository.getUserByName(friendToAddFirstName, friendToAddLastName);
 
         //creating two new Users - userT (the target user, who's list we want to update) and the userF (friend to be added)
         //creating two new Friends - friendLT and friendLF for the corresponding users
         //the friend objects call getters from the corresponding user class
+
+        if(userF == null) {
+            throw new InvalidDataAccessApiUsageException("User does not exist! Check the details are right and try again, " + userC.getFirstname() + " " + userC.getLastname());
+        }
+
         Friend friendTA = new Friend(userC, userF);
         friendRepository.save(friendTA);
 

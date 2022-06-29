@@ -55,11 +55,14 @@ public class FriendController {
     }
 
 
-    @PostMapping("/addFriend/{currentUser}/{friendToAdd}")
-    public String addFriend(@PathVariable("currentUser") String currentUser, @PathVariable("friendToAdd") String friendToAdd) throws Exception{
-        return friendService.addFriend(currentUser, friendToAdd);
+    @PostMapping("/addFriend/{currentUserFirstName}/{currentUserLastName}/{friendToAddFirstName}/{friendToAddLastName}")
+    public String addFriend(@PathVariable("currentUserFirstName") String currentUserFirstName,
+                            @PathVariable("currentUserLastName") String currentUserLastName,
+                            @PathVariable("friendToAddFirstName") String friendToAddFirstName,
+                            @PathVariable("friendToAddLastName") String friendToAddLastName
+                            ) throws Exception{
+        return friendService.addFriend(currentUserFirstName, currentUserLastName, friendToAddFirstName, friendToAddLastName);
     }
-
 
 }
 //get all friends from friends list

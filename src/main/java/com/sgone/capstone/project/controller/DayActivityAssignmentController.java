@@ -60,10 +60,7 @@ public class DayActivityAssignmentController {
     public List<PayeeAndPayer> generateTripCosts(@RequestParam Long tripID) {
 
         List<PayeeAndPayer> oweListWithoutCancellations = new ArrayList<>();
-        List<PayeeAndPayer> oweListWithoutRepeats = new ArrayList<>();
         List<PayeeAndPayer> oweList = new ArrayList<>();
-
-        Set<PayeeAndPayer> alreadyInList;
 
         List<DayActivityAssignment> dayActivitiesByTrip = dayActivityAssignmentRepository
                 .getActivityAssignmentsByTripID(tripID);

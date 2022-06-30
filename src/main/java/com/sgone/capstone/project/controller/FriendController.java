@@ -48,9 +48,11 @@ public class FriendController {
         return new ResponseEntity<>(friendList, HttpStatus.OK);
     }
 
-    @GetMapping("/findFriendPair/{friend_a_name}/{friend_b_name}")
-    public Friend findFriendPair(String friend_a_name, String friend_b_name) {
-        return friendService.findFriendPair(friend_a_name, friend_b_name);
+
+
+    @GetMapping("/findFriendPairUsername/{username_a}/{username_b}")
+    public Friend findFriendPairUsername(String username_a, String username_b) {
+        return friendService.findFriendPairUsername(username_a, username_b);
     }
 
 
@@ -60,24 +62,23 @@ public class FriendController {
 //    }
 
 
-    @PostMapping("/addFriend/{currentUserFirstName}/{currentUserLastName}/{friendToAddFirstName}/{friendToAddLastName}")
-    public String addFriend(@PathVariable("currentUserFirstName") String currentUserFirstName,
-                            @PathVariable("currentUserLastName") String currentUserLastName,
-                            @PathVariable("friendToAddFirstName") String friendToAddFirstName,
-                            @PathVariable("friendToAddLastName") String friendToAddLastName
+    @PostMapping("/addFriend/{currentUserUsername}/{friendToAddUsername}")
+    public String addFriend(@PathVariable("currentUserUsername") String currentUserUsername,
+                            @PathVariable("friendToAddUsername") String friendToAddUsername
+
                             ) throws Exception{
-        return friendService.addFriend(currentUserFirstName, currentUserLastName, friendToAddFirstName, friendToAddLastName);
+        return friendService.addFriend(currentUserUsername, friendToAddUsername);
     }
 
 
 
-    @PostMapping("/addFriend/{username}")
-    public String addFriendByUsername(@PathVariable("currentUserUsername") String currentUserUsername,
-                                      @PathVariable("friendToAddUsername") String friendToAddUsername
-
-    ) throws Exception{
-        return friendService.addFriendByUsername(currentUserUsername, friendToAddUsername);
-    }
+//    @PostMapping("/addFriendByUsername/{currentUserUsername}/{friendToAddUsername}")
+//    public String addFriendByUsername(@PathVariable("currentUserUsername") @RequestParam(required = false) String currentUserUsername,
+//                                      @PathVariable("friendToAddUsername") @RequestParam(required = false) String friendToAddUsername
+//
+//    ) throws Exception{
+//        return friendService.addFriendByUsername(currentUserUsername, friendToAddUsername);
+//    }
 
 }
 //get all friends from friends list

@@ -44,8 +44,8 @@ public class FriendService {
 
 
 
-    public Friend findFriendPair(String friend_a_name, String friend_b_name) {
-        return friendRepository.findFriendPair(friend_a_name, friend_b_name);
+    public Friend findFriendPairUsername(String username_a, String username_b) {
+        return friendRepository.findFriendPairUsername(username_a, username_b);
     }
 
 //    public String deleteFriendById(Long id) {
@@ -61,30 +61,32 @@ public class FriendService {
 //        }
 //    }
 
-    public String addFriend(String currentUserFirstName, String currentUserLastName, String friendToAddFirstName, String friendToAddLastName) {
+    public String addFriend(String currentUserUsername, String friendToAddUsername) {
 
-        ApplicationUser userC = userRepository.getUserByName(currentUserFirstName, currentUserLastName);
-        ApplicationUser userF = userRepository.getUserByName(friendToAddFirstName, friendToAddLastName);
+        ApplicationUser userC = userRepository.getUserByUserName(currentUserUsername);
+        ApplicationUser userF = userRepository.getUserByUserName(friendToAddUsername);
 
         // Creating two new Users...
-        // userC corresponds to the current user. currentUserFirstName, currentUserLastName should correspond to whoever is logged in
-        // userF corresponds to the TARGET user to be added as a friend, by their first and last names
+        // userC corresponds to the current user. currentUserUsername should correspond to whoever is logged in
+        // userF corresponds to the TARGET user to be added as a friend, by their username
 
 
         //creating two new Friends - friendLT and friendLF for the corresponding users
         //the friend objects call getters from the corresponding user class
 
-        Friend friendTA = new Friend(currentUserFirstName, userC, friendToAddFirstName, userF);
-        Friend existingFriendCombo1 = friendRepository.findFriendPair(currentUserFirstName, friendToAddFirstName);
-        Friend existingFriendCombo2 = friendRepository.findFriendPair(friendToAddFirstName, currentUserFirstName);
+
+        Friend friendTA = new Friend(userC, userF, currentUserUsername, friendToAddUsername);
+
+        Friend existingUsernameCombo1 = friendRepository.findFriendPairUsername(currentUserUsername, friendToAddUsername);
+        Friend existingUsernameCombo2 = friendRepository.findFriendPairUsername(friendToAddUsername, currentUserUsername);
 
 
-
-        if(userF == null) {
+        if (userF == null) {
             throw new InvalidDataAccessApiUsageException("User does not exist! Check the details are right and try again, " + userC.getFirstname() + " " + userC.getLastname());
+
         } else if (userC == userF) {
             throw new InvalidDataAccessApiUsageException("Oi, big boy! You can't be friends with yourself! " + userC.getFirstname() + " " + userC.getLastname());
-        } else if (existingFriendCombo1 == null && existingFriendCombo2 == null) {
+        } else if (existingUsernameCombo1 == null && existingUsernameCombo2 == null) {
             friendRepository.save(friendTA);
         } else {
             throw new InvalidDataAccessApiUsageException("You're already friends with " + userF.getFirstname() + "!");
@@ -92,27 +94,9 @@ public class FriendService {
 
         //friendTA.getFriend_a_name().equals(existingFriend.getFriend_a_name().contains(currentUserFirstName)) && friendTA.getFriend_b_name().equals(existingFriend.getFriend_b_name())
 
-        return "You have added " + userF.getFirstname() + " to your friend list, " + userC.getFirstname() + " " + userC.getLastname();
+        return "You have added " + userF.getFirstname() + " " + userF.getLastname() + " to your friend list, " + userC.getFirstname() + " " + userC.getLastname();
     }
-
-
-    public String addFriendByUsername(String currentUserUsername, String friendToAddUsername) {
-
-        ApplicationUser userC = userRepository.getUserByUserName(currentUserUsername);
-        ApplicationUser userF = userRepository.getUserByUserName(friendToAddUsername);
-        if(userF == null) {
-            throw new InvalidDataAccessApiUsageException("Username does not exist! Check the details are right and try again, " + userC.getUsername());
-        }
-
-        Friend friendTA = new Friend(userC, userF);
-        friendRepository.save(friendTA);
-
-        return "You have added " + userF.getUsername() + " to your friend list, " + userC.getUsername();
-    }
-
-
 }
-
 
 //For addFriend logic:
 

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -36,4 +37,15 @@ public interface DayRepository extends JpaRepository<Day, Long> {
             nativeQuery = true
     )
     Integer deleteDayById(Long dayId);
+
+
+    @Transactional
+    @Modifying
+    @Query (
+
+            value = "UPDATE day SET(name, budget, date) = (?2, ?3, ?4 ) WHERE id= ?1",
+            nativeQuery= true
+    )
+    Integer updateDay(Long dayID,String name, Double budget, LocalDateTime date);
+
 }

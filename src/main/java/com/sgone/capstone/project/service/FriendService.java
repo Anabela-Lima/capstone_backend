@@ -94,9 +94,24 @@ public class FriendService {
 
         return "You have added " + userF.getFirstname() + " to your friend list, " + userC.getFirstname() + " " + userC.getLastname();
     }
+
+
+    public String addFriendByUsername(String currentUserUsername, String friendToAddUsername) {
+
+        ApplicationUser userC = userRepository.getUserByUserName(currentUserUsername);
+        ApplicationUser userF = userRepository.getUserByUserName(friendToAddUsername);
+        if(userF == null) {
+            throw new InvalidDataAccessApiUsageException("Username does not exist! Check the details are right and try again, " + userC.getUsername());
+        }
+
+        Friend friendTA = new Friend(userC, userF);
+        friendRepository.save(friendTA);
+
+        return "You have added " + userF.getUsername() + " to your friend list, " + userC.getUsername();
+    }
+
+
 }
-
-
 
 
 //For addFriend logic:

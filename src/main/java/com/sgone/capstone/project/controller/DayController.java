@@ -4,7 +4,6 @@ import com.sgone.capstone.dto.CustomDayDto;
 import com.sgone.capstone.dto.response.StandardResponseDto;
 import com.sgone.capstone.project.model.Day;
 import com.sgone.capstone.project.model.DayActivity;
-import com.sgone.capstone.project.model.DayActivityAssignment;
 import com.sgone.capstone.project.model.Trip;
 import com.sgone.capstone.project.repository.DayActivityAssignmentRepository;
 import com.sgone.capstone.project.repository.DayActivityRepository;
@@ -19,10 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -194,7 +191,26 @@ public class DayController {
 
 
 
+    // put Method - update day details
 
+    @PutMapping("/updateDayDetails")
+    ResponseEntity<String > updateDayDetails (@RequestParam Long dayId,
+                           @RequestParam String name,
+                           @RequestParam Double budget,
+                           @DateTimeFormat(pattern= "yyyy-MM-dd HH:mm:ss")   @RequestParam LocalDateTime date)
+
+    {
+        //get day using Long id
+
+       Optional<Day> dayTobeUpdated = dayService.getDayById(dayId);
+
+
+       dayRepository.updateDay( dayId, name,budget, date);
+
+
+       return( ResponseEntity.ok().body("your day has been updated"));
+
+    }
 
 
 

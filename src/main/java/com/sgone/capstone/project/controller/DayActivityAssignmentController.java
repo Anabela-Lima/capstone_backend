@@ -63,6 +63,8 @@ public class DayActivityAssignmentController {
         List<PayeeAndPayer> oweListWithoutRepeats = new ArrayList<>();
         List<PayeeAndPayer> oweList = new ArrayList<>();
 
+        Set<PayeeAndPayer> alreadyInList;
+
         List<DayActivityAssignment> dayActivitiesByTrip = dayActivityAssignmentRepository
                 .getActivityAssignmentsByTripID(tripID);
 
@@ -90,6 +92,9 @@ public class DayActivityAssignmentController {
             while (indexOfSamePayeeAndPayer != -1 && j<10) {
                 PayeeAndPayer samePayeeAndPayer = oweListWithoutCancellations.get(indexOfSamePayeeAndPayer);
                 total += samePayeeAndPayer.getOwed();
+
+                oweListWithoutCancellations.remove(indexOfSamePayeeAndPayer);
+
                 indexOfSamePayeeAndPayer = dayActivityAssignmentService
                         .findIndexOfSamePayeeAndPayer(oweListWithoutCancellations,
                                 payeeAndPayer.getPayee(), payeeAndPayer.getPayer(),
@@ -99,6 +104,7 @@ public class DayActivityAssignmentController {
 
             payeeAndPayer.setOwed(total);
         }
+
 
         // cancel out money owed both ways
 

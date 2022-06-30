@@ -85,8 +85,7 @@ public class DayActivityAssignmentController {
                             payeeAndPayer.getPayee(), payeeAndPayer.getPayer(),
                             i);
 
-            int j=0;
-            while (indexOfSamePayeeAndPayer != -1 && j<10) {
+            while (indexOfSamePayeeAndPayer != -1) {
                 PayeeAndPayer samePayeeAndPayer = oweListWithoutCancellations.get(indexOfSamePayeeAndPayer);
                 total += samePayeeAndPayer.getOwed();
 
@@ -96,7 +95,6 @@ public class DayActivityAssignmentController {
                         .findIndexOfSamePayeeAndPayer(oweListWithoutCancellations,
                                 payeeAndPayer.getPayee(), payeeAndPayer.getPayer(),
                                 i);
-                j++;
             }
 
             payeeAndPayer.setOwed(total);

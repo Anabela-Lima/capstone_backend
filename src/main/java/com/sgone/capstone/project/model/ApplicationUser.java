@@ -49,13 +49,6 @@ public class ApplicationUser {
     @JsonIgnore
     private Set<DayActivityAssignment> dayActivityAssignments;
 
-    @OneToMany(mappedBy = "payee", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Set<MoneyOwed> payee;
-    @OneToMany(mappedBy = "payer", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Set<MoneyOwed> payer;
-
     @OneToMany(mappedBy = "friend_a", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Friend> friends_a;
@@ -80,8 +73,6 @@ public class ApplicationUser {
                            String lastname,
                            Set<TripAssignment> tripAssignments,
                            Set<DayActivityAssignment> dayActivityAssignments,
-                           Set<MoneyOwed> payee,
-                           Set<MoneyOwed> payer,
                            Set<Friend> friends_a,
                            Set<Friend> friends_b) {
         this.id = id;
@@ -95,8 +86,6 @@ public class ApplicationUser {
         this.lastname = lastname;
         this.tripAssignments = tripAssignments;
         this.dayActivityAssignments = dayActivityAssignments;
-        this.payee = payee;
-        this.payer = payer;
         this.friends_a = friends_a;
         this.friends_b = friends_b;
     }
@@ -210,22 +199,6 @@ public class ApplicationUser {
 
     public void setDayActivityAssignments(Set<DayActivityAssignment> dayActivityAssignments) {
         this.dayActivityAssignments = dayActivityAssignments;
-    }
-
-    public Set<MoneyOwed> getPayee() {
-        return payee;
-    }
-
-    public void setPayee(Set<MoneyOwed> payee) {
-        this.payee = payee;
-    }
-
-    public Set<MoneyOwed> getPayer() {
-        return payer;
-    }
-
-    public void setPayer(Set<MoneyOwed> payer) {
-        this.payer = payer;
     }
 
     public Set<Friend> getFriends_a() {

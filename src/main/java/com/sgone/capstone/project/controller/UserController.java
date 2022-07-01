@@ -381,8 +381,21 @@ public class UserController {
     }
 
 
+    @GetMapping("/OrganisedTrips")
+    ResponseEntity<List<Trip>> getOrganisedTrips(@RequestParam Long userID) {
+        List<Long> allTripsByUser = tripAssignmentRepository.returnAllTripsByUser(userID);
+        List<Trip> allTripsOrganisedByUser = new ArrayList<>();
 
+        for (Long tripID : allTripsByUser) {
+            if (userID == tripAssignmentRepository.returnOrganiserOfTrip(tripID)) {
+                allTripsOrganisedByUser.add(tripRepository.findById(tripID)
+                        .orElseThrow());
+            }
+        }
 
+        return ResponseEntity.ok().body(allTripsOrganisedByUser);
+
+    }
 
 
 

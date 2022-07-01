@@ -4,7 +4,9 @@ import com.sgone.capstone.project.model.Day;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -47,5 +49,12 @@ public interface DayRepository extends JpaRepository<Day, Long> {
             nativeQuery= true
     )
     Integer updateDay(Long dayID,String name, Double budget, LocalDateTime date);
+
+
+    @Query(value = "SELECT SUM(price) FROM day\n" +
+            "INNER JOIN day_activity \n" +
+            "ON day.id = day_activity.day_id\n" +
+            "WHERE day.id = :DAY_ID", nativeQuery = true)
+    Long daySpend(@Param("DAY_ID") Long dayID);
 
 }

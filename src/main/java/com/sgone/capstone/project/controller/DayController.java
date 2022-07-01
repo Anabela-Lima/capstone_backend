@@ -18,7 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -212,6 +214,13 @@ public class DayController {
 
     }
 
+
+    @GetMapping("/portionOfDayBudgetSpent")
+    ResponseEntity<Map<String, Double>> portionOfDayBudgetSpent(@RequestParam Long dayID) {
+        Double budget = dayRepository.getById(dayID).getBudget();
+        Long spent = dayRepository.daySpend(dayID);
+        return ResponseEntity.ok().body(Collections.singletonMap("portionOfBudget", spent/budget));
+    }
 
 
 

@@ -1,25 +1,29 @@
 package com.sgone.capstone.project.controller;
 
 import com.sgone.capstone.project.model.DayActivityAssignment;
+import com.sgone.capstone.project.model.PayeeAndPayer;
 import com.sgone.capstone.project.repository.DayActivityAssignmentRepository;
 import com.sgone.capstone.project.repository.DayActivityRepository;
+import com.sgone.capstone.project.service.DayActivityAssignmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 public class DayActivityAssignmentController {
 
     private DayActivityAssignmentRepository dayActivityAssignmentRepository;
     private DayActivityRepository dayActivityRepository;
+    private DayActivityAssignmentService dayActivityAssignmentService;
 
-    public DayActivityAssignmentController(DayActivityAssignmentRepository dayActivityAssignmentRepository, DayActivityRepository dayActivityRepository) {
+    public DayActivityAssignmentController(DayActivityAssignmentRepository dayActivityAssignmentRepository,
+                                           DayActivityRepository dayActivityRepository,
+                                           DayActivityAssignmentService dayActivityAssignmentService) {
         this.dayActivityAssignmentRepository = dayActivityAssignmentRepository;
         this.dayActivityRepository = dayActivityRepository;
+        this.dayActivityAssignmentService = dayActivityAssignmentService;
     }
 
     @GetMapping("/dayActivityAssignments")
@@ -52,71 +56,77 @@ public class DayActivityAssignmentController {
         return Collections.singletonMap("success", false);
     }
 
-    // move to service
-    @GetMapping("/generateCostByUserAndActivity")
-    public List<Map<Map<Long, Long>, Long>> generateActivityCostByUser(@RequestParam Long userID,
-                                                          @RequestParam Long dayActivityID) {
-        List<Map<Map<Long, Long>, Long>> userOwesList = new ArrayList<>();
+    @GetMapping("/generateOwingFromTrip")
+    public List<PayeeAndPayer> generateTripCosts(@RequestParam Long tripID) {
 
-        List<DayActivityAssignment> dayActivityAssignments = dayActivityAssignmentRepository
-                .returnActivityAssignmentsByActivityID(dayActivityID);
+        List<PayeeAndPayer> oweListWithoutCancellations = new ArrayList<>();
+        List<PayeeAndPayer> oweList = new ArrayList<>();
 
-        Double paid = dayActivityAssignmentRepository.userPaidForCertainActivity(dayActivityID, userID);
+        List<DayActivityAssignment> dayActivitiesByTrip = dayActivityAssignmentRepository
+                .getActivityAssignmentsByTripID(tripID);
 
-        Double shouldPay = dayActivityAssignmentRepository.userShouldPayForCertainActivity(dayActivityID, userID);
-
-        Long remainsToPay;
-        Long userHasPaidOver;
-
-        remainsToPay = Math.round(shouldPay) - Math.round(paid) ;
-
-        for (DayActivityAssignment dayActivityAssignment : dayActivityAssignments) {
-            userHasPaidOver = Math.round(dayActivityAssignment.getPaid()) -
-                    Math.round(dayActivityAssignment.getShouldPay());
-            if (remainsToPay > 0 && dayActivityAssignment.getApplicationUser().getId() != userID
-            && userHasPaidOver > 0) {
-                if ((remainsToPay - userHasPaidOver) >= 0) {
-                    userOwesList.add(Collections.singletonMap(
-                            Collections.singletonMap(dayActivityAssignment.getApplicationUser().getId(),
-                                    userID),
-                            userHasPaidOver));
-                    dayActivityAssignmentRepository.changeActivityAssignmentRow(dayActivityAssignment
-                            .getApplicationUser().getId(), dayActivityAssignment.getDayActivity().getId(),
-                            dayActivityAssignment.getShouldPay(), dayActivityAssignment.getShouldPay());
-                    dayActivityAssignmentRepository.changeActivityAssignmentRow(userID, dayActivityID,
-                            dayActivityAssignmentRepository.userPaidForCertainActivity(dayActivityID, userID)
-                    + userHasPaidOver, dayActivityAssignmentRepository
-                                    .userShouldPayForCertainActivity(dayActivityID, userID));
-                    remainsToPay = remainsToPay - userHasPaidOver;
-                } else {
-                    userOwesList.add(Collections.singletonMap(
-                            Collections.singletonMap(dayActivityAssignment.getApplicationUser().getId(),
-                                    userID),
-                            remainsToPay));
-                    dayActivityAssignmentRepository.changeActivityAssignmentRow(dayActivityAssignment
-                            .getApplicationUser().getId(), dayActivityAssignment.getDayActivity().getId(),
-                            dayActivityAssignment.getPaid() - remainsToPay,
-                            dayActivityAssignment.getShouldPay());
-                    dayActivityAssignmentRepository.changeActivityAssignmentRow(userID, dayActivityID,
-                            dayActivityAssignmentRepository
-                                    .userShouldPayForCertainActivity(dayActivityID, userID),
-                            dayActivityAssignmentRepository
-                                    .userShouldPayForCertainActivity(dayActivityID, userID));
-                    remainsToPay = 0l;
-                }
-            }
+        for (DayActivityAssignment dayActivityAssignment : dayActivitiesByTrip) {
+            oweListWithoutCancellations.addAll(
+                    dayActivityAssignmentService.generateActivityCostByUser(
+                            dayActivityAssignment.getApplicationUser().getId(),
+                            dayActivityAssignment.getDayActivity().getId())
+            );
         }
 
-        return userOwesList;
+        // add up all payments with same payee and payer
+
+        for (int i=0; i < oweListWithoutCancellations.size();i++) {
+
+            PayeeAndPayer payeeAndPayer = oweListWithoutCancellations.get(i);
+
+            Long total = payeeAndPayer.getOwed();
+            int indexOfSamePayeeAndPayer = dayActivityAssignmentService
+                    .findIndexOfSamePayeeAndPayer(oweListWithoutCancellations,
+                            payeeAndPayer.getPayee(), payeeAndPayer.getPayer(),
+                            i);
+
+            while (indexOfSamePayeeAndPayer != -1) {
+                PayeeAndPayer samePayeeAndPayer = oweListWithoutCancellations.get(indexOfSamePayeeAndPayer);
+                total += samePayeeAndPayer.getOwed();
+
+                oweListWithoutCancellations.remove(indexOfSamePayeeAndPayer);
+
+                indexOfSamePayeeAndPayer = dayActivityAssignmentService
+                        .findIndexOfSamePayeeAndPayer(oweListWithoutCancellations,
+                                payeeAndPayer.getPayee(), payeeAndPayer.getPayer(),
+                                i);
+            }
+
+            payeeAndPayer.setOwed(total);
+        }
+
+
+        // cancel out money owed both ways
+
+            for (int i=0; i < oweListWithoutCancellations.size(); i++){
+
+                PayeeAndPayer payeeAndPayer = oweListWithoutCancellations.get(i);
+
+                int indexOfInverse = dayActivityAssignmentService.findIndexOfInversePayeeAndPayer(
+                    oweListWithoutCancellations, payeeAndPayer.getPayee(), payeeAndPayer.getPayer());
+                if (indexOfInverse != -1) {
+                    PayeeAndPayer inversePayeeAndPayer = oweListWithoutCancellations.get(indexOfInverse);
+                    if (payeeAndPayer.getOwed() > inversePayeeAndPayer.getOwed()  && indexOfInverse > i) {
+                        oweList.add(new PayeeAndPayer(payeeAndPayer.getPayee(),
+                            payeeAndPayer.getPayer(), payeeAndPayer.getOwed() -
+                            oweListWithoutCancellations.get(indexOfInverse).getOwed()));
+                    } else if (payeeAndPayer.getOwed() < inversePayeeAndPayer.getOwed()  && indexOfInverse > i) {
+                        oweList.add(new PayeeAndPayer(payeeAndPayer.getPayer(), payeeAndPayer.getPayee(),
+                            inversePayeeAndPayer.getOwed() - payeeAndPayer.getOwed()));
+                    }
+                 } else {
+                    oweList.add(new PayeeAndPayer(payeeAndPayer.getPayee(), payeeAndPayer.getPayer(),
+                        payeeAndPayer.getOwed()));
+                }
+            }
+        return oweList;
+
     }
-
-//    @GetMapping("/generateOwingFromTrip")
-//    public List<Map<Map<Long, Long>, Long>> generateTripCostByUser(@RequestParam Long userID,
-//                                                                   @RequestParam Long tripID) {
-//
-//    }
-
-
 
 
 }

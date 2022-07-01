@@ -187,8 +187,17 @@ public class DataLoader implements ApplicationRunner {
                 trip1Day1
         );
 
+        DayActivity dayActivity3 = new DayActivity(
+                "Pizza for the third time my God",
+                "London",
+                100.00,
+                null,
+                trip1Day1
+        );
+
         dataLoaderDayActivityRepository.save(dayActivity1);
         dataLoaderDayActivityRepository.save(dayActivity2);
+        dataLoaderDayActivityRepository.save(dayActivity3);
 
         DayActivityAssignment dayActivityAssignment1 = new DayActivityAssignment(
                 0.00,
@@ -234,6 +243,27 @@ public class DataLoader implements ApplicationRunner {
                 naeem
         );
 
+        DayActivityAssignment dayActivityAssignment8 = new DayActivityAssignment(
+                0.00,
+                30.00,
+                dayActivity3,
+                jenna
+        );
+
+        DayActivityAssignment dayActivityAssignment9 = new DayActivityAssignment(
+                0.00,
+                25.00,
+                dayActivity3,
+                naeem
+        );
+
+        DayActivityAssignment dayActivityAssignment10 = new DayActivityAssignment(
+                0.00,
+                25.00,
+                dayActivity3,
+                ana
+        );
+
         dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment1);
         dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment2);
         dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment3);
@@ -241,17 +271,19 @@ public class DataLoader implements ApplicationRunner {
         dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment5);
         dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment6);
         dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment7);
+        dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment8);
+        dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment9);
+        dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment10);
 
 
 
-        Friend friend1 = new Friend(jenna.getFirstname(), jenna, ana.getFirstname(), ana);
-        Friend friend2 = new Friend(jenna.getFirstname(), jenna, scott.getFirstname(), scott);
-        Friend friend3 = new Friend(jenna.getFirstname(), jenna, naeem.getFirstname(), naeem);
+        Friend friend1 = new Friend(jenna, ana, jenna.getUsername(),ana.getUsername());
+        Friend friend2 = new Friend(jenna, scott, jenna.getUsername(), scott.getUsername());
+        Friend friend3 = new Friend(jenna, naeem, jenna.getUsername(), naeem.getUsername());
 
         dataLoaderFriendRepository.save(friend1);
         dataLoaderFriendRepository.save(friend2);
         dataLoaderFriendRepository.save(friend3);
-
     }
 
 }

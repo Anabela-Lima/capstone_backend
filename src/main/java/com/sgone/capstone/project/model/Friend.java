@@ -12,40 +12,35 @@ public class Friend {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String friend_a_name;
 
     @ManyToOne
     @JoinColumn(name = "friend_a_id")
     private ApplicationUser friend_a;
 
-    private String friend_b_name;
+
     @ManyToOne
     @JoinColumn(name = "friend_b_id")
     private ApplicationUser friend_b;
 
-
+    private String username_a;
+    private String username_b;
 
     public Friend() {
     }
 
-    public Friend(Long id, String friend_a_name, ApplicationUser friend_a, String friend_b_name, ApplicationUser friend_b) {
+    public Friend(Long id, ApplicationUser friend_a, ApplicationUser friend_b, String username_a, String username_b) {
         this.id = id;
         this.friend_a = friend_a;
         this.friend_b = friend_b;
-        this.friend_a_name = friend_a_name;
-        this.friend_b_name = friend_b_name;
+        this.username_a = username_a;
+        this.username_b = username_b;
     }
 
-    public Friend(ApplicationUser friend_a, ApplicationUser friend_b) {
+    public Friend(ApplicationUser friend_a, ApplicationUser friend_b , String username_a, String username_b){
         this.friend_a = friend_a;
         this.friend_b = friend_b;
-    }
-
-    public Friend(String friend_a_name, ApplicationUser friend_a, String friend_b_name, ApplicationUser friend_b) {
-        this.friend_a = friend_a;
-        this.friend_b = friend_b;
-        this.friend_a_name = friend_a_name;
-        this.friend_b_name = friend_b_name;
+        this.username_a = username_a;
+        this.username_b = username_b;
     }
 
     public Long getId() {
@@ -72,20 +67,20 @@ public class Friend {
         this.friend_b = friend_b;
     }
 
-    public String getFriend_a_name() {
-        return friend_a_name;
+    public String getUsername_a() {
+        return username_a;
     }
 
-    public void setFriend_a_name(String friend_a_name) {
-        this.friend_a_name = friend_a_name;
+    public void setUsername_a(String username_a) {
+        this.username_a = username_a;
     }
 
-    public String getFriend_b_name() {
-        return friend_b_name;
+    public String getUsername_b() {
+        return username_b;
     }
 
-    public void setFriend_b_name(String friend_b_name) {
-        this.friend_b_name = friend_b_name;
+    public void setUsername_b(String username_b) {
+        this.username_b = username_b;
     }
 }
 

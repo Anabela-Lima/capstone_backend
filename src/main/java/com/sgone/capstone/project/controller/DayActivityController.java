@@ -2,6 +2,7 @@ package com.sgone.capstone.project.controller;
 
 import com.sgone.capstone.dto.CustomDayActivityDto;
 import com.sgone.capstone.project.model.DayActivity;
+import com.sgone.capstone.project.model.DayActivityAssignment;
 import com.sgone.capstone.project.model.Enum.DayActivityType;
 import com.sgone.capstone.project.repository.DayActivityAssignmentRepository;
 import com.sgone.capstone.project.repository.DayActivityRepository;
@@ -9,10 +10,7 @@ import com.sgone.capstone.project.repository.DayRepository;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,15 +47,22 @@ public class DayActivityController {
                 return ResponseEntity.status(HttpStatus.OK).body(dayActivityDtoList);
     }
 
+    @GetMapping("/DayActivityAssignmentsByDayActivityID")
+    public ResponseEntity<List<DayActivityAssignment>> getActivityAssignments(@RequestParam Long dayActivityID) {
+        List<DayActivityAssignment> dayActivityAssignmentList =
+        dayActivityAssignmentRepository.returnActivityAssignmentsByActivityID(dayActivityID);
+        return ResponseEntity.ok().body(dayActivityAssignmentList);
+    }
+
     @PostMapping("/dayActivity")
     public void createDayActivity(
-//            @RequestParam DayActivityType activityType,
+            @RequestParam String activityType,
                                   @RequestParam String location,
                                   @RequestParam String name,
                                   @RequestParam Double price,
                                   @RequestParam Long day_id) {
         if (dayRepository.findById(day_id).isPresent()) {
-            DayActivity dayActivity = new DayActivity(name, location, price, null,
+            DayActivity dayActivity = new DayActivity(name, location, price, activityType,
                     dayRepository.getById(day_id));
             dayActivityRepository.save(dayActivity);
 
@@ -74,5 +79,11 @@ public class DayActivityController {
             dayActivityAssignmentRepository.SplitCostEvenly(activityID);
 
         }
+    }
+
+    @DeleteMapping("/deleteDayActivity")
+    public void deleteDayActivity(@RequestParam Long dayActivityID) {
+        dayActivityAssignmentRepository.deleteByDayActivityId(dayActivityID);
+        dayActivityRepository.deleteDayActivity(dayActivityID);
     }
 }

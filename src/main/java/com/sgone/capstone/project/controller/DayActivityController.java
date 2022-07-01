@@ -56,13 +56,13 @@ public class DayActivityController {
 
     @PostMapping("/dayActivity")
     public void createDayActivity(
-//            @RequestParam DayActivityType activityType,
+            @RequestParam String activityType,
                                   @RequestParam String location,
                                   @RequestParam String name,
                                   @RequestParam Double price,
                                   @RequestParam Long day_id) {
         if (dayRepository.findById(day_id).isPresent()) {
-            DayActivity dayActivity = new DayActivity(name, location, price, null,
+            DayActivity dayActivity = new DayActivity(name, location, price, activityType,
                     dayRepository.getById(day_id));
             dayActivityRepository.save(dayActivity);
 

@@ -42,4 +42,26 @@ public interface DayActivityRepository extends JpaRepository<DayActivity, Long> 
     @Query(value = "DELETE FROM day_activity WHERE id = :DAY_ACTIVITY_ID", nativeQuery = true)
     @Transactional
     void deleteDayActivity(@Param("DAY_ACTIVITY_ID") Long dayActivityID);
+
+    @Query(value="SELECT SUM(budget) FROM day\n" +
+            "INNER JOIN trip\n" +
+            "ON trip.id = day.trip_id " +
+            "WHERE trip.id = :TRIP_ID", nativeQuery = true)
+    Double addUpAllDayBudgetsByTrip(@Param("TRIP_ID") Long tripID);
+
+    @Query(value="SELECT SUM(price) FROM day_activity\n" +
+            "INNER JOIN day \n" +
+            "ON day.id = day_activity.day_id\n" +
+            "INNER JOIN trip\n" +
+            "ON trip.id = day.trip_id\n" +
+            "WHERE trip.id = :TRIP_ID\n", nativeQuery = true)
+    Double addUpPriceByTrip(@Param("TRIP_ID") Long tripID);
+
+    @Query(value="SELECT COALESCE(SUM(price), 0) FROM day_activity\n" +
+            "INNER JOIN day \n" +
+            "ON day.id = day_activity.day_id\n" +
+            "INNER JOIN trip\n" +
+            "ON trip.id = day.trip_id\n" +
+            "WHERE trip.id = :TRIP_ID AND day_activity.activity_type = CAST(:CATEGORY_NUMBER AS varchar) \n", nativeQuery = true)
+    Double addUpCategoryPriceByTrip(@Param("TRIP_ID") Long tripID, @Param("CATEGORY_NUMBER") Integer categoryNumber);
 }

@@ -31,20 +31,6 @@ public class DayActivityController {
     @GetMapping("/dayActivities")
     public ResponseEntity<List<DayActivity>> getActivities() {
         List <DayActivity> dayActivityList = dayActivityRepository.findAll();
-//        List<CustomDayActivityDto> dayActivityDtoList = dayActivityList
-//                .stream()
-//                .map(dayActivity -> {
-//                        return new CustomDayActivityDto(
-//                                dayActivity.getId(),
-//                                dayActivity.getName(),
-//                                dayActivity.getLocation(),
-//                                dayActivity.getPrice(),
-//                                dayActivity.getDayActivityType(),
-//                                dayActivity.getDay()
-//                        );
-//                })
-//                .collect(Collectors.toList());
-//                return ResponseEntity.status(HttpStatus.OK).body(dayActivityDtoList);
         return ResponseEntity.ok().body(dayActivityList);
     }
 

@@ -2,6 +2,7 @@ package com.sgone.capstone.dataloader;
 
 import com.sgone.capstone.dataloader.repository.*;
 import com.sgone.capstone.project.model.*;
+import com.sgone.capstone.project.model.Enum.DayActivityType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -175,7 +176,7 @@ public class DataLoader implements ApplicationRunner {
                 "Pizza",
                 "London",
                 100.00,
-                null,
+                DayActivityType.valueOf("Food"),
                 trip1Day1
         );
 
@@ -183,15 +184,15 @@ public class DataLoader implements ApplicationRunner {
                 "Pizza again",
                 "London",
                 100.00,
-                null,
+                DayActivityType.valueOf("Food"),
                 trip1Day1
         );
 
         DayActivity dayActivity3 = new DayActivity(
-                "Pizza for the third time my God",
+                "Tennis",
                 "London",
                 100.00,
-                null,
+                DayActivityType.valueOf("Physical"),
                 trip1Day1
         );
 

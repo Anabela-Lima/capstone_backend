@@ -2,6 +2,7 @@ package com.sgone.capstone.project.controller;
 
 import com.sgone.capstone.dto.CustomDayActivityDto;
 import com.sgone.capstone.project.model.DayActivity;
+import com.sgone.capstone.project.model.DayActivityAssignment;
 import com.sgone.capstone.project.model.Enum.DayActivityType;
 import com.sgone.capstone.project.repository.DayActivityAssignmentRepository;
 import com.sgone.capstone.project.repository.DayActivityRepository;
@@ -44,6 +45,13 @@ public class DayActivityController {
                 })
                 .collect(Collectors.toList());
                 return ResponseEntity.status(HttpStatus.OK).body(dayActivityDtoList);
+    }
+
+    @GetMapping("/DayActivityAssignmentsByDayActivityID")
+    public ResponseEntity<List<DayActivityAssignment>> getActivityAssignments(@RequestParam Long dayActivityID) {
+        List<DayActivityAssignment> dayActivityAssignmentList =
+        dayActivityAssignmentRepository.returnActivityAssignmentsByActivityID(dayActivityID);
+        return ResponseEntity.ok().body(dayActivityAssignmentList);
     }
 
     @PostMapping("/dayActivity")

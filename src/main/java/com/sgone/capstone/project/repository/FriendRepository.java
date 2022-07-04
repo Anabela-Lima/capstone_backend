@@ -23,11 +23,16 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     @Query(value = "SELECT * FROM friend WHERE username_a =?1 AND username_b = ?2", nativeQuery = true)
     Friend findFriendPairUsername(String username_a, String username_b);
 
-    @Query(value = "SELECT application_user.id\n" +
+    @Query(value = "SELECT \n" +
+            "CASE\n" +
+            "\tWHEN friend_a_id = :USER_ID THEN friend_b_id\n" +
+            "\tWHEN friend_b_id = :USER_ID THEN friend_a_id\n" +
+            "END\n" +
             "FROM friend \n" +
             "INNER JOIN application_user\n" +
             "ON friend_b_id = application_user.id\n" +
-            "WHERE friend_a_id = :USER_ID", nativeQuery = true)
+            "WHERE friend_a_id = :USER_ID OR friend_b_id = :USER_ID " +
+            "ORDER BY friend.id", nativeQuery = true)
     List<Long> findFriendsByID(@Param("USER_ID") Long userID);
 
 

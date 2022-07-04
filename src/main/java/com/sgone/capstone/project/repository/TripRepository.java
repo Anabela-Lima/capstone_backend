@@ -47,7 +47,8 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
     @Query(value = "SELECT trip.* FROM trip_assignment\n" +
             "INNER JOIN trip \n" +
             "ON trip.id = trip_assignment.trip_id\n" +
-            "WHERE trip_assignment.application_user_id = :USER_ID", nativeQuery = true)
+            "WHERE trip_assignment.application_user_id = :USER_ID " +
+            "ORDER BY trip.id", nativeQuery = true)
     List<Trip> getAllTripsByUser(@Param("USER_ID") Long userID);
 
 

@@ -38,7 +38,7 @@ public class FriendController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/friend")
+    @GetMapping("/find_all_friends")
     public ResponseEntity<List<Friend>> findAllFriends() {
         List<Friend> friendList = friendRepository.findAll();
         return new ResponseEntity<>(friendList, HttpStatus.OK);

@@ -27,7 +27,6 @@ public class Trip {
     private String country;
 
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
-    @JsonIgnore
     private Set<TripAssignment> tripAssignments;
 
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)

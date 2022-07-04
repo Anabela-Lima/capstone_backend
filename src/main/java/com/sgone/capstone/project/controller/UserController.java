@@ -59,26 +59,9 @@ public class UserController {
 
     // get trips
     @GetMapping("/trips")
-    public ResponseEntity<List<CustomTripDto>> getTrips() {
+    public ResponseEntity<List<Trip>> getTrips() {
         List<Trip> trips = userService.getAllTrips();
-        System.out.println(trips);
-        List<CustomTripDto> customTripDtos = trips
-                .stream()
-                .map(trip -> {
-                    return new CustomTripDto(
-                            trip.getId(),
-                            trip.getTripCode(),
-                            trip.getName(),
-                            trip.getStartDate(),
-                            trip.getEndDate(),
-                            trip.getDescription(),
-                            trip.getCountry(),
-                            new ArrayList<>(),
-                            new ArrayList<>()
-                    );
-                })
-                .collect(Collectors.toList());
-        return ResponseEntity.status(HttpStatus.OK).body(customTripDtos);
+        return ResponseEntity.status(HttpStatus.OK).body(trips);
     }
 
 

@@ -117,7 +117,9 @@ public class DataLoader implements ApplicationRunner {
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(3),
                 "trip1 description",
-                "Portugal"
+                "Portugal",
+                "https://www.mickeyshannon.com/photos/moraine-lake-sunrise-brilliance.jpg"
+
         );
 
         Trip trip2 = new Trip(
@@ -126,7 +128,8 @@ public class DataLoader implements ApplicationRunner {
                 LocalDateTime.now().plusDays(2),
                 LocalDateTime.now().plusDays(6),
                 "trip2 description",
-                "Dubai"
+                "Dubai",
+                "https://www.mickeyshannon.com/photos/maroon-bells-magic.jpg"
         );
 
         Trip trip3 = new Trip(
@@ -135,7 +138,8 @@ public class DataLoader implements ApplicationRunner {
                 LocalDateTime.now().plusDays(2),
                 LocalDateTime.now().plusDays(10),
                 "trip3 description",
-                "Cyprus"
+                "Cyprus",
+                "https://www.mickeyshannon.com/photos/summit-county-sunrise.jpg"
         );
 
         Trip trip4 = new Trip(

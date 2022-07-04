@@ -31,6 +31,16 @@ public class CustomApplicationUserDto {
         this.tripAssignmentId = tripAssignmentId;
     }
 
+    public CustomApplicationUserDto(Long id, String username, String password, String email, Long mobile, String firstname, String lastname) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.mobile = mobile;
+        this.firstname = firstname;
+        this.lastname = lastname;
+    }
+
     public Long getId() {
         return id;
     }

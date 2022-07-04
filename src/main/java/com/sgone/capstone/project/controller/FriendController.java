@@ -1,22 +1,17 @@
 package com.sgone.capstone.project.controller;
 
-import com.sgone.capstone.dto.CustomApplicationUserDto;
-import com.sgone.capstone.dto.request.NewFriendDto;
 import com.sgone.capstone.project.model.ApplicationUser;
 import com.sgone.capstone.project.model.Friend;
-import com.sgone.capstone.project.model.TripAssignment;
 import com.sgone.capstone.project.repository.FriendRepository;
 import com.sgone.capstone.project.repository.UserRepository;
 import com.sgone.capstone.project.service.FriendService;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -46,6 +41,17 @@ public class FriendController {
     public ResponseEntity<List<Friend>> findAllFriends() {
         List<Friend> friendList = friendRepository.findAll();
         return new ResponseEntity<>(friendList, HttpStatus.OK);
+    }
+
+    @GetMapping("/friendsByID")
+    public ResponseEntity<List<ApplicationUser>> allFriendsById(@RequestParam Long userID) {
+        List<Long> allFriends = friendRepository.findFriendsByID(userID);
+        List<ApplicationUser> friends = new ArrayList<>();
+        for (Long friendID : allFriends) {
+            friends.add(userRepository.findById(friendID)
+                    .orElseThrow());
+        }
+        return ResponseEntity.ok().body(friends);
     }
 
 

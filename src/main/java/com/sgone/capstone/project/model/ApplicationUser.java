@@ -32,6 +32,8 @@ public class ApplicationUser {
     private String firstname;
     @Column(name = "lastname")
     private String lastname;
+    @Column(name = "img_url")
+    private String imgURL;
 
     @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -61,6 +63,28 @@ public class ApplicationUser {
     public ApplicationUser() {}
 
     // TODO: Modify constructor after adding additional properties
+
+
+    public ApplicationUser(Long id, String username, String password,
+                           Boolean isAdmin, Boolean isOwner, String email, Long mobile,
+                           String firstname, String lastname, String imgURL, Set<TripAssignment> tripAssignments,
+                           Set<DayActivityAssignment> dayActivityAssignments, Set<Friend> friends_a,
+                           Set<Friend> friends_b) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.isAdmin = isAdmin;
+        this.isOwner = isOwner;
+        this.email = email;
+        this.mobile = mobile;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.imgURL = imgURL;
+        this.tripAssignments = tripAssignments;
+        this.dayActivityAssignments = dayActivityAssignments;
+        this.friends_a = friends_a;
+        this.friends_b = friends_b;
+    }
 
     public ApplicationUser(Long id,
                            String username,
@@ -111,6 +135,7 @@ public class ApplicationUser {
         this.mobile = mobile;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.imgURL = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
     }
 
     public Long getId() {
@@ -215,5 +240,13 @@ public class ApplicationUser {
 
     public void setFriends_b(Set<Friend> friends_b) {
         this.friends_b = friends_b;
+    }
+
+    public String getImgURL() {
+        return imgURL;
+    }
+
+    public void setImgURL(String imgURL) {
+        this.imgURL = imgURL;
     }
 }

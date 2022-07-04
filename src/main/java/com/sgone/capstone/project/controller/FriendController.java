@@ -54,6 +54,21 @@ public class FriendController {
         return ResponseEntity.ok().body(friends);
     }
 
+    @GetMapping("/searchNonFriends")
+    public ResponseEntity<List<ApplicationUser>> searchNonFriends(@RequestParam Long userID,
+                                                                  @RequestParam String search) {
+        List<Long> nonFriendList = friendRepository.top10NonFriendsBySearch(userID, '%' +search +'%');
+
+        List<ApplicationUser> searchResult = new ArrayList<>();
+
+        for (Long id : nonFriendList) {
+            searchResult.add(userRepository.findById(id)
+                    .orElseThrow());
+        }
+
+        return ResponseEntity.ok().body(searchResult);
+    }
+
     @GetMapping("/findFriendPairUsername/{username_a}/{username_b}")
     public Friend findFriendPairUsername(String username_a, String username_b) {
         return friendService.findFriendPairUsername(username_a, username_b);

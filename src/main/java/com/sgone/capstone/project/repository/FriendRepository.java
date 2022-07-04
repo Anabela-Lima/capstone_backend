@@ -35,6 +35,21 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
             "ORDER BY friend.id", nativeQuery = true)
     List<Long> findFriendsByID(@Param("USER_ID") Long userID);
 
+    @Query(value= "SELECT id FROM \n" +
+            "application_user \n" +
+            "WHERE NOT id IN (SELECT \n" +
+            "CASE\n" +
+            "\tWHEN friend_a_id = ?1 THEN friend_b_id\n" +
+            "\tWHEN friend_b_id = ?1 THEN friend_a_id\n" +
+            "END\n" +
+            "FROM friend \n" +
+            "INNER JOIN application_user\n" +
+            "ON friend_b_id = application_user.id\n" +
+            "WHERE friend_a_id = ?1 OR friend_b_id = ?1)\n" +
+            "AND username LIKE ?2 AND NOT ?1 = id  \n" +
+            "LIMIT 10", nativeQuery = true)
+    List<Long> top10NonFriendsBySearch(Long userID, String search);
+
 
 }
 

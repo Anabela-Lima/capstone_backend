@@ -57,4 +57,8 @@ public interface DayRepository extends JpaRepository<Day, Long> {
             "WHERE day.id = :DAY_ID", nativeQuery = true)
     Long daySpend(@Param("DAY_ID") Long dayID);
 
+
+    @Query(value = "SELECT trip.id FROM trip_assignment INNER JOIN trip ON trip.id = trip_assignment.trip_id WHERE application_user_id = 1 AND trip_code = 883dfea7-7975-4132-b0fc-9aa22b258e96", nativeQuery = true)
+    Long testQuery();
+
 }

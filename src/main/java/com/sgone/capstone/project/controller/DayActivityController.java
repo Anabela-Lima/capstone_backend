@@ -29,22 +29,9 @@ public class DayActivityController {
     }
 
     @GetMapping("/dayActivities")
-    public ResponseEntity<List<CustomDayActivityDto>> getActivities() {
+    public ResponseEntity<List<DayActivity>> getActivities() {
         List <DayActivity> dayActivityList = dayActivityRepository.findAll();
-        List<CustomDayActivityDto> dayActivityDtoList = dayActivityList
-                .stream()
-                .map(dayActivity -> {
-                        return new CustomDayActivityDto(
-                                dayActivity.getId(),
-                                dayActivity.getName(),
-                                dayActivity.getLocation(),
-                                dayActivity.getPrice(),
-                                dayActivity.getDayActivityType(),
-                                dayActivity.getDay()
-                        );
-                })
-                .collect(Collectors.toList());
-                return ResponseEntity.status(HttpStatus.OK).body(dayActivityDtoList);
+        return ResponseEntity.ok().body(dayActivityList);
     }
 
     @GetMapping("/DayActivityAssignmentsByDayActivityID")
@@ -56,7 +43,7 @@ public class DayActivityController {
 
     @PostMapping("/dayActivity")
     public void createDayActivity(
-            @RequestParam String activityType,
+            @RequestParam DayActivityType activityType,
                                   @RequestParam String location,
                                   @RequestParam String name,
                                   @RequestParam Double price,

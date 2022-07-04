@@ -23,7 +23,7 @@ public class DayActivity {
     @Column(name = "price")
     private Double price;
     @Column(name = "activity_type")
-    private String dayActivityType;
+    private DayActivityType dayActivityType;
 
     @ManyToOne
     @JoinColumn(name = "day_id")
@@ -40,7 +40,7 @@ public class DayActivity {
                        String name,
                        String location,
                        Double price,
-                       String dayActivityType,
+                       DayActivityType dayActivityType,
                        Day day,
                        Set<DayActivityAssignment> dayActivityAssignmentSet) {
         this.id = id;
@@ -55,7 +55,7 @@ public class DayActivity {
     public DayActivity(String name,
                        String location,
                        Double price,
-                       String dayActivityType,
+                       DayActivityType dayActivityType,
                        Day day) {
         this.name = name;
         this.location = location;
@@ -97,11 +97,11 @@ public class DayActivity {
         this.price = price;
     }
 
-    public String getDayActivityType() {
+    public DayActivityType getDayActivityType() {
         return dayActivityType;
     }
 
-    public void setDayActivityType(String dayActivityType) {
+    public void setDayActivityType(DayActivityType dayActivityType) {
         this.dayActivityType = dayActivityType;
     }
 

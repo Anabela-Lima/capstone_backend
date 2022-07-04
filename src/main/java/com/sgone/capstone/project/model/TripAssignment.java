@@ -1,5 +1,8 @@
 package com.sgone.capstone.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,10 +15,12 @@ public class TripAssignment {
 
     @ManyToOne
     @JoinColumn(name = "trip_id")
+    @JsonIgnoreProperties({"tripAssignments"})
     private Trip trip;
 
     @ManyToOne
     @JoinColumn(name = "application_user_id")
+    @JsonIgnoreProperties({})
     private ApplicationUser applicationUser;
 
     public TripAssignment() {}

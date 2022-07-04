@@ -219,8 +219,13 @@ public class DayController {
     ResponseEntity<Map<String, Double>> portionOfDayBudgetSpent(@RequestParam Long dayID) {
         Double budget = dayRepository.getById(dayID).getBudget();
         Long spent = dayRepository.daySpend(dayID);
-        return ResponseEntity.ok().body(Collections.singletonMap("portionOfBudget", spent/budget));
+        if (budget != 0) {
+            return ResponseEntity.ok().body(Collections.singletonMap("portionOfBudget", spent / budget));
+        }
+
+        return ResponseEntity.ok().body(Collections.singletonMap("portionOfBudget", 0.0));
     }
+
 
 
 

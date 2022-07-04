@@ -28,6 +28,7 @@ public class NewTripDto {
         this.endDate = endDate;
     }
 
+
     public Long getUserId() {
         return userId;
     }

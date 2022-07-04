@@ -25,9 +25,10 @@ public class Trip {
     private String description;
     @Column(name = "country")
     private String country;
+    @Column(name = "img_url")
+    private String imgURL;
 
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
-    @JsonIgnore
     private Set<TripAssignment> tripAssignments;
 
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
@@ -40,6 +41,21 @@ public class Trip {
 
 
     public Trip() {}
+
+    public Trip(Long id, String tripCode, String name,
+                LocalDateTime startDate, LocalDateTime endDate, String description,
+                String country, String imgURL, Set<TripAssignment> tripAssignments, Set<Day> days) {
+        this.id = id;
+        this.tripCode = tripCode;
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.description = description;
+        this.country = country;
+        this.imgURL = imgURL;
+        this.tripAssignments = tripAssignments;
+        this.days = days;
+    }
 
     public Trip(Long id,
                 String tripCode,
@@ -66,13 +82,26 @@ public class Trip {
                 LocalDateTime startDate,
                 LocalDateTime endDate,
                 String description,
-                String country) {
+                String country,
+                String imgURL) {
         this.tripCode = tripCode;
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.description = description;
         this.country = country;
+        this.imgURL = imgURL;
+    }
+
+    public Trip(String tripCode, String name, LocalDateTime startDate,
+                LocalDateTime endDate, String description, String country) {
+        this.tripCode = tripCode;
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.description = description;
+        this.country = country;
+        this.imgURL = "https://c.neh.tw/thumb/f/720/9be8f70458994300a81e.jpg";
     }
 
     public Long getId() {
@@ -145,5 +174,13 @@ public class Trip {
 
     public void setDays(Set<Day> days) {
         this.days = days;
+    }
+
+    public String getImgURL() {
+        return imgURL;
+    }
+
+    public void setImgURL(String imgURL) {
+        this.imgURL = imgURL;
     }
 }

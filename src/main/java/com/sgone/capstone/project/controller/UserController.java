@@ -60,26 +60,9 @@ public class UserController {
 
     // get trips
     @GetMapping("/trips")
-    public ResponseEntity<List<CustomTripDto>> getTrips() {
+    public ResponseEntity<List<Trip>> getTrips() {
         List<Trip> trips = userService.getAllTrips();
-        System.out.println(trips);
-        List<CustomTripDto> customTripDtos = trips
-                .stream()
-                .map(trip -> {
-                    return new CustomTripDto(
-                            trip.getId(),
-                            trip.getTripCode(),
-                            trip.getName(),
-                            trip.getStartDate(),
-                            trip.getEndDate(),
-                            trip.getDescription(),
-                            trip.getCountry(),
-                            new ArrayList<>(),
-                            new ArrayList<>()
-                    );
-                })
-                .collect(Collectors.toList());
-        return ResponseEntity.status(HttpStatus.OK).body(customTripDtos);
+        return ResponseEntity.status(HttpStatus.OK).body(trips);
     }
 
 
@@ -382,8 +365,21 @@ public class UserController {
     }
 
 
+    @GetMapping("/OrganisedTrips")
+    ResponseEntity<List<Trip>> getOrganisedTrips(@RequestParam Long userID) {
+        List<Long> allTripsByUser = tripAssignmentRepository.returnAllTripsByUser(userID);
+        List<Trip> allTripsOrganisedByUser = new ArrayList<>();
 
+        for (Long tripID : allTripsByUser) {
+            if (userID == tripAssignmentRepository.returnOrganiserOfTrip(tripID)) {
+                allTripsOrganisedByUser.add(tripRepository.findById(tripID)
+                        .orElseThrow());
+            }
+        }
 
+        return ResponseEntity.ok().body(allTripsOrganisedByUser);
+
+    }
 
 
 

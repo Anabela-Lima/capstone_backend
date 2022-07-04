@@ -1,9 +1,9 @@
 package com.sgone.capstone.project.repository;
 
-import com.sgone.capstone.project.model.ApplicationUser;
 import com.sgone.capstone.project.model.Friend;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,6 +22,13 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
 
     @Query(value = "SELECT * FROM friend WHERE username_a =?1 AND username_b = ?2", nativeQuery = true)
     Friend findFriendPairUsername(String username_a, String username_b);
+
+    @Query(value = "SELECT application_user.id\n" +
+            "FROM friend \n" +
+            "INNER JOIN application_user\n" +
+            "ON friend_b_id = application_user.id\n" +
+            "WHERE friend_a_id = :USER_ID", nativeQuery = true)
+    List<Long> findFriendsByID(@Param("USER_ID") Long userID);
 
 
 

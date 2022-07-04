@@ -62,10 +62,10 @@ public class DataLoader implements ApplicationRunner {
         }
 
         ApplicationUser ana = new ApplicationUser(
-                "ana",
+                "anaLima_1",
                 passwordEncoder.encode("password"),
                 "ana@email.com",
-                1l,
+                1L,
                 "Ana",
                 "Lima",
                 false,
@@ -73,10 +73,10 @@ public class DataLoader implements ApplicationRunner {
         );
 
         ApplicationUser jenna = new ApplicationUser(
-                "jenna",
+                "jennaV771",
                 passwordEncoder.encode("password"),
                 "jenna@email.com",
-                2l,
+                2L,
                 "Jenna",
                 "Vlahos",
                 false,
@@ -84,10 +84,10 @@ public class DataLoader implements ApplicationRunner {
         );
 
         ApplicationUser naeem = new ApplicationUser(
-                "naeem",
+                "thelifeandtimesofnaeem",
                 passwordEncoder.encode("password"),
                 "naeem@email.com",
-                3l,
+                3L,
                 "Naeem",
                 "Khan",
                 false,
@@ -95,12 +95,23 @@ public class DataLoader implements ApplicationRunner {
         );
 
         ApplicationUser scott = new ApplicationUser(
-                "scott",
+                "scottaccino123",
                 passwordEncoder.encode("password"),
                 "scott@email.com",
-                4l,
+                4L,
                 "Scott",
                 "Christie",
+                false,
+                false
+        );
+
+        ApplicationUser steve = new ApplicationUser(
+                "stevo789",
+                passwordEncoder.encode("password"),
+                "steve@strangerthings.com",
+                5L,
+                "Steve",
+                "Harrington",
                 false,
                 false
         );
@@ -109,6 +120,7 @@ public class DataLoader implements ApplicationRunner {
         dataLoaderApplicationUserRepository.save(jenna);
         dataLoaderApplicationUserRepository.save(naeem);
         dataLoaderApplicationUserRepository.save(scott);
+        dataLoaderApplicationUserRepository.save(steve);
 
         Trip trip1 = new Trip(
                 UUID.randomUUID().toString(),

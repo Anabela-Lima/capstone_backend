@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/friend")
+@CrossOrigin("localhost:3000")
 public class FriendController {
 
     @Autowired

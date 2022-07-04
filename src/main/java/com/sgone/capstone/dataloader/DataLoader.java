@@ -97,7 +97,7 @@ public class DataLoader implements ApplicationRunner {
                 "Khan",
                 false,
                 false,
-                "https://dominic-russel.netlify.app/authors/admin/avatar_hu8d30e29128cae2b0d49276543cea6665_24055_250x250_fill_q90_lanczos_center.jpg",
+                "https://img.freepik.com/free-photo/closeup-portrait-smiling-handsome-asian-man_1262-3728.jpg?w=2000",
                 "UK",
                 "Liverpool",
                 "Nothing feels as good as going from a place you \n" +

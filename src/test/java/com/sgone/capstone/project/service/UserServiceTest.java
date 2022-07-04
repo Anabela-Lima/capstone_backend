@@ -1,4 +1,4 @@
-package com.sgone.capstone;
+package com.sgone.capstone.project.service;
 
 import com.sgone.capstone.dto.request.NewTripDto;
 import com.sgone.capstone.project.model.ApplicationUser;
@@ -19,6 +19,7 @@ import java.time.Month;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.BooleanSupplier;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -79,11 +80,12 @@ public class UserServiceTest {
     }
 
     @Test
-    public void canGetTrips(){}
+    public void canGetTrips(){
+    assertTrue((BooleanSupplier) tripRepository.findAll());
+    }
 
 
-    @Test
-    public void canDeleteTrip(){}
+
 
 
 

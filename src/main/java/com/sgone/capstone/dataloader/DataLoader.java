@@ -70,7 +70,9 @@ public class DataLoader implements ApplicationRunner {
                 "Ana",
                 "Lima",
                 false,
-                false
+                false,
+                "UK",
+                "London"
         );
 
         ApplicationUser jenna = new ApplicationUser(
@@ -81,7 +83,9 @@ public class DataLoader implements ApplicationRunner {
                 "Jenna",
                 "Vlahos",
                 false,
-                false
+                false,
+                "UK",
+                "London"
         );
 
         ApplicationUser naeem = new ApplicationUser(
@@ -92,7 +96,12 @@ public class DataLoader implements ApplicationRunner {
                 "Naeem",
                 "Khan",
                 false,
-                false
+                false,
+                "https://dominic-russel.netlify.app/authors/admin/avatar_hu8d30e29128cae2b0d49276543cea6665_24055_250x250_fill_q90_lanczos_center.jpg",
+                "UK",
+                "Liverpool",
+                "Nothing feels as good as going from a place you \n" +
+                        "                love to a place youv’e never been #CatchMeIfYouCan"
         );
 
         ApplicationUser scott = new ApplicationUser(
@@ -103,7 +112,10 @@ public class DataLoader implements ApplicationRunner {
                 "Scott",
                 "Christie",
                 false,
-                false
+                false,
+                "UK",
+                "Lake District"
+
         );
 
         dataLoaderApplicationUserRepository.save(ana);

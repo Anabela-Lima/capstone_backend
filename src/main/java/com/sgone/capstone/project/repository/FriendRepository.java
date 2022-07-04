@@ -31,7 +31,6 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     List<Long> findFriendsByID(@Param("USER_ID") Long userID);
 
 
-
 }
 
 //For addFriend logic:

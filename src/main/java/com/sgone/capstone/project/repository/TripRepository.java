@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -43,8 +44,11 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
     )
     Integer cancelTrip(String tripCode);
 
-
-
+    @Query(value = "SELECT trip.* FROM trip_assignment\n" +
+            "INNER JOIN trip \n" +
+            "ON trip.id = trip_assignment.trip_id\n" +
+            "WHERE trip_assignment.application_user_id = :USER_ID", nativeQuery = true)
+    List<Trip> getAllTripsByUser(@Param("USER_ID") Long userID);
 
 
 }

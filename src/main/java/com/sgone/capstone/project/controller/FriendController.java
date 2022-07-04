@@ -54,8 +54,6 @@ public class FriendController {
         return ResponseEntity.ok().body(friends);
     }
 
-
-
     @GetMapping("/findFriendPairUsername/{username_a}/{username_b}")
     public Friend findFriendPairUsername(String username_a, String username_b) {
         return friendService.findFriendPairUsername(username_a, username_b);

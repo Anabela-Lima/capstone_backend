@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -34,6 +35,7 @@ public class Trip {
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Day> days;
+
 
 //    @ManyToMany(mappedBy = "trips", cascade = CascadeType.ALL)
 //    @JsonIgnore

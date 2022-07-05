@@ -372,12 +372,14 @@ public class UserController {
 
     }
 
+    @GetMapping("/didUserOrganiseTrip")
+    public Map<String, Boolean> didUserOrganiseTrip(@RequestParam Long tripID, @RequestParam Long userID) {
+        if (tripAssignmentRepository.returnOrganiserOfTrip(tripID) == userID) {
+            return Collections.singletonMap("success", true);
+        }
 
-
-
-
-
-
+        return Collections.singletonMap("success", false);
+    }
 
 
 }

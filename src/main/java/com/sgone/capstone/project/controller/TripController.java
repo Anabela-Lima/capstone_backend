@@ -29,7 +29,20 @@ public class TripController {
     @GetMapping("/pieChartPercentages")
     ResponseEntity<TripPieChart> getPieChartByTrip(@RequestParam Long tripID) {
 
-        Double tripBudget = dayActivityRepository.addUpAllDayBudgetsByTrip(tripID);
+        Double tripBudget;
+
+        if (dayActivityRepository.addUpAllDayBudgetsByTrip(tripID) == null) {
+            if (dayActivityRepository.addUpPriceByTrip(tripID) != null) {
+                tripBudget = dayActivityRepository.addUpPriceByTrip(tripID);
+            } else {
+                return ResponseEntity.ok().body(new TripPieChart(tripID,
+                        0.0, 0.0, 0.0, 0.0,
+                        0.0, 0.0));
+            }
+        }
+
+
+        tripBudget = dayActivityRepository.addUpAllDayBudgetsByTrip(tripID);
 
         TripPieChart tripPieChart;
 

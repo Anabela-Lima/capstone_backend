@@ -1,8 +1,10 @@
 package com.sgone.capstone.project.controller;
 
+import com.sgone.capstone.project.model.MoneyOwed;
 import com.sgone.capstone.project.model.Trip;
 import com.sgone.capstone.project.model.TripPieChart;
 import com.sgone.capstone.project.repository.DayActivityRepository;
+import com.sgone.capstone.project.repository.MoneyOwedRepository;
 import com.sgone.capstone.project.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,9 @@ public class TripController {
 
     @Autowired
     private DayActivityRepository dayActivityRepository;
+
+    @Autowired
+    private MoneyOwedRepository moneyOwedRepository;
 
     public TripController() {}
 
@@ -65,6 +70,20 @@ public class TripController {
                 );
 
         return ResponseEntity.ok().body(tripPieChart);
+    }
+
+    @GetMapping("/getReportByTrip")
+    ResponseEntity<List<MoneyOwed>> getReportByTrip(@RequestParam Long tripID) {
+        List<MoneyOwed> allMoneyOwed = moneyOwedRepository.findAll();
+        List<MoneyOwed> moneyOwedByTrip = new ArrayList<>();
+
+        for (MoneyOwed moneyOwed : allMoneyOwed) {
+            if (moneyOwed.getTrip().getId() == tripID) {
+                moneyOwedByTrip.add(moneyOwed);
+            }
+        }
+
+        return ResponseEntity.ok().body(moneyOwedByTrip);
     }
 
 }

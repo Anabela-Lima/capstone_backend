@@ -62,7 +62,7 @@ public class UserServiceTest {
 
 @Test
     public void canAddNewTrip(){
-
+    //incomplete
         userService.createTrip(newTripDto);
        LocalDateTime startDate = LocalDateTime.of(2022, Month.SEPTEMBER, 19,16,00,00);
     LocalDateTime endDate = LocalDateTime.of(2022, Month.SEPTEMBER, 29,18,00,00);

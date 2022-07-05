@@ -29,4 +29,10 @@ class DayActivityAssignmentRepositoryTest {
         assertThat(found.get().getId().equals(2));
     }
 
+    @Test
+    public void canSubmitActivityPaymentFormByDayActivityId(){
+        Optional<DayActivityAssignment> found = dayActivityAssignmentRepository.findById(2L);
+        assertThat(found.get().getId().equals(2));
+    }
+
 }

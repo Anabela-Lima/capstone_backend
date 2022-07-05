@@ -77,4 +77,14 @@ Day day;
 
 }
 
+
+@Test
+    public void canDeleteDay(Long dayID){
+    boolean exists = dayRepository.existsById(dayID);
+    if (!exists) {
+        throw new IllegalStateException("Day of id " + dayID + "does not exist");
+    }
+    dayRepository.deleteById(dayID);
+}
+
 }

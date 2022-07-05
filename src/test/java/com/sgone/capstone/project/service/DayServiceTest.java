@@ -71,7 +71,7 @@ Day day;
         Day day1 = new Day(day.getId(), day.getName(),day.getBudget(),day.getDate(),day.getTrip(),day.getDayActivities());
         Trip trip1 = new Trip(trip.getTripCode(),trip.getName(),trip.getStartDate(),trip.getEndDate(),trip.getDescription(),trip.getCountry());
         Trip daytrip = userService.getTrip(trip1.getTripCode());
-       Day daysave = dayRepository.save(day1);
+        Day daysave = dayRepository.save(day1);
 
 
 

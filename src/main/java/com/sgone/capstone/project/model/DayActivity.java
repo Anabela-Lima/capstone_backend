@@ -23,6 +23,8 @@ public class DayActivity {
     @Column(name = "price")
     private Double price;
     @Column(name = "activity_type")
+
+    @Enumerated(EnumType.ORDINAL)
     private DayActivityType dayActivityType;
 
     @ManyToOne

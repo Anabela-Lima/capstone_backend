@@ -18,10 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -227,6 +224,25 @@ public class DayController {
     }
 
 
+    @GetMapping("/getActivitiesByDayID")
+    ResponseEntity<List<DayActivity>> getActivitiesByDayId(@RequestParam Long dayID) {
+        List<DayActivity> allActivities = dayActivityRepository.findAll();
+        List<DayActivity> activities = new ArrayList<>();
+
+        for (DayActivity dayActivity : allActivities) {
+            if (dayActivity.getDay().getId() == dayID) {
+                activities.add(dayActivity);
+            }
+        }
+
+        return ResponseEntity.ok().body(activities);
+    }
+
+    @GetMapping("/getDaysByTrip")
+    ResponseEntity<List<Day>> getDaysByTrip(@RequestParam Long tripID) {
+        List<Day> days = dayRepository.getAllDaysByTripId(tripID);
+        return ResponseEntity.ok().body(days);
+    }
 
 
 }

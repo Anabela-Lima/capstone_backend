@@ -212,9 +212,18 @@ public class DataLoader implements ApplicationRunner {
                 trip1Day1
         );
 
+        DayActivity dayActivity4 = new DayActivity(
+                "Tennis",
+                "London",
+                100.00,
+                DayActivityType.valueOf("Physical"),
+                trip1Day2
+        );
+
         dataLoaderDayActivityRepository.save(dayActivity1);
         dataLoaderDayActivityRepository.save(dayActivity2);
         dataLoaderDayActivityRepository.save(dayActivity3);
+        dataLoaderDayActivityRepository.save(dayActivity4);
 
         DayActivityAssignment dayActivityAssignment1 = new DayActivityAssignment(
                 0.00,

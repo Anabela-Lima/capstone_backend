@@ -22,7 +22,9 @@ public class Friend {
     @JoinColumn(name = "friend_b_id")
     private ApplicationUser friend_b;
 
+    @Column
     private String username_a;
+    @Column
     private String username_b;
 
     public Friend() {
@@ -34,6 +36,12 @@ public class Friend {
         this.friend_b = friend_b;
         this.username_a = username_a;
         this.username_b = username_b;
+    }
+
+    // test constructor
+    public Friend(ApplicationUser friend_a, ApplicationUser friend_b) {
+        this.friend_a = friend_a;
+        this.friend_b = friend_b;
     }
 
     public Friend(ApplicationUser friend_a, ApplicationUser friend_b , String username_a, String username_b){

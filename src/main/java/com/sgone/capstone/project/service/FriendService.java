@@ -83,7 +83,6 @@ public class FriendService {
 
         if (userF == null) {
             throw new InvalidDataAccessApiUsageException("User does not exist! Check the details are right and try again, " + userC.getFirstname() + " " + userC.getLastname());
-
         } else if (userC == userF) {
             throw new InvalidDataAccessApiUsageException("Oi, big boy! You can't be friends with yourself! " + userC.getFirstname() + " " + userC.getLastname());
         } else if (existingUsernameCombo1 == null && existingUsernameCombo2 == null) {
@@ -95,6 +94,27 @@ public class FriendService {
         //friendTA.getFriend_a_name().equals(existingFriend.getFriend_a_name().contains(currentUserFirstName)) && friendTA.getFriend_b_name().equals(existingFriend.getFriend_b_name())
 
         return "You have added " + userF.getFirstname() + " " + userF.getLastname() + " to your friend list, " + userC.getFirstname() + " " + userC.getLastname();
+    }
+
+    public String deleteFriend(String currentUserUsername, String friendToDeleteUsername) {
+
+        ApplicationUser userC = userRepository.getUserByUserName(currentUserUsername);
+        ApplicationUser userF = userRepository.getUserByUserName(friendToDeleteUsername);
+
+        Friend existingUsernameCombo1 = friendRepository.findFriendPairUsername(currentUserUsername, friendToDeleteUsername);
+        Friend existingUsernameCombo2 = friendRepository.findFriendPairUsername(friendToDeleteUsername, currentUserUsername);
+
+        if (userC == userF) {
+            throw new InvalidDataAccessApiUsageException("You can't delete yourself bud, this isn't the multiverse " + userF.getFirstname() + "!");
+        } else if (existingUsernameCombo1 == null && existingUsernameCombo2 == null) {
+            throw new InvalidDataAccessApiUsageException("You're not friends with " + userF.getFirstname() + "!");
+        } else if (existingUsernameCombo1 == null && existingUsernameCombo2.getFriend_a().equals(userF) && existingUsernameCombo2.getFriend_b().equals(userC)) {
+            friendRepository.delete(existingUsernameCombo2);
+        } else if (existingUsernameCombo1.getFriend_a().equals(userC) && existingUsernameCombo1.getFriend_b().equals(userF)) {
+            friendRepository.delete(existingUsernameCombo2);
+        }
+
+        return "You have deleted " + userF.getFirstname() + " " + userF.getLastname() + " from your friend list, " + userC.getFirstname() + " " + userC.getLastname();
     }
 }
 

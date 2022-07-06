@@ -41,17 +41,17 @@ public class DayActivityAssignmentServiceTest {
     dayActivityAssignmentRepository.deleteUserFromActivity(useriD, dayActivityId);
     }
 
-   @Test
-    public void canChangePaymentOfDayActivity(Long userId, Long dayActivityId, double paid, double shouldPay){
-    DayActivityAssignment activityAssignment = dayActivityAssignmentRepository.obtainAppUserIdAndDayActivityId(userId, dayActivityId);
-      if (activityAssignment.getPaid() != null && !Objects.equals(activityAssignment.getPaid(), paid)){
-          activityAssignment.setPaid(paid);
-      }
-        if (activityAssignment.getShouldPay() != null && !Objects.equals(activityAssignment.getShouldPay(),shouldPay)){
-            activityAssignment.setShouldPay(shouldPay);
-        }
-        else throw new IllegalStateException("ID entered does not exist");
-}
+//   @Test
+//    public void canChangePaymentOfDayActivity(Long userId, Long dayActivityId, double paid, double shouldPay){
+//    DayActivityAssignment activityAssignment = dayActivityAssignmentRepository.obtainAppUserIdAndDayActivityId(userId, dayActivityId);
+//      if (activityAssignment.getPaid() != null && !Objects.equals(activityAssignment.getPaid(), paid)){
+//          activityAssignment.setPaid(paid);
+//      }
+//        if (activityAssignment.getShouldPay() != null && !Objects.equals(activityAssignment.getShouldPay(),shouldPay)){
+//            activityAssignment.setShouldPay(shouldPay);
+//        }
+//        else throw new IllegalStateException("ID entered does not exist");
+//}
 
 
 

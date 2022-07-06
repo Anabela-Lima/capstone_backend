@@ -17,9 +17,6 @@ public class DayActivityRepositoryTest {
     DayActivityRepository dayActivityRepository;
 
     @Autowired
-    DayActivity dayActivity;
-
-    @Autowired
     DayActivityController dayActivityController;
 
     @Test
@@ -32,13 +29,8 @@ public class DayActivityRepositoryTest {
     }
 
     @Test
-    public void canDeleteDayActivity(Long dayActivityId){
-        boolean exists = dayActivityRepository.existsById(dayActivityId);
-        if(!exists){
-            throw new IllegalStateException(
-                    "Day ID of " + dayActivityId + " does not exist"
-            );
-        }
+    public void canDeleteDayActivity(){
+        dayActivityRepository.deleteDayActivity(1L);
     }
 
 }

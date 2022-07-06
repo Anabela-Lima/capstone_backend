@@ -21,10 +21,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class DayServiceTest {
 
 @Autowired
-    DayController dayController;
+DayController dayController;
 
 @Autowired
-    DayRepository dayRepository;
+DayRepository dayRepository;
 
 @Autowired
 DayServiceTest dayServiceTest;

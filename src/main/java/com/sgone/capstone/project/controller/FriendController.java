@@ -76,10 +76,13 @@ public class FriendController {
     }
 
 
-//    @DeleteMapping("/friend/{id}")
-//    public String deleteFriendById(@PathVariable(value = "id") Long id) {
-//        return friendService.deleteFriendById(id);
-//    }
+    @DeleteMapping("/deleteFriend/{currentUserUsername}/{friendToAddUsername}")
+    public String deleteFriend(@PathVariable("currentUserUsername") String currentUserUsername,
+                            @PathVariable("friendToAddUsername") String friendToAddUsername
+
+    ) throws Exception{
+        return friendService.deleteFriend(currentUserUsername, friendToAddUsername);
+    }
 
 
     @PostMapping("/addFriend/{currentUserUsername}/{friendToAddUsername}")
@@ -89,16 +92,6 @@ public class FriendController {
                             ) throws Exception{
         return friendService.addFriend(currentUserUsername, friendToAddUsername);
     }
-
-
-
-//    @PostMapping("/addFriendByUsername/{currentUserUsername}/{friendToAddUsername}")
-//    public String addFriendByUsername(@PathVariable("currentUserUsername") @RequestParam(required = false) String currentUserUsername,
-//                                      @PathVariable("friendToAddUsername") @RequestParam(required = false) String friendToAddUsername
-//
-//    ) throws Exception{
-//        return friendService.addFriendByUsername(currentUserUsername, friendToAddUsername);
-//    }
 
 }
 //get all friends from friends list

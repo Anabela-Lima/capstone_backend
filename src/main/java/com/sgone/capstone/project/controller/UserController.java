@@ -134,7 +134,9 @@ public class UserController {
                 user
         );
 
-        tripAssignmentRepository.save(newTripAssignment);
+        if (tripAssignmentRepository.doesTripAssignmentExist(userId, tripCode) == null) {
+            tripAssignmentRepository.save(newTripAssignment);
+        }
 
         return ResponseEntity.status(HttpStatus.OK).body(trip);
     }

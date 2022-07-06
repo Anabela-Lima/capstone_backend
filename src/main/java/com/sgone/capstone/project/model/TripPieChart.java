@@ -2,6 +2,7 @@ package com.sgone.capstone.project.model;
 
 public class TripPieChart {
     private Long tripID;
+    private Double totalSpend;
     private Double overallPercentageOfBudget;
     private Double foodPercentage;
     private Double physicalPercentage;
@@ -12,10 +13,11 @@ public class TripPieChart {
     public TripPieChart() {
     }
 
-    public TripPieChart(Long tripID, Double overallPercentageOfBudget, Double foodPercentage,
-                        Double physicalPercentage, Double entertainmentPercentage, Double travelPercentage,
-                        Double otherPercentage) {
+    public TripPieChart(Long tripID, Double totalSpend, Double overallPercentageOfBudget,
+                        Double foodPercentage, Double physicalPercentage, Double entertainmentPercentage,
+                        Double travelPercentage, Double otherPercentage) {
         this.tripID = tripID;
+        this.totalSpend = totalSpend;
         this.overallPercentageOfBudget = overallPercentageOfBudget;
         this.foodPercentage = foodPercentage;
         this.physicalPercentage = physicalPercentage;
@@ -78,5 +80,13 @@ public class TripPieChart {
 
     public void setOtherPercentage(Double otherPercentage) {
         this.otherPercentage = otherPercentage;
+    }
+
+    public Double getTotalSpend() {
+        return totalSpend;
+    }
+
+    public void setTotalSpend(Double totalSpend) {
+        this.totalSpend = totalSpend;
     }
 }

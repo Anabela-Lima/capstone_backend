@@ -38,24 +38,26 @@ public class TripController {
 
         Double tripBudget;
 
+        tripBudget = dayActivityRepository.addUpAllDayBudgetsByTrip(tripID);
+
         if (dayActivityRepository.addUpAllDayBudgetsByTrip(tripID) == null) {
             if (dayActivityRepository.addUpPriceByTrip(tripID) != null) {
                 tripBudget = dayActivityRepository.addUpPriceByTrip(tripID);
             } else {
                 return ResponseEntity.ok().body(new TripPieChart(tripID,
-                        0.0, 0.0, 0.0, 0.0,
+                        0.0, 0.0, 0.0, 0.0, 0.0,
                         0.0, 0.0));
             }
         }
 
-
-        tripBudget = dayActivityRepository.addUpAllDayBudgetsByTrip(tripID);
-
         TripPieChart tripPieChart;
 
         if (tripBudget == 0) {
-            tripBudget = dayActivityRepository.addUpPriceByTrip(tripID);
-
+            if (dayActivityRepository.addUpPriceByTrip(tripID) != null) {
+                tripBudget = dayActivityRepository.addUpPriceByTrip(tripID);
+            } else {
+                tripBudget = 1.0;
+            }
         }
 
         if (tripBudget == 0) {
@@ -63,6 +65,7 @@ public class TripController {
         }
 
         tripPieChart = new TripPieChart(tripID,
+                dayActivityRepository.addUpPriceByTrip(tripID),
                 dayActivityRepository.addUpPriceByTrip(tripID)/tripBudget,
                 dayActivityRepository.addUpCategoryPriceByTrip(tripID, 0)/tripBudget,
                 dayActivityRepository.addUpCategoryPriceByTrip(tripID, 1)/tripBudget,

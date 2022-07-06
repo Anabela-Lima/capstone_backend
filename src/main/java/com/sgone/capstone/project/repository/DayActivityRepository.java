@@ -49,7 +49,7 @@ public interface DayActivityRepository extends JpaRepository<DayActivity, Long> 
             "WHERE trip.id = :TRIP_ID", nativeQuery = true)
     Double addUpAllDayBudgetsByTrip(@Param("TRIP_ID") Long tripID);
 
-    @Query(value="SELECT SUM(price) FROM day_activity\n" +
+    @Query(value="SELECT COALESCE(SUM(price), 0) FROM day_activity\n" +
             "INNER JOIN day \n" +
             "ON day.id = day_activity.day_id\n" +
             "INNER JOIN trip\n" +

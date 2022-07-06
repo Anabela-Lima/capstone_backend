@@ -50,6 +50,12 @@ public class DayController {
     // get day by id
 
 
+    @PutMapping("/changeBudget")
+    void changeBudget(@RequestParam Long dayID, @RequestParam Double budget) {
+        Day day = dayRepository.findById(dayID).orElseThrow();
+        day.setBudget(budget);
+    }
+
     @GetMapping("/day/{id}")
     public ResponseEntity<StandardResponseDto<CustomDayDto>> getDay (@PathVariable Long id ) {
 

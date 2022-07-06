@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/trips/")
@@ -84,6 +86,19 @@ public class TripController {
         }
 
         return ResponseEntity.ok().body(moneyOwedByTrip);
+    }
+
+    @GetMapping("/hasReportBeenGeneratedByTrip")
+    public Map<String, Boolean> hasReportBeenGenerated(@RequestParam Long tripID) {
+        List<MoneyOwed> allMoneyOwed = moneyOwedRepository.findAll();
+
+        for (MoneyOwed moneyOwed : allMoneyOwed) {
+            if (moneyOwed.getTrip().getId() == tripID) {
+                return Collections.singletonMap("success", true);
+            }
+        }
+
+        return Collections.singletonMap("success", false);
     }
 
 }

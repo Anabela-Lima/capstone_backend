@@ -42,8 +42,11 @@ public class DayActivityAssignmentController {
 
     @DeleteMapping("/deleteUserFromActivity")
     void deleteUserFromActivity(@RequestParam Long userID, @RequestParam Long dayActivityID) {
-        dayActivityAssignmentRepository.deleteUserFromActivity(userID, dayActivityID);
-        dayActivityAssignmentRepository.SplitCostEvenly(dayActivityID);
+        if (dayActivityAssignmentRepository.returnActivityAssignmentsByActivityID(dayActivityID)
+                .size() != 1) {
+            dayActivityAssignmentRepository.deleteUserFromActivity(userID, dayActivityID);
+            dayActivityAssignmentRepository.SplitCostEvenly(dayActivityID);
+        }
     }
 
     @PutMapping("/changePaymentOfDayActivity")

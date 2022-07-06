@@ -23,6 +23,9 @@ public class DayActivity {
     @Column(name = "price")
     private Double price;
 
+    @Column(name = "imgURL")
+    private String imgURL;
+
     @Column(name = "activity_type")
     private DayActivityType dayActivityType;
 
@@ -36,6 +39,18 @@ public class DayActivity {
 
 
     public DayActivity() {}
+
+    public DayActivity(Long id, String name, String location, Double price, String imgURL,
+                       DayActivityType dayActivityType, Day day, Set<DayActivityAssignment> dayActivityAssignmentSet) {
+        this.id = id;
+        this.name = name;
+        this.location = location;
+        this.price = price;
+        this.imgURL = imgURL;
+        this.dayActivityType = dayActivityType;
+        this.day = day;
+        this.dayActivityAssignmentSet = dayActivityAssignmentSet;
+    }
 
     public DayActivity(Long id,
                        String name,
@@ -51,6 +66,7 @@ public class DayActivity {
         this.dayActivityType = dayActivityType;
         this.day = day;
         this.dayActivityAssignmentSet = dayActivityAssignmentSet;
+        this.imgURL = "https://cdn2.photostockeditor.com/c/0601/black-and-white-gray-scale-photo-of-restaurant-facade-human-human-image.jpg";
     }
 
     public DayActivity(String name,
@@ -64,6 +80,8 @@ public class DayActivity {
         this.dayActivityType = dayActivityType;
         this.day = day;
         this.dayActivityAssignmentSet = Sets.newHashSet();
+        this.imgURL = "https://cdn2.photostockeditor.com/c/0601/black-and-white-gray-scale-photo-of-restaurant-facade-human-human-image.jpg";
+
     }
 
     public Long getId() {
@@ -120,5 +138,13 @@ public class DayActivity {
 
     public void setDayActivityAssignmentSet(Set<DayActivityAssignment> dayActivityAssignmentSet) {
         this.dayActivityAssignmentSet = dayActivityAssignmentSet;
+    }
+
+    public String getImgURL() {
+        return imgURL;
+    }
+
+    public void setImgURL(String imgURL) {
+        this.imgURL = imgURL;
     }
 }

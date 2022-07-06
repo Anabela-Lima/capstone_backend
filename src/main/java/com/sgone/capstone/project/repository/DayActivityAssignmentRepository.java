@@ -77,7 +77,7 @@ public interface DayActivityAssignmentRepository extends JpaRepository<DayActivi
 
     @Query(value="SELECT * FROM day_activity_assignment\n" +
             "WHERE day_activity_id = :DAY_ACTIVITY_ID " +
-            "ORDER BY PAID DESC", nativeQuery = true)
+            "ORDER BY application_user_id", nativeQuery = true)
     List<DayActivityAssignment> returnActivityAssignmentsByActivityID(@Param("DAY_ACTIVITY_ID") Long dayActivityID);
 
     @Query(value="SELECT paid FROM day_activity_assignment " +

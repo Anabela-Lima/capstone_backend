@@ -184,9 +184,11 @@ public class DataLoader implements ApplicationRunner {
 
         Day trip1Day1 = new Day("trip_1_day_1", 200.00, LocalDateTime.now(), trip1);
         Day trip1Day2 = new Day("trip_1_day_2", 200.00, LocalDateTime.now().plusDays(1), trip1);
+        Day trip2Day1 = new Day("trip_2_day_1", 300.00, LocalDateTime.now(), trip2);
 
         dataLoaderDayRepository.save(trip1Day1);
         dataLoaderDayRepository.save(trip1Day2);
+        dataLoaderDayRepository.save(trip2Day1);
 
         DayActivity dayActivity1 = new DayActivity(
                 "Pizza",

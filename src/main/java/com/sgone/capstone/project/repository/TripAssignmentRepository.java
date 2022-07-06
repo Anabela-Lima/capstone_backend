@@ -31,5 +31,12 @@ public interface TripAssignmentRepository extends JpaRepository<TripAssignment, 
             "LIMIT 1", nativeQuery = true)
     Long returnOrganiserOfTrip(@Param("TRIP_ID") Long tripID);
 
+    @Query(value= "SELECT trip_assignment.* FROM trip_assignment\n" +
+            "INNER JOIN trip\n" +
+            "ON trip_assignment.trip_id = trip.id " +
+            "WHERE trip_assignment.application_user_id = :USER_ID " +
+            "AND trip.trip_code = :TRIP_CODE", nativeQuery=true)
+    TripAssignment doesTripAssignmentExist(@Param("USER_ID") Long userID, @Param("TRIP_CODE") String tripCode);
+
 
 }

@@ -30,7 +30,10 @@ public class DayActivityRepositoryTest {
 
     @Test
     public void canDeleteDayActivity(){
-        dayActivityRepository.deleteDayActivity(1L);
+        DayActivity test = new DayActivity(26L,"Test");
+        dayActivityRepository.save(test);
+        dayActivityRepository.deleteDayActivity(26L);
+
     }
 
 }

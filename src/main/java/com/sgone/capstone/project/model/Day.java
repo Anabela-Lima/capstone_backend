@@ -34,6 +34,11 @@ public class Day {
 
     public Day() {}
 
+    public Day(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Day(Long id,
                String name,
                Double budget,

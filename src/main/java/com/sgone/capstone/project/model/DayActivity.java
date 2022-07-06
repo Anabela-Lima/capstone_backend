@@ -52,6 +52,11 @@ public class DayActivity {
         this.dayActivityAssignmentSet = dayActivityAssignmentSet;
     }
 
+    public DayActivity(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public DayActivity(Long id,
                        String name,
                        String location,

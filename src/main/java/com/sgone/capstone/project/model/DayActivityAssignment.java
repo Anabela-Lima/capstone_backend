@@ -30,6 +30,10 @@ public class DayActivityAssignment {
 
     public DayActivityAssignment() {}
 
+    public DayActivityAssignment(Long id) {
+        this.id = id;
+    }
+
     public DayActivityAssignment(Long id,
                                  Double paid,
                                  Double shouldPay,

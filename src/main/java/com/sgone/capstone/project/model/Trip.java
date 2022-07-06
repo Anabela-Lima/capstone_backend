@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -35,12 +36,33 @@ public class Trip {
     @JsonIgnore
     private Set<Day> days;
 
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<MoneyOwed> owing;
+
+
 //    @ManyToMany(mappedBy = "trips", cascade = CascadeType.ALL)
 //    @JsonIgnore
 //    private Set<ApplicationUser> users;
 
 
     public Trip() {}
+
+    public Trip(Long id, String tripCode, String name, LocalDateTime startDate,
+                LocalDateTime endDate, String description, String country, String imgURL,
+                Set<TripAssignment> tripAssignments, Set<Day> days, List<MoneyOwed> owing) {
+        this.id = id;
+        this.tripCode = tripCode;
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.description = description;
+        this.country = country;
+        this.imgURL = imgURL;
+        this.tripAssignments = tripAssignments;
+        this.days = days;
+        this.owing = owing;
+    }
 
     public Trip(Long id, String tripCode, String name,
                 LocalDateTime startDate, LocalDateTime endDate, String description,
@@ -182,5 +204,13 @@ public class Trip {
 
     public void setImgURL(String imgURL) {
         this.imgURL = imgURL;
+    }
+
+    public List<MoneyOwed> getOwing() {
+        return owing;
+    }
+
+    public void setOwing(List<MoneyOwed> owing) {
+        this.owing = owing;
     }
 }

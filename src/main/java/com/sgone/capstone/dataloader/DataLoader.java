@@ -70,7 +70,9 @@ public class DataLoader implements ApplicationRunner {
                 "Ana",
                 "Lima",
                 false,
-                false
+                false,
+                "UK",
+                "London"
         );
 
         ApplicationUser jenna = new ApplicationUser(
@@ -81,7 +83,9 @@ public class DataLoader implements ApplicationRunner {
                 "Jenna",
                 "Vlahos",
                 false,
-                false
+                false,
+                "UK",
+                "London"
         );
 
         ApplicationUser naeem = new ApplicationUser(
@@ -92,7 +96,12 @@ public class DataLoader implements ApplicationRunner {
                 "Naeem",
                 "Khan",
                 false,
-                false
+                false,
+                "https://img.freepik.com/free-photo/closeup-portrait-smiling-handsome-asian-man_1262-3728.jpg?w=2000",
+                "UK",
+                "Liverpool",
+                "Nothing feels as good as going from a place you \n" +
+                        "                love to a place youv’e never been #CatchMeIfYouCan"
         );
 
         ApplicationUser scott = new ApplicationUser(
@@ -103,7 +112,10 @@ public class DataLoader implements ApplicationRunner {
                 "Scott",
                 "Christie",
                 false,
-                false
+                false,
+                "UK",
+                "Lake District"
+
         );
 
         ApplicationUser steve = new ApplicationUser(
@@ -184,9 +196,11 @@ public class DataLoader implements ApplicationRunner {
 
         Day trip1Day1 = new Day("trip_1_day_1", 200.00, LocalDateTime.now(), trip1);
         Day trip1Day2 = new Day("trip_1_day_2", 200.00, LocalDateTime.now().plusDays(1), trip1);
+        Day trip2Day1 = new Day("trip_2_day_1", 300.00, LocalDateTime.now(), trip2);
 
         dataLoaderDayRepository.save(trip1Day1);
         dataLoaderDayRepository.save(trip1Day2);
+        dataLoaderDayRepository.save(trip2Day1);
 
         DayActivity dayActivity1 = new DayActivity(
                 "Pizza",
@@ -212,9 +226,18 @@ public class DataLoader implements ApplicationRunner {
                 trip1Day1
         );
 
+        DayActivity dayActivity4 = new DayActivity(
+                "Tennis",
+                "London",
+                100.00,
+                DayActivityType.valueOf("Physical"),
+                trip1Day2
+        );
+
         dataLoaderDayActivityRepository.save(dayActivity1);
         dataLoaderDayActivityRepository.save(dayActivity2);
         dataLoaderDayActivityRepository.save(dayActivity3);
+        dataLoaderDayActivityRepository.save(dayActivity4);
 
         DayActivityAssignment dayActivityAssignment1 = new DayActivityAssignment(
                 0.00,

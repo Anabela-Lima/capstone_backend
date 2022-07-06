@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.support.AbstractPlatformTransactionManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -63,6 +64,11 @@ public class UserController {
     public ResponseEntity<List<Trip>> getTrips() {
         List<Trip> trips = userService.getAllTrips();
         return ResponseEntity.status(HttpStatus.OK).body(trips);
+    }
+
+    @GetMapping("/tripsByUser")
+    public ResponseEntity<List<Trip>> tripsByUser(@RequestParam Long userID) {
+        return ResponseEntity.ok().body(tripRepository.getAllTripsByUser(userID));
     }
 
 
@@ -178,6 +184,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(customUsers);
     }
 
+    @GetMapping("getUserByID")
+    public ResponseEntity<ApplicationUser> getUserByID(@RequestParam Long userID) {
+        return ResponseEntity.ok().body(userRepository.findById(userID).orElseThrow());
+    }
+
     // Search user by first name and last name
     @GetMapping("/getUserByName/{firstname}/{lastname}")
     public ResponseEntity<List<CustomApplicationUserDto>> getUserByName(@PathVariable("firstname") String firstname, @PathVariable("lastname") String lastname) throws Exception {
@@ -214,30 +225,11 @@ public class UserController {
 
     // Search user by username
     @GetMapping("/getUserByUserName/{username}")
-    public ResponseEntity<List<CustomApplicationUserDto>> getUserByUserName(@PathVariable("username") String username) throws Exception {
-        List<ApplicationUser> users = userRepository.findAll();
-        List<CustomApplicationUserDto> usersNameKeyword = users
+    public ResponseEntity<List<ApplicationUser>> getUserByUserName(@PathVariable("username") String username) throws Exception {
+        List<ApplicationUser> usersNameKeyword = userRepository.findAll()
                 .stream()
-                .map(user -> {
-                    Set<TripAssignment> tripAssignments = user.getTripAssignments();
-                    Set<Long> tripAssignmentId = tripAssignments
-                            .stream()
-                            .map(tripAssignment -> {
-                                return tripAssignment.getId();
-                            })
-                            .collect(Collectors.toSet());
-                    return new CustomApplicationUserDto(
-                            user.getId(),
-                            user.getUsername(),
-                            user.getPassword(),
-                            user.getEmail(),
-                            user.getMobile(),
-                            user.getFirstname(),
-                            user.getLastname(),
-                            tripAssignmentId
-                    );
-                })
-                .filter(s -> s.getUsername().contains(username)).collect(Collectors.toList());
+                .filter(s -> s.getUsername().contains(username))
+                .collect(Collectors.toList());
         if (usersNameKeyword.equals(Collections.emptyList())) {
             throw new Exception("That Username you entered does not exist. Please enter a valid username");
         }
@@ -381,12 +373,14 @@ public class UserController {
 
     }
 
+    @GetMapping("/didUserOrganiseTrip")
+    public Map<String, Boolean> didUserOrganiseTrip(@RequestParam Long tripID, @RequestParam Long userID) {
+        if (tripAssignmentRepository.returnOrganiserOfTrip(tripID) == userID) {
+            return Collections.singletonMap("success", true);
+        }
 
-
-
-
-
-
+        return Collections.singletonMap("success", false);
+    }
 
 
 }

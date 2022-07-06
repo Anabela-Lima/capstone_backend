@@ -34,18 +34,16 @@ public class ApplicationUser {
     private String lastname;
     @Column(name = "img_url")
     private String imgURL;
+    @Column(name = "country")
+    private String country;
+    @Column(name = "city")
+    private String city;
+    @Column(name = "profile_description")
+    private String profileDescription;
 
     @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<TripAssignment> tripAssignments;
-
-//    @ManyToMany
-//    @JoinTable(
-//            name = "trip_assignments",
-//            joinColumns = @JoinColumn(name = "application_user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "trip_id")
-//    )
-//    private Set<Trip> trips = new HashSet<>();
 
     @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -58,18 +56,23 @@ public class ApplicationUser {
     @OneToMany(mappedBy = "friend_b", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Friend> friends_b;
+
+
+    @OneToMany(mappedBy = "payee", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<MoneyOwed> payee;
+    @OneToMany(mappedBy = "payer", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<MoneyOwed> payer;
     // TODO: User Entity properties goes here
 
     public ApplicationUser() {}
 
-    // TODO: Modify constructor after adding additional properties
-
-
-    public ApplicationUser(Long id, String username, String password,
-                           Boolean isAdmin, Boolean isOwner, String email, Long mobile,
-                           String firstname, String lastname, String imgURL, Set<TripAssignment> tripAssignments,
-                           Set<DayActivityAssignment> dayActivityAssignments, Set<Friend> friends_a,
-                           Set<Friend> friends_b) {
+    public ApplicationUser(Long id, String username, String password, Boolean isAdmin,
+                           Boolean isOwner, String email, Long mobile, String firstname,
+                           String lastname, String imgURL, String country, String city, String profileDescription,
+                           Set<TripAssignment> tripAssignments, Set<DayActivityAssignment> dayActivityAssignments,
+                           Set<Friend> friends_a, Set<Friend> friends_b, Set<MoneyOwed> payee, Set<MoneyOwed> payer) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -80,25 +83,78 @@ public class ApplicationUser {
         this.firstname = firstname;
         this.lastname = lastname;
         this.imgURL = imgURL;
+        this.country = country;
+        this.city = city;
+        this.profileDescription = profileDescription;
         this.tripAssignments = tripAssignments;
         this.dayActivityAssignments = dayActivityAssignments;
         this.friends_a = friends_a;
         this.friends_b = friends_b;
+        this.payee = payee;
+        this.payer = payer;
     }
 
-    public ApplicationUser(Long id,
-                           String username,
+    // TODO: Modify constructor after adding additional properties
+
+    public ApplicationUser(String username,
                            String password,
-                           Boolean isAdmin,
-                           Boolean isOwner,
                            String email,
                            Long mobile,
                            String firstname,
                            String lastname,
-                           Set<TripAssignment> tripAssignments,
-                           Set<DayActivityAssignment> dayActivityAssignments,
-                           Set<Friend> friends_a,
-                           Set<Friend> friends_b) {
+                           Boolean isAdmin,
+                           Boolean isOwner,
+                           String imgURL,
+                           String country,
+                           String city
+    ) {
+        this.username = username;
+        this.password = password;
+        this.isAdmin = isAdmin;
+        this.isOwner = isOwner;
+        this.email = email;
+        this.mobile = mobile;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.imgURL = imgURL;
+        this.country = country;
+        this.city = city;
+    }
+
+    public ApplicationUser(String username,
+                           String password,
+                           String email,
+                           Long mobile,
+                           String firstname,
+                           String lastname,
+                           Boolean isAdmin,
+                           Boolean isOwner,
+                           String imgURL,
+                           String country,
+                           String city,
+                           String profileDescription
+    ) {
+        this.username = username;
+        this.password = password;
+        this.isAdmin = isAdmin;
+        this.isOwner = isOwner;
+        this.email = email;
+        this.mobile = mobile;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.imgURL = imgURL;
+        this.country = country;
+        this.city = city;
+        this.profileDescription = profileDescription;
+    }
+
+
+
+    public ApplicationUser(Long id, String username, String password, Boolean isAdmin,
+                           Boolean isOwner, String email, Long mobile, String firstname,
+                           String lastname, String imgURL, String country, String city,
+                           Set<TripAssignment> tripAssignments, Set<DayActivityAssignment> dayActivityAssignments,
+                           Set<Friend> friends_a, Set<Friend> friends_b) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -108,14 +164,41 @@ public class ApplicationUser {
         this.mobile = mobile;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.imgURL = imgURL;
+        this.country = country;
+        this.city = city;
         this.tripAssignments = tripAssignments;
         this.dayActivityAssignments = dayActivityAssignments;
         this.friends_a = friends_a;
         this.friends_b = friends_b;
     }
 
-
     // TODO: Modify constructor after adding additional properties
+
+
+    public ApplicationUser(String username,
+                           String password,
+                           String email,
+                           Long mobile,
+                           String firstname,
+                           String lastname,
+                           Boolean isAdmin,
+                           Boolean isOwner,
+                           String country,
+                           String city
+    ) {
+        this.username = username;
+        this.password = password;
+        this.isAdmin = isAdmin;
+        this.isOwner = isOwner;
+        this.email = email;
+        this.mobile = mobile;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.imgURL = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+        this.country = country;
+        this.city = city;
+    }
 
 
     public ApplicationUser(String username,
@@ -248,5 +331,45 @@ public class ApplicationUser {
 
     public void setImgURL(String imgURL) {
         this.imgURL = imgURL;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getProfileDescription() {
+        return profileDescription;
+    }
+
+    public void setProfileDescription(String profileDescription) {
+        this.profileDescription = profileDescription;
+    }
+
+    public Set<MoneyOwed> getPayee() {
+        return payee;
+    }
+
+    public void setPayee(Set<MoneyOwed> payee) {
+        this.payee = payee;
+    }
+
+    public Set<MoneyOwed> getPayer() {
+        return payer;
+    }
+
+    public void setPayer(Set<MoneyOwed> payer) {
+        this.payer = payer;
     }
 }

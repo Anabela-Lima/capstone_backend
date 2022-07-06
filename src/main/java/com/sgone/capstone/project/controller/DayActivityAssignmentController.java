@@ -1,9 +1,9 @@
 package com.sgone.capstone.project.controller;
 
 import com.sgone.capstone.project.model.DayActivityAssignment;
+import com.sgone.capstone.project.model.MoneyOwed;
 import com.sgone.capstone.project.model.PayeeAndPayer;
-import com.sgone.capstone.project.repository.DayActivityAssignmentRepository;
-import com.sgone.capstone.project.repository.DayActivityRepository;
+import com.sgone.capstone.project.repository.*;
 import com.sgone.capstone.project.service.DayActivityAssignmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +17,21 @@ public class DayActivityAssignmentController {
     private DayActivityAssignmentRepository dayActivityAssignmentRepository;
     private DayActivityRepository dayActivityRepository;
     private DayActivityAssignmentService dayActivityAssignmentService;
+    private MoneyOwedRepository moneyOwedRepository;
+    private UserRepository userRepository;
+    private TripRepository tripRepository;
 
     public DayActivityAssignmentController(DayActivityAssignmentRepository dayActivityAssignmentRepository,
                                            DayActivityRepository dayActivityRepository,
-                                           DayActivityAssignmentService dayActivityAssignmentService) {
+                                           DayActivityAssignmentService dayActivityAssignmentService,
+                                           MoneyOwedRepository moneyOwedRepository, UserRepository userRepository,
+                                           TripRepository tripRepository) {
         this.dayActivityAssignmentRepository = dayActivityAssignmentRepository;
         this.dayActivityRepository = dayActivityRepository;
         this.dayActivityAssignmentService = dayActivityAssignmentService;
+        this.moneyOwedRepository = moneyOwedRepository;
+        this.userRepository = userRepository;
+        this.tripRepository = tripRepository;
     }
 
     @GetMapping("/dayActivityAssignments")
@@ -34,8 +42,11 @@ public class DayActivityAssignmentController {
 
     @DeleteMapping("/deleteUserFromActivity")
     void deleteUserFromActivity(@RequestParam Long userID, @RequestParam Long dayActivityID) {
-        dayActivityAssignmentRepository.deleteUserFromActivity(userID, dayActivityID);
-        dayActivityAssignmentRepository.SplitCostEvenly(dayActivityID);
+        if (dayActivityAssignmentRepository.returnActivityAssignmentsByActivityID(dayActivityID)
+                .size() != 1) {
+            dayActivityAssignmentRepository.deleteUserFromActivity(userID, dayActivityID);
+            dayActivityAssignmentRepository.SplitCostEvenly(dayActivityID);
+        }
     }
 
     @PutMapping("/changePaymentOfDayActivity")
@@ -124,6 +135,18 @@ public class DayActivityAssignmentController {
                         payeeAndPayer.getOwed()));
                 }
             }
+
+            for (PayeeAndPayer payeeAndPayer : oweList) {
+                MoneyOwed moneyOwed = new MoneyOwed(null, payeeAndPayer.getOwed(),
+                        userRepository.findById(payeeAndPayer.getPayee()) .orElseThrow(),
+                        userRepository.findById(payeeAndPayer.getPayer()) .orElseThrow(),
+                        tripRepository.findById(tripID) .orElseThrow());
+
+                moneyOwedRepository.save(moneyOwed);
+            }
+
+
+
         return oweList;
 
     }

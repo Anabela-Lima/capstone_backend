@@ -62,6 +62,6 @@ public interface DayActivityRepository extends JpaRepository<DayActivity, Long> 
             "ON day.id = day_activity.day_id\n" +
             "INNER JOIN trip\n" +
             "ON trip.id = day.trip_id\n" +
-            "WHERE trip.id = :TRIP_ID AND day_activity.activity_type = CAST(:CATEGORY_NUMBER AS varchar) \n", nativeQuery = true)
+            "WHERE trip.id = :TRIP_ID AND day_activity.activity_type = :CATEGORY_NUMBER \n", nativeQuery = true)
     Double addUpCategoryPriceByTrip(@Param("TRIP_ID") Long tripID, @Param("CATEGORY_NUMBER") Integer categoryNumber);
 }

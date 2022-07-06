@@ -1,6 +1,7 @@
 package com.sgone.capstone.project.repository;
 
 import com.sgone.capstone.project.model.Day;
+import com.sgone.capstone.project.model.DayActivity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +17,8 @@ import java.util.List;
 public interface DayRepository extends JpaRepository<Day, Long> {
 
     @Query(
-            value = "SELECT * FROM day WHERE trip_id = ?1",
+            value = "SELECT * FROM day WHERE trip_id = ?1 " +
+                    "ORDER BY id",
             nativeQuery = true
     )
     List<Day> getAllDaysByTripId(Long tripId);

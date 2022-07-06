@@ -77,7 +77,7 @@ public interface DayActivityAssignmentRepository extends JpaRepository<DayActivi
 
     @Query(value="SELECT * FROM day_activity_assignment\n" +
             "WHERE day_activity_id = :DAY_ACTIVITY_ID " +
-            "ORDER BY PAID DESC", nativeQuery = true)
+            "ORDER BY application_user_id", nativeQuery = true)
     List<DayActivityAssignment> returnActivityAssignmentsByActivityID(@Param("DAY_ACTIVITY_ID") Long dayActivityID);
 
     @Query(value="SELECT paid FROM day_activity_assignment " +
@@ -87,5 +87,8 @@ public interface DayActivityAssignmentRepository extends JpaRepository<DayActivi
     @Query(value="SELECT should_pay FROM day_activity_assignment " +
             "WHERE application_user_id = :USER_ID AND day_activity_id = :DAY_ACTIVITY_ID", nativeQuery = true)
     Double userShouldPayForCertainActivity(@Param("DAY_ACTIVITY_ID") Long dayActivityID, @Param("USER_ID") Long userID);
+
+//    @Query(value = "SELECT application_user_id, day_activity_id FROM day_activity_assignment")
+//    DayActivityAssignment obtainAppUserIdAndDayActivityId(Long userID, Long dayActivityID);
 
 }

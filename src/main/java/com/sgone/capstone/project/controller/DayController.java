@@ -52,8 +52,7 @@ public class DayController {
 
     @PutMapping("/changeBudget")
     void changeBudget(@RequestParam Long dayID, @RequestParam Double budget) {
-        Day day = dayRepository.findById(dayID).orElseThrow();
-        day.setBudget(budget);
+        dayRepository.changeBudget(dayID, budget);
     }
 
     @GetMapping("/day/{id}")

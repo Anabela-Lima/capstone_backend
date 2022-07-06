@@ -88,7 +88,7 @@ public interface DayActivityAssignmentRepository extends JpaRepository<DayActivi
             "WHERE application_user_id = :USER_ID AND day_activity_id = :DAY_ACTIVITY_ID", nativeQuery = true)
     Double userShouldPayForCertainActivity(@Param("DAY_ACTIVITY_ID") Long dayActivityID, @Param("USER_ID") Long userID);
 
-    @Query(value = "SELECT application_user_id, day_activity_id FROM day_activity_assignment")
-    DayActivityAssignment obtainAppUserIdAndDayActivityId(Long userID, Long dayActivityID);
+//    @Query(value = "SELECT application_user_id, day_activity_id FROM day_activity_assignment")
+//    DayActivityAssignment obtainAppUserIdAndDayActivityId(Long userID, Long dayActivityID);
 
 }

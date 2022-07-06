@@ -292,6 +292,20 @@ public class DataLoader implements ApplicationRunner {
                 ana
         );
 
+        DayActivityAssignment dayActivityAssignment11 = new DayActivityAssignment(
+                0.00,
+                75.00,
+                dayActivity4,
+                ana
+        );
+
+        DayActivityAssignment dayActivityAssignment12 = new DayActivityAssignment(
+                0.00,
+                25.00,
+                dayActivity4,
+                naeem
+        );
+
         dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment1);
         dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment2);
         dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment3);
@@ -302,6 +316,8 @@ public class DataLoader implements ApplicationRunner {
         dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment8);
         dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment9);
         dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment10);
+        dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment11);
+        dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment12);
 
 
 

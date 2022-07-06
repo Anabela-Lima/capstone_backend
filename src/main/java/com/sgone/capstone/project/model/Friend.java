@@ -22,10 +22,18 @@ public class Friend {
     @JoinColumn(name = "friend_b_id")
     private ApplicationUser friend_b;
 
+    @Column(name = "username_a")
     private String username_a;
+
+    @Column(name = "username_b")
     private String username_b;
 
     public Friend() {
+    }
+
+    public Friend( String username_a, String username_b) {
+        this.username_a = username_a;
+        this.username_b = username_b;
     }
 
     public Friend(Long id, ApplicationUser friend_a, ApplicationUser friend_b, String username_a, String username_b) {

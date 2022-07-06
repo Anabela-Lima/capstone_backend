@@ -17,14 +17,8 @@ public class UserRepositoryTest {
     TripRepository tripRepository;
 
     @Test
-    public void canDeleteTrip(String tripCode){
-        Optional<Trip> exists = tripRepository.findByTripCode(tripCode);
-        if (!tripCode.equals(exists)) {
-            throw new IllegalStateException(
-                    "Trip of code " + tripCode + " does not exist"
-            );
-        }
-    tripRepository.cancelTrip(tripCode);
+    public void canDeleteTrip(){
+       tripRepository.cancelTrip("f65d4af5-111e-4b61-9b16-ce7e594f315c");
     }
 
 }

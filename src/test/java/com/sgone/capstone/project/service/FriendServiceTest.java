@@ -16,8 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class FriendServiceTest {
@@ -28,8 +27,6 @@ public class FriendServiceTest {
     @Autowired
     FriendService friendService;
 
-    @Autowired
-    ApplicationUser applicationUser;
 
     @Autowired
     UserRepository userRepository;
@@ -59,13 +56,8 @@ String userB = applicationUser2.getUsername();
         }
 
     @Test
-    public void canGetFriendPairByUserName(String userA, String userB){
-            userA = "Scott";
-            userB = "Naeem";
-
-            Friend found = friendRepository.findFriendPairUsername(userA,userB);
-
-
+    public void canGetFriendPairByUserName(){
+      assertEquals(null, friendRepository.findFriendPairUsername("scott","naeem"));
         }
 
 }

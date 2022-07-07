@@ -221,6 +221,15 @@ public class ApplicationUser {
         this.imgURL = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
     }
 
+
+    public ApplicationUser(Long id, String username, Boolean isAdmin, Boolean isOwner, String password) {
+        this.id = id;
+        this.username = username;
+        this.isAdmin = isAdmin;
+        this.isOwner = isOwner;
+        this.password = password;
+    }
+
     public Long getId() {
         return id;
     }

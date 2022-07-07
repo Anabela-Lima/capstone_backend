@@ -71,7 +71,7 @@ public class DayActivity {
         this.dayActivityType = dayActivityType;
         this.day = day;
         this.dayActivityAssignmentSet = dayActivityAssignmentSet;
-        this.imgURL = "https://cdn2.photostockeditor.com/c/0601/black-and-white-gray-scale-photo-of-restaurant-facade-human-human-image.jpg";
+        this.imgURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJGfoU3JnHEUDmOY2ih94E812yK7mHovGejA&usqp=CAU";
     }
 
     public DayActivity(String name,
@@ -85,7 +85,7 @@ public class DayActivity {
         this.dayActivityType = dayActivityType;
         this.day = day;
         this.dayActivityAssignmentSet = Sets.newHashSet();
-        this.imgURL = "https://cdn2.photostockeditor.com/c/0601/black-and-white-gray-scale-photo-of-restaurant-facade-human-human-image.jpg";
+        this.imgURL = "http://ruthincraftcentre.org.uk/assets/Cafe-R-2021-2-SUB-Home-860x612px-380x265.png";
 
     }
 

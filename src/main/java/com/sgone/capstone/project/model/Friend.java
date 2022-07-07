@@ -44,6 +44,12 @@ public class Friend {
         this.username_b = username_b;
     }
 
+    // test constructor
+    public Friend(ApplicationUser friend_a, ApplicationUser friend_b) {
+        this.friend_a = friend_a;
+        this.friend_b = friend_b;
+    }
+
     public Friend(ApplicationUser friend_a, ApplicationUser friend_b , String username_a, String username_b){
         this.friend_a = friend_a;
         this.friend_b = friend_b;

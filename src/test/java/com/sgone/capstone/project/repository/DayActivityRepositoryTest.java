@@ -3,7 +3,6 @@ package com.sgone.capstone.project.repository;
 import com.sgone.capstone.project.controller.DayActivityController;
 import com.sgone.capstone.project.model.DayActivity;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -16,8 +15,6 @@ public class DayActivityRepositoryTest {
 
     @Autowired
     DayActivityRepository dayActivityRepository;
-
-
 
     @Autowired
     DayActivityController dayActivityController;

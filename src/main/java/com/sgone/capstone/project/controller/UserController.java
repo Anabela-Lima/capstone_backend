@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(value = "*", methods = RequestMethod.GET)
 public class UserController {
 
     @Autowired
@@ -133,7 +134,9 @@ public class UserController {
                 user
         );
 
-        tripAssignmentRepository.save(newTripAssignment);
+        if (tripAssignmentRepository.doesTripAssignmentExist(userId, tripCode) == null) {
+            tripAssignmentRepository.save(newTripAssignment);
+        }
 
         return ResponseEntity.status(HttpStatus.OK).body(trip);
     }

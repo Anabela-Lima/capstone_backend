@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/friend")
+@CrossOrigin("localhost:3000")
 public class FriendController {
 
     @Autowired
@@ -89,13 +90,6 @@ public class FriendController {
         return friendService.addFriend(currentUserUsername, friendToAddUsername);
     }
 
-//    @DeleteMapping("/deleteFriendPair/{username_a}/{username_b}")
-//    public String deleteFriendPair(String username_a, String username_b){
-//        if (friendRepository.findFriendPairUsername(username_a, username_b) != null) {
-//            friendRepository.deleteFriendPair(username_a, username_b);
-//        }
-//        return "This friend pairing does not exist";
-//    }
 
 
 //    @PostMapping("/addFriendByUsername/{currentUserUsername}/{friendToAddUsername}")

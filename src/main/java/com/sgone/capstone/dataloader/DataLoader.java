@@ -63,10 +63,10 @@ public class DataLoader implements ApplicationRunner {
         }
 
         ApplicationUser ana = new ApplicationUser(
-                "ana",
+                "anaLima_1",
                 passwordEncoder.encode("password"),
                 "ana@email.com",
-                1l,
+                1L,
                 "Ana",
                 "Lima",
                 false,
@@ -76,10 +76,10 @@ public class DataLoader implements ApplicationRunner {
         );
 
         ApplicationUser jenna = new ApplicationUser(
-                "jenna",
+                "jennaV771",
                 passwordEncoder.encode("password"),
                 "jenna@email.com",
-                2l,
+                2L,
                 "Jenna",
                 "Vlahos",
                 false,
@@ -89,10 +89,10 @@ public class DataLoader implements ApplicationRunner {
         );
 
         ApplicationUser naeem = new ApplicationUser(
-                "naeem",
+                "thelifeandtimesofnaeem",
                 passwordEncoder.encode("password"),
                 "naeem@email.com",
-                3l,
+                3L,
                 "Naeem",
                 "Khan",
                 false,
@@ -105,10 +105,10 @@ public class DataLoader implements ApplicationRunner {
         );
 
         ApplicationUser scott = new ApplicationUser(
-                "scott",
+                "scottaccino123",
                 passwordEncoder.encode("password"),
                 "scott@email.com",
-                4l,
+                4L,
                 "Scott",
                 "Christie",
                 false,
@@ -118,10 +118,22 @@ public class DataLoader implements ApplicationRunner {
 
         );
 
+        ApplicationUser steve = new ApplicationUser(
+                "stevo789",
+                passwordEncoder.encode("password"),
+                "steve@strangerthings.com",
+                5L,
+                "Steve",
+                "Harrington",
+                false,
+                false
+        );
+
         dataLoaderApplicationUserRepository.save(ana);
         dataLoaderApplicationUserRepository.save(jenna);
         dataLoaderApplicationUserRepository.save(naeem);
         dataLoaderApplicationUserRepository.save(scott);
+        dataLoaderApplicationUserRepository.save(steve);
 
         Trip trip1 = new Trip(
                 UUID.randomUUID().toString(),
@@ -134,61 +146,25 @@ public class DataLoader implements ApplicationRunner {
 
         );
 
-        Trip trip2 = new Trip(
-                UUID.randomUUID().toString(),
-                "trip2",
-                LocalDateTime.now().plusDays(2),
-                LocalDateTime.now().plusDays(6),
-                "trip2 description",
-                "Dubai",
-                "https://www.mickeyshannon.com/photos/maroon-bells-magic.jpg"
-        );
-
-        Trip trip3 = new Trip(
-                UUID.randomUUID().toString(),
-                "trip3",
-                LocalDateTime.now().plusDays(2),
-                LocalDateTime.now().plusDays(10),
-                "trip3 description",
-                "Cyprus",
-                "https://www.mickeyshannon.com/photos/summit-county-sunrise.jpg"
-        );
-
-        Trip trip4 = new Trip(
-                UUID.randomUUID().toString(),
-                "trip4",
-                LocalDateTime.now().plusDays(11),
-                LocalDateTime.now().plusDays(15),
-                "trip4 description",
-                "Germany"
-        );
 
         dataLoaderTripRepository.save(trip1);
-        dataLoaderTripRepository.save(trip2);
-        dataLoaderTripRepository.save(trip3);
-        dataLoaderTripRepository.save(trip4);
+
 
         TripAssignment tripAssignment1 = new TripAssignment(trip1, ana);
         TripAssignment tripAssignment2 = new TripAssignment(trip1, jenna);
-        TripAssignment tripAssignment3 = new TripAssignment(trip3, scott);
-        TripAssignment tripAssignment4 = new TripAssignment(trip4, naeem);
         TripAssignment tripAssignment5 = new TripAssignment(trip1, scott);
         TripAssignment tripAssignment6 = new TripAssignment(trip1, naeem);
 
         dataLoaderTripAssignmentRepository.save(tripAssignment1);
         dataLoaderTripAssignmentRepository.save(tripAssignment2);
-        dataLoaderTripAssignmentRepository.save(tripAssignment3);
-        dataLoaderTripAssignmentRepository.save(tripAssignment4);
         dataLoaderTripAssignmentRepository.save(tripAssignment5);
         dataLoaderTripAssignmentRepository.save(tripAssignment6);
 
         Day trip1Day1 = new Day("trip_1_day_1", 200.00, LocalDateTime.now(), trip1);
         Day trip1Day2 = new Day("trip_1_day_2", 200.00, LocalDateTime.now().plusDays(1), trip1);
-        Day trip2Day1 = new Day("trip_2_day_1", 300.00, LocalDateTime.now(), trip2);
 
         dataLoaderDayRepository.save(trip1Day1);
         dataLoaderDayRepository.save(trip1Day2);
-        dataLoaderDayRepository.save(trip2Day1);
 
         DayActivity dayActivity1 = new DayActivity(
                 "Pizza",
@@ -254,42 +230,56 @@ public class DataLoader implements ApplicationRunner {
 
         DayActivityAssignment dayActivityAssignment5 = new DayActivityAssignment(
                 0.00,
-                25.00,
+                33.00,
                 dayActivity2,
                 ana
         );
         DayActivityAssignment dayActivityAssignment6 = new DayActivityAssignment(
                 0.00,
-                25.00,
+                33.00,
                 dayActivity2,
                 jenna
         );
         DayActivityAssignment dayActivityAssignment7 = new DayActivityAssignment(
                 0.00,
-                25.00,
+                34.00,
                 dayActivity2,
                 naeem
         );
 
         DayActivityAssignment dayActivityAssignment8 = new DayActivityAssignment(
                 0.00,
-                30.00,
+                34.00,
                 dayActivity3,
                 jenna
         );
 
         DayActivityAssignment dayActivityAssignment9 = new DayActivityAssignment(
                 0.00,
-                25.00,
+                33.00,
                 dayActivity3,
                 naeem
         );
 
         DayActivityAssignment dayActivityAssignment10 = new DayActivityAssignment(
                 0.00,
-                25.00,
+                33.00,
                 dayActivity3,
                 ana
+        );
+
+        DayActivityAssignment dayActivityAssignment11 = new DayActivityAssignment(
+                0.00,
+                75.00,
+                dayActivity4,
+                ana
+        );
+
+        DayActivityAssignment dayActivityAssignment12 = new DayActivityAssignment(
+                0.00,
+                25.00,
+                dayActivity4,
+                naeem
         );
 
         dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment1);
@@ -302,6 +292,8 @@ public class DataLoader implements ApplicationRunner {
         dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment8);
         dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment9);
         dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment10);
+        dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment11);
+        dataLoaderDayActivityAssignmentRepository.save(dayActivityAssignment12);
 
 
 

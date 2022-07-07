@@ -27,7 +27,6 @@ public class FriendServiceTest {
     @Autowired
     FriendService friendService;
 
-
     @Autowired
     UserRepository userRepository;
 
@@ -56,8 +55,9 @@ String userB = applicationUser2.getUsername();
         }
 
     @Test
-    public void canGetFriendPairByUserName(){
-      assertEquals(null, friendRepository.findFriendPairUsername("scott","naeem"));
-        }
+    public void canGetFriendPairByUserName() {
+
+        assertEquals(null, friendRepository.findFriendPairUsername("jeff123", "JOYCEY"));
+    }
 
 }

@@ -20,6 +20,9 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     @Query(value = "DELETE * FROM friend WHERE id = ?", nativeQuery = true)
     String deleteFriendById(Long id);
 
+//    @Query(value = "DELETE * FROM friend WHERE username_a = ?1 AND username_b = ?2", nativeQuery = true)
+//    String deleteFriendPair(String username_a, String username_b);
+
     @Query(value = "SELECT * FROM friend WHERE username_a =?1 AND username_b = ?2", nativeQuery = true)
     Friend findFriendPairUsername(String username_a, String username_b);
 

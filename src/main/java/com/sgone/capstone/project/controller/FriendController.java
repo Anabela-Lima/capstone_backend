@@ -19,7 +19,7 @@ import java.util.List;
 public class FriendController {
 
     @Autowired
-    private final FriendRepository friendRepository;
+    private FriendRepository friendRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -89,6 +89,13 @@ public class FriendController {
         return friendService.addFriend(currentUserUsername, friendToAddUsername);
     }
 
+//    @DeleteMapping("/deleteFriendPair/{username_a}/{username_b}")
+//    public String deleteFriendPair(String username_a, String username_b){
+//        if (friendRepository.findFriendPairUsername(username_a, username_b) != null) {
+//            friendRepository.deleteFriendPair(username_a, username_b);
+//        }
+//        return "This friend pairing does not exist";
+//    }
 
 
 //    @PostMapping("/addFriendByUsername/{currentUserUsername}/{friendToAddUsername}")

@@ -68,31 +68,33 @@ public class FriendService {
 
         // Creating two new Users...
         // userC corresponds to the current user. currentUserUsername should correspond to whoever is logged in
-        // userF corresponds to the TARGET user to be added as a friend, by their username
-
-
-        //creating two new Friends - friendLT and friendLF for the corresponding users
-        //the friend objects call getters from the corresponding user class
-
+        // userF corresponds to the TARGET user to be added as a friend
 
         Friend friendTA = new Friend(userC, userF, currentUserUsername, friendToAddUsername);
+
+        // Create a new Friend object to add the users and their usernames
 
         Friend existingUsernameCombo1 = friendRepository.findFriendPairUsername(currentUserUsername, friendToAddUsername);
         Friend existingUsernameCombo2 = friendRepository.findFriendPairUsername(friendToAddUsername, currentUserUsername);
 
+        // Create two combinations to check that the inputs are checked in both columns in the friend table
+
 
         if (userF == null) {
             throw new InvalidDataAccessApiUsageException("User does not exist! Check the details are right and try again, " + userC.getFirstname() + " " + userC.getLastname());
+            // If userF is null , i.e the entered friendToAddUsername does not correspond to an existing user, then it will
+            // throw an invalidDataAccessApiUsageException as shown above
         } else if (userC == userF) {
-            throw new InvalidDataAccessApiUsageException("Oi, big boy! You can't be friends with yourself! " + userC.getFirstname() + " " + userC.getLastname());
+            throw new InvalidDataAccessApiUsageException("Oi, big boy! You can't be friends with yourself, " + userC.getFirstname() + "!");
+            // If userC = userF (both inputs load the same user) then it will throw an invalidDataAccessApiUsageException as shown above
         } else if (existingUsernameCombo1 == null && existingUsernameCombo2 == null) {
             friendRepository.save(friendTA);
+            // if neither combination returns an existing friend object, save the new friend object
         } else {
             throw new InvalidDataAccessApiUsageException("You're already friends with " + userF.getFirstname() + "!");
+            // otherwise, you'll be friends with the friend to add, so
+            // an invalidDataAccessApiUsageException will be thrown as shown above
         }
-
-        //friendTA.getFriend_a_name().equals(existingFriend.getFriend_a_name().contains(currentUserFirstName)) && friendTA.getFriend_b_name().equals(existingFriend.getFriend_b_name())
-
         return "You have added " + userF.getFirstname() + " " + userF.getLastname() + " to your friend list, " + userC.getFirstname() + " " + userC.getLastname();
     }
 
